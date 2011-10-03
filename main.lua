@@ -1,17 +1,20 @@
 sprite = require "sprite"
 physics = require "physics"
+shield_h = require "shield"
 
 --start the physical simulation
 physics.start()
 physics.setDrawMode("hybrid")
 
 --background color
-local background = display.newRect(0, 0, display.contentWidth, display.contentHeight)
-background:setFillColor(0, 0, 200)
+local background = display.newImage("img/background.png")
 
 --circle to show transitions, touch & drag
 local circle = display.newCircle(display.contentWidth / 2, display.contentHeight / 2, 100)
 circle:setFillColor(255, 0, 0)
+
+local shield_generators = {}
+table.insert( shield_generators, shield:new(display.contentWidth / 2, display.contentHeight / 2 + 200 ,50,25,50) )
 
 --functions that show simple transitions - circle regularly fade in and out
 
@@ -113,7 +116,6 @@ circle:addEventListener("touch", circleTouch)
 --Runtime:addEventListener("enterFrame", penguinFly)
 Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("accelerometer", onShake)
-
 
 
 
