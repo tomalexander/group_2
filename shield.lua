@@ -5,7 +5,6 @@ function shield:new(center_x,center_y, radius, health, max_health)
    local object = { center_x = center_x, center_y = center_y, radius = radius, health = health, max_health = max_health }
    setmetatable(object, { __index = shield })
    object.image = display.newCircle(center_x, center_y, radius)
-   --object.image.parent = object
    object:update_color()
    object.type = "shield"
    physics.addBody(object.image, "static", {bounce = 0.7, radius = radius})
@@ -29,6 +28,8 @@ function cull_shields(shield_generators)
    while i > 0 do
       v = shield_generators[i]
       if v.health == 0 then
+         --local closure = function() return display.remove(v.image) end
+         --timer.performWithDelay(10, closure)
          display.remove(v.image)
          table.remove(shield_generators, i)
       end

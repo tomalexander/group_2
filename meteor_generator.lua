@@ -3,7 +3,7 @@ meteor_h = require "meteor"
 meteor_list = {}
 
 function generate_meteor( event )
-   table.insert(meteor_list, meteor:new(100+math.random(100),100+math.random(100),10))
+   table.insert(meteor_list, meteor:new(math.random(display.contentWidth),100+math.random(100),10))
 end
 
 meteor_generator_timer = timer.performWithDelay(1000, generate_meteor, 0)

@@ -6,7 +6,7 @@ meteor_generator_h = require "meteor_generator"
 
 --start the physical simulation
 physics.start()
-physics.setDrawMode("hybrid")
+--physics.setDrawMode("hybrid")
 
 --background color
 local background = display.newImage("img/background.png")
@@ -17,6 +17,12 @@ circle:setFillColor(255, 0, 0)
 
 local shield_generators = {}
 table.insert( shield_generators, shield:new(display.contentWidth / 2, display.contentHeight / 2 + 200 ,50,25,50) )
+table.insert( shield_generators, shield:new(50, 400 ,200,50,50) )
+table.insert( shield_generators, shield:new(350, 400 ,150,50,50) )
+table.insert( shield_generators, shield:new(550, 500 ,70,50,50) )
+table.insert( shield_generators, shield:new(750, 500 ,90,50,50) )
+table.insert( shield_generators, shield:new(950, 500 ,100,50,50) )
+
 
 --functions that show simple transitions - circle regularly fade in and out
 
@@ -123,7 +129,7 @@ local function onCollide(event)
    for i,v in ipairs(shield_generators) do
       if event.object1 == v.image or event.object2 == v.image then
          collide_shield = v
-         found_shield = 1
+         found_shield = i
       end
    end
 
@@ -132,14 +138,15 @@ local function onCollide(event)
    for i,v in ipairs(meteor_list) do
       if event.object1 == v.image or event.object2 == v.image then
          collide_meteor = v
-         found_meteor = 1
+         found_meteor = i
       end
    end
 
 
-   if found_shield == 1 and found_meteor == 1 then
+   if found_shield ~= 0 and found_meteor ~= 0 then
       print("found both " .. #shield_generators)
       collide_shield:take_damage(5)
+      meteor_disperse(found_meteor, meteor_list)
       cull_shields(shield_generators)
    end
 end
