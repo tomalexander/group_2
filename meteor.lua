@@ -47,7 +47,8 @@ function cull_debris(debris_list)
       v = debris_list[i]
       --local closure = function() return display.remove(v) end
       --timer.performWithDelay(10, closure)
-      table.remove(debris_list, i)
+      display.remove(v)
+      --table.remove(debris_list, i)
       i = i - 1
    end
 end

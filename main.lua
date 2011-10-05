@@ -152,10 +152,11 @@ local function onCollide(event)
 
 
    if found_shield ~= 0 and found_meteor ~= 0 then
-      --print("found both " .. #shield_generators)
       collide_shield:take_damage(5)
       meteor_disperse(found_meteor, meteor_list)
       cull_shields(shield_generators)
+   elseif found_meteor ~= 0 then
+      meteor_disperse(found_meteor, meteor_list)
    end
 end
 

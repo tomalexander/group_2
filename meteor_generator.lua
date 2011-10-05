@@ -6,7 +6,7 @@ function generate_meteor( event )
    table.insert(meteor_list, meteor:new(math.random(display.contentWidth),0,10, math.random(-500,500), math.random(250,500)))
 end
 
-meteor_generator_timer = timer.performWithDelay(1000, generate_meteor, 0)
+meteor_generator_timer = timer.performWithDelay(250, generate_meteor, 0)
 
 function cull_meteor()
    local cull_list = {}

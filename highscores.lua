@@ -1,5 +1,6 @@
 physics = require "physics"
 local http = require("socket.http")
+url = require("socket.url")
  
 
  
@@ -24,8 +25,8 @@ function highscores:parse_scores(input)
    self.parsed_scores = new_parsed_scores
 end
 
-function highscores:insert_scores(name, score)
-   local high_scores = http.request("http://gamedevhighscores.paphus.com/?newscore=" .. score .. "&newname=" .. name)
+function highscores:insert_score(name, score)
+   local high_scores = http.request("http://gamedevhighscores.paphus.com/?newscore=" .. url.escape(score) .. "&newname=" .. url.escape(name))
    self:parse_scores(high_scores)
 end
 
