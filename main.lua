@@ -4,6 +4,7 @@ shield_h = require "shield"
 meteor_h = require "meteor"
 meteor_generator_h = require "meteor_generator"
 survivor_h = require "survivor"
+highscores_h = require "highscores"
 
 --start the physical simulation
 physics.start()
@@ -145,7 +146,7 @@ local function onCollide(event)
 
 
    if found_shield ~= 0 and found_meteor ~= 0 then
-      print("found both " .. #shield_generators)
+      --print("found both " .. #shield_generators)
       collide_shield:take_damage(5)
       meteor_disperse(found_meteor, meteor_list)
       cull_shields(shield_generators)
