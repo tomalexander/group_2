@@ -3,6 +3,7 @@ physics = require "physics"
 shield_h = require "shield"
 meteor_h = require "meteor"
 meteor_generator_h = require "meteor_generator"
+platform_h = require "platform"
 survivor_h = require "survivor"
 highscores_h = require "highscores"
 
@@ -25,6 +26,7 @@ table.insert( shield_generators, shield:new(550, 500 ,70,50,50) )
 table.insert( shield_generators, shield:new(750, 500 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 500 ,100,50,50) )
 
+platform:new(300, 20)
 
 --functions that show simple transitions - circle regularly fade in and out
 
@@ -40,6 +42,7 @@ fadeOut()
 
 --this will start to break down with multiple moving physics objects
 --consider using a TouchJoint if the physics engine is enabled
+--[[
 local function circleTouch(event)
     --save point on which circle was touched - otherwise it hops instantly to be centered on finger
     if event.phase == "began" then
@@ -52,6 +55,7 @@ local function circleTouch(event)
     
     return true
 end
+--]]
 
 --spritesheet and sprite set for the penguin
 --filename, width and height of an individual frame
@@ -161,7 +165,7 @@ end
 
 
 --add event listeners for other functions
-circle:addEventListener("touch", circleTouch)
+--circle:addEventListener("touch", circleTouch)
 --Runtime:addEventListener("enterFrame", penguinFly)
 Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("accelerometer", onShake)
