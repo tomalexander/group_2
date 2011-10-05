@@ -49,7 +49,7 @@ function platform:destroy()
 		image:removeSelf()
 		Runtime:removeEventListener('accelerometer', onAccelerometer)
 		Runtime:removeEventListener('touch', onTouch)
-		instance = nil
+		platform.instance = nil
 		
 		destroyed = true
 	end
