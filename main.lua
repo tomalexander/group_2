@@ -168,3 +168,6 @@ Runtime:addEventListener("accelerometer", onShake)
 
 
 
+local high_scores = highscores:new()
+high_scores:update_scores()
+high_scores:print_scores()
