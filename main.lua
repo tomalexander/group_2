@@ -175,5 +175,9 @@ Runtime:addEventListener("accelerometer", onShake)
 
 
 local high_scores = highscores:new()
-high_scores:update_scores()
-high_scores:print_scores()
+high_scores:show_overlay()
+--high_scores:kill_overlay()
+local high_scores_closure = function()
+                               high_scores:kill_overlay()
+                            end
+timer.performWithDelay(1000, high_scores_closure)

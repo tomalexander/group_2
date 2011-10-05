@@ -40,6 +40,41 @@ function highscores:print_scores()
    end
 end
 
+function highscores:show_overlay()
+   self.overlay = display.newRect( 0, 0, display.contentWidth, display.contentHeight )
+   self.overlay:setFillColor( 0,0,0,200 )
+   self.overlay:addEventListener( "touch", doOverlay )
+   self:generate_highscores()
+end
+
+function highscores:kill_overlay()
+   print("killing overlay")
+   self.overlay:removeEventListener( "touch", doOverlay )
+   self.overlay:removeSelf()
+   self.score_group:removeSelf()
+   self.overlay = nil
+end
+
+function highscores:generate_highscores()
+   local x = 300
+   local y = 100
+   local margin = 40
+   self:update_scores()
+   self.score_group = display.newGroup()
+   local headline_text = display.newText("High Scores", x-20, y - 60, native.systemFontBold, 54)
+   self.score_group:insert(headline_text)
+   for i, line in ipairs(self.parsed_scores) do
+         local current_text = display.newText(line[1] .. " " .. line[2], x, y, native.systemFontBold, 44)
+         y = y + margin
+         current_text:setTextColor(255, 255, 255)
+         self.score_group:insert(current_text)
+   end
+end
+
+function doOverlay()
+    return true
+end
+
 function split(input, seperator)
    local previous_end = 1
    local ret = {}
