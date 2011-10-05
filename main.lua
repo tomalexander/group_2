@@ -94,22 +94,22 @@ penguinpoly = {-30, -70, 30, -70, 70, 0, 40, 60, -40, 60, -70, 0}
 
 --add invisible boudaries so that the penguin doesn't fall offscreen
 local edge1 = display.newRect(0,0, display.contentWidth, 10)
-physics.addBody(edge1, "static", {bounce = 0.7})
+--physics.addBody(edge1, "static", {bounce = 0.7})
 edge1.isVisible = false
 edge1.parent = {}
 edge1.parent.type = "edge"
 local edge2 = display.newRect(0,0, 10, display.contentHeight)
-physics.addBody(edge2, "static", {bounce = 0.7})
+--physics.addBody(edge2, "static", {bounce = 0.7})
 edge2.isVisible = false
 edge2.parent = {}
 edge2.parent.type = "edge"
 local edge3 = display.newRect(display.contentWidth - 10,0, 10, display.contentHeight)
-physics.addBody(edge3, "static", {bounce = 0.7})
+--physics.addBody(edge3, "static", {bounce = 0.7})
 edge3.isVisible = false
 edge3.parent = {}
 edge3.parent.type = "edge"
 local edge4 = display.newRect(0,display.contentHeight-10, display.contentWidth, 10)
-physics.addBody(edge4, "static", {bounce = 0.7})
+--physics.addBody(edge4, "static", {bounce = 0.7})
 edge4.isVisible = false
 edge4.parent = {}
 edge4.parent.type = "edge"

@@ -1,12 +1,13 @@
 physics = require "physics"
 meteor = {}
 
-function meteor:new(center_x, center_y, radius)
+function meteor:new(center_x, center_y, radius, x_velocity, y_velocity)
    local object = {center_x = center_x, center_y = center_y, radius = radius }
    setmetatable(object, { __index = meteor })
    object.image = display.newCircle(center_x, center_y, radius)
    object.type = "live_meteor"
    physics.addBody(object.image, { density = 1.0, friction = 0.3, bounce = 0.2, radius = radius})
+   object.image:setLinearVelocity(x_velocity, y_velocity)
    object.image:setFillColor(255,0,0)
    return object
 end
