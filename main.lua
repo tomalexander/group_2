@@ -4,6 +4,7 @@ shield_h = require "shield"
 meteor_h = require "meteor"
 meteor_generator_h = require "meteor_generator"
 platform_h = require "platform"
+ground_h = require "ground"
 survivor_h = require "survivor"
 highscores_h = require "highscores"
 
@@ -26,7 +27,8 @@ table.insert( shield_generators, shield:new(550, 500 ,70,50,50) )
 table.insert( shield_generators, shield:new(750, 500 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 500 ,100,50,50) )
 
-platform:new(300, 20)
+platform:new(256, 64)
+ground:newArea(32, 386, 640, 128)
 
 --functions that show simple transitions - circle regularly fade in and out
 

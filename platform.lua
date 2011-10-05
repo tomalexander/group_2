@@ -1,6 +1,5 @@
 physics = require "physics"
 sprite = require "sprite"
---event = require "event"
 
 platform = {
 	-- Class constants
@@ -13,7 +12,7 @@ platform = {
 	velocityMax = 250,
 	
 	
-	
+	-- Make the class singleton-ish so it can handle global events gracefully
 	instance = nil
 }
 platform.spriteSheet = sprite.newSpriteSheet(platform.spriteName, platform.spriteWidth, platform.spriteHeight)
@@ -22,34 +21,32 @@ platform.spriteSet = sprite.newSpriteSet(platform.spriteSheet, platform.spriteId
 sprite.add(platform.spriteSet, 'idle', platform.spriteIdleFrameBegin, platform.spriteIdleFrameCount, platform.spriteIdleFrameRate, 0)
 
 function platform:new(center_x, center_y)
-	if not instance then
-		instance = {
-			velocity = 0,
+	if not platform.instance then
+		platform.instance = {
 			resources = 0,
 			destroyed = false,
 			image = sprite.newSprite(platform.spriteSet)
 		}
-		setmetatable(instance, { __index = platform })
+		setmetatable(platform.instance, { __index = platform })
 		
-		--instance.body = physics.addBody(instance.image, 'static', {density = 0, friction = 0.5, bounce = 0.2})
-		physics.addBody(instance.image, 'kinematic', {friction = 0.5, bounce = 0.2})
-		instance.image.isFixedRotation = true
+		physics.addBody(platform.instance.image, 'kinematic', {friction = 0.5, bounce = 0.2})
+		platform.instance.image.isFixedRotation = true
 		
 		Runtime:addEventListener('accelerometer', platform.onAccelerometer)
 		Runtime:addEventListener('touch', platform.onTouch)
-		instance.image:prepare('idle')
-		instance.image:play()
+		platform.instance.image:prepare('idle')
+		platform.instance.image:play()
 	end
 	
-	instance.image.x = center_x
-	instance.image.y = center_y
+	platform.instance.image.x = center_x
+	platform.instance.image.y = center_y
 	
-	return instance
+	return platform.instance
 end
 
 function platform:destroy()
 	if not destroyed then
-		body:removeSelf()
+		image:removeSelf()
 		Runtime:removeEventListener('accelerometer', onAccelerometer)
 		Runtime:removeEventListener('touch', onTouch)
 		instance = nil
@@ -59,22 +56,22 @@ function platform:destroy()
 end
 
 function platform.onAccelerometer(event)
-	if instance then
+	if platform.instance then
 		print('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity)
 	end
 end
 
 function platform.onTouch(event)
 	-- Can't test accelerometer on simulator, so touch the sides of the screen for testing
-	if instance then
+	if platform.instance then
 		if event.phase == 'began' then
 			if event.x < 100 then
-				instance.image:setLinearVelocity(-instance.velocityMax, 0)
+				platform.instance.image:setLinearVelocity(-platform.instance.velocityMax, 0)
 			elseif event.x > 960 - 100 then
-				instance.image:setLinearVelocity(instance.velocityMax, 0)
+				platform.instance.image:setLinearVelocity(platform.instance.velocityMax, 0)
 			end
 		elseif event.phase == 'ended' or event.phase == 'cancelled' then
-			instance.image:setLinearVelocity(0, 0)
+			platform.instance.image:setLinearVelocity(0, 0)
 		end
 	end
 end
