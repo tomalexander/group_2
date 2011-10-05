@@ -3,6 +3,7 @@ physics = require "physics"
 shield_h = require "shield"
 meteor_h = require "meteor"
 meteor_generator_h = require "meteor_generator"
+survivor_h = require "survivor"
 
 --start the physical simulation
 physics.start()
