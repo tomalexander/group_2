@@ -4,8 +4,8 @@ sprite = require "sprite"
 resource = {
 	-- Class constants
 	spriteName = 'img/resource.png',
-	spriteWidth = 32,
-	spriteHeight = 32,
+	spriteWidth = 82,
+	spriteHeight = 74,
 	spriteIdleFrameBegin = 1,
 	spriteIdleFrameCount = 1,
 	spriteIdleFrameRate = 1,
@@ -30,8 +30,8 @@ function resource:new(x, y)
 	object.image:prepare('idle')
 	object.image:play()
 	
-	object.image.x = x
-	object.image.y = y
+	object.image.x = x + resource.spriteWidth / 2
+	object.image.y = y + resource.spriteHeight / 2
 	
 	table.insert(resource.list, object)
 	
@@ -39,11 +39,11 @@ function resource:new(x, y)
 end
 
 function resource:destroy()
-	if not destroyed then
-		image:removeSelf()
+	if not self.destroyed then
+		self.image:removeSelf()
 		
 		-- Remove from resource.list
 		
-		destroyed = true
+		self.destroyed = true
 	end
 end

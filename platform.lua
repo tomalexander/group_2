@@ -1,11 +1,12 @@
 physics = require "physics"
 sprite = require "sprite"
+require 'ground'
 
 platform = {
 	-- Class constants
 	spriteName = 'img/platform.png',
-	spriteWidth = 200,
-	spriteHeight = 100,
+	spriteWidth = 199,
+	spriteHeight = 103,
 	spriteIdleFrameBegin = 1,
 	spriteIdleFrameCount = 1,
 	spriteIdleFrameRate = 250,
@@ -45,13 +46,13 @@ function platform:new(center_x, center_y)
 end
 
 function platform:destroy()
-	if not destroyed then
-		image:removeSelf()
+	if not self.destroyed then
+		self.image:removeSelf()
 		Runtime:removeEventListener('accelerometer', onAccelerometer)
 		Runtime:removeEventListener('touch', onTouch)
 		platform.instance = nil
 		
-		destroyed = true
+		self.destroyed = true
 	end
 end
 
@@ -73,5 +74,71 @@ function platform.onTouch(event)
 		elseif event.phase == 'ended' or event.phase == 'cancelled' then
 			platform.instance.image:setLinearVelocity(0, 0)
 		end
+		
+		if event.y > 400 then
+			laser:new(platform.instance.image.x, platform.instance.image.y)
+		end
 	end
+end
+
+-- Laser/extraction-thingy class
+
+laser = {
+	-- Class constants
+	radius = 3,
+	velocity = 200,
+	
+	list = {}
+}
+
+function laser:new(center_x, center_y)
+	-- Temporary non-physics based solution until collisions are worked out
+	for _, i in ipairs(ground.list) do
+		if center_x >= i:x() and center_x < i:x() + i.w then
+			i:carve(center_x, 32, 4)
+			break
+		end
+	end
+	
+	local object = {
+		image = display.newCircle(center_x, center_y, laser.radius),
+	
+		destroyed = false
+	}
+	setmetatable(object, { __index = laser })
+	
+	object.image:setFillColor(0,255,0)
+		
+	physics.addBody(object.image, 'kinematic', {})
+	
+	object.image.collision = laser.collide
+	object.image:addEventListener('collision', object.image)
+	object.image:setLinearVelocity(0, laser.velocity)
+	
+	object.image.isFixedRotation = true
+	object.image.isBullet = true
+	
+	object.image.x = center_x
+	object.image.y = center_y
+	
+	return object
+end
+
+function laser:destroy()
+	if not destroyed then
+		self.image:removeSelf()
+		
+		self.destroyed = true
+	end
+end
+
+function laser:collide(event)
+	--[[
+	print('collision: phase = ' .. event.phase)
+	print('other = ' .. event.other.x .. ' ' .. event.other.y)
+	if event.other.__index == ground then
+		print('kill')
+		self.destroy()
+	end
+	--]]
 end

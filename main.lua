@@ -13,7 +13,7 @@ physics.start()
 --physics.setDrawMode("hybrid")
 
 --background color
-local background = display.newImage("img/background.png")
+local background = display.newImage("img/background.png", true)
 
 --circle to show transitions, touch & drag
 local circle = display.newCircle(display.contentWidth / 2, display.contentHeight / 2, 100)
@@ -28,7 +28,8 @@ table.insert( shield_generators, shield:new(750, 500 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 500 ,100,50,50) )
 
 platform:new(256, 64)
-ground:newArea(32, 386, 640, 128)
+--ground:newArea(32, 386, 640, 128)
+ground:new(0, 386)
 
 --functions that show simple transitions - circle regularly fade in and out
 
