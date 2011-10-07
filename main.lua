@@ -184,3 +184,5 @@ local high_scores_closure = function()
 timer.performWithDelay(1000, high_scores_closure)
 
 table.insert(survivor_list, survivor:new(500,50) )
+local sysFonts = native.getFontNames()
+for k,v in pairs(sysFonts) do print(v) end
