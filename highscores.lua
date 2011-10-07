@@ -62,10 +62,10 @@ function highscores:generate_highscores()
    local margin = 40
    self:update_scores()
    self.score_group = display.newGroup()
-   local headline_text = display.newText("High Scores", x-20, y - 60, native.systemFontBold, 54)
+   local headline_text = display.newText("High Scores", x-20, y - 60, "Space Frigate", 54)
    self.score_group:insert(headline_text)
    for i, line in ipairs(self.parsed_scores) do
-         local current_text = display.newText(line[1] .. " " .. line[2], x, y, native.systemFontBold, 44)
+         local current_text = display.newText(line[1] .. " " .. line[2], x, y, "Space Frigate", 44)
          y = y + margin
          current_text:setTextColor(255, 255, 255)
          self.score_group:insert(current_text)

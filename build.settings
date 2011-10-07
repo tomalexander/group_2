@@ -8,4 +8,14 @@ settings =
                         "landscapeLeft", "landscapeRight", "portrait", "portraitUpsideDown",
                 },
         },
+iphone =        
+        {
+                plist =
+                {
+                        UIAppFonts = 
+                        {
+                                "spacefr.ttf"
+                        }
+                },
+        },
 }
