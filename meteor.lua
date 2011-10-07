@@ -29,7 +29,23 @@ function meteor_disperse(meteor_index, meteor_list)
       local vx, vy = current_meteor.image:getLinearVelocity()
       local closure = function()
                          physics.addBody(current, { density = 0.1, friction = 0, bounce = 0.2, radius = 1})
-                         return current:setLinearVelocity(vx*1 + math.random(-100,100), vy*-1 + math.random(-100,100))
+                         local x_addition = math.random(50,100)
+                         local x_multiplier = math.random(-1,1)
+                         if x_multiplier < 0 then
+                            x_multiplier = -1
+                         else
+                            x_multiplier = 1
+                         end
+                         local y_addition = math.random(50,100)
+                         local y_multiplier = math.random(-1,1)
+                         if y_multiplier < 0 then
+                            y_multiplier = -1
+                         else
+                            y_multiplier = 1
+                         end
+                         x_addition = x_addition * x_multiplier
+                         y_addition = y_addition * y_multiplier
+                         return current:setLinearVelocity(vx*1 + x_addition, vy*-1 + y_addition)
                       end
       timer.performWithDelay(10, closure)
       --physics.addBody(current, { density = 1.0, friction = 0, bounce = 0.2, radius = radius})
