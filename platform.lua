@@ -4,12 +4,16 @@ require 'ground'
 
 platform = {
 	-- Class constants
-	spriteName = 'img/platform_anim.png',
+	spriteName = 'img/platform.png',
+	spriteFireName = 'img/platform_anim.png',
 	spriteWidth = 199,
 	spriteHeight = 103,
 	spriteIdleFrameBegin = 1,
-	spriteIdleFrameCount = 3,
+	spriteIdleFrameCount = 1,
 	spriteIdleFrameRate = 500,
+	spriteFireFrameBegin = 1,
+	spriteFireFrameCount = 1,
+	spriteFireFrameRate = 500,
 	velocityMax = 250,
 	
 	charge = 0,
@@ -21,7 +25,11 @@ platform = {
 platform.spriteSheet = sprite.newSpriteSheet(platform.spriteName, platform.spriteWidth, platform.spriteHeight)
 platform.spriteSet = sprite.newSpriteSet(platform.spriteSheet, platform.spriteIdleFrameBegin, platform.spriteIdleFrameCount)
 
+platform.spriteFireSheet = sprite.newSpriteSheet(platform.spriteFireName, platform.spriteWidth, platform.spriteHeight)
+platform.spriteFireSet = sprite.newSpriteSet(platform.spriteFireSheet, platform.spriteFireFrameBegin, platform.spriteFireFrameCount)
+
 sprite.add(platform.spriteSet, 'idle', platform.spriteIdleFrameBegin, platform.spriteIdleFrameCount, platform.spriteIdleFrameRate, 0)
+sprite.add(platform.spriteSet, 'fire', platform.spriteFireFrameBegin, platform.spriteFireFrameCount, platform.spriteFireFrameRate, 0)
 
 function platform:new(center_x, center_y)
 	if not platform.instance then
@@ -86,6 +94,8 @@ function platform.onTouch(event)
 			if platform.instance.laser ~= nil then
 				platform.instance.laser:destroy()
 				platform.instance.laser = nil
+				platform.instance.image:prepare('idle')
+				platform.instance.image:play()
 			end
 		end
 	end
@@ -94,6 +104,8 @@ end
 function platform:update(time)
 	if self.charge == self.chargeFull then
 		if not self.laser then
+			platform.instance.image:prepare('fire')
+			platform.instance.image:play()
 			self.laser = laser:new(platform.instance.image.x, platform.instance.image.y + laser.spriteHeight/2 + 44)
 		end
 	elseif self.charge > 0 then
