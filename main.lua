@@ -25,7 +25,7 @@ table.insert( shield_generators, shield:new(750, 500 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 500 ,100,50,50) )
 
 platform:new(256, 64)
-ground:new(0, 386)
+ground:new(0, 450)
 
 
 --[[Corona automatically translates between the screen units and the
@@ -86,6 +86,9 @@ end
 function onFrame(event)
 	if platform.instance then
 		platform.instance:update(event.time)
+		if platform.instance.laser then
+			platform.instance.laser:update(event.time)
+		end
 	end
 end
 

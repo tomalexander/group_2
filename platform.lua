@@ -4,12 +4,12 @@ require 'ground'
 
 platform = {
 	-- Class constants
-	spriteName = 'img/platform.png',
+	spriteName = 'img/platform_anim.png',
 	spriteWidth = 199,
 	spriteHeight = 103,
 	spriteIdleFrameBegin = 1,
-	spriteIdleFrameCount = 1,
-	spriteIdleFrameRate = 250,
+	spriteIdleFrameCount = 3,
+	spriteIdleFrameRate = 500,
 	velocityMax = 250,
 	
 	charge = 0,
@@ -27,8 +27,10 @@ function platform:new(center_x, center_y)
 	if not platform.instance then
 		platform.instance = {
 			resources = 0,
-			destroyed = false,
-			image = sprite.newSprite(platform.spriteSet)
+			laser = nil,
+			image = sprite.newSprite(platform.spriteSet),
+			
+			destroyed = false
 		}
 		setmetatable(platform.instance, { __index = platform })
 		
@@ -81,15 +83,19 @@ function platform.onTouch(event)
 		elseif event.phase == 'ended' or event.phase == 'cancelled' then
 			platform.instance.image:setLinearVelocity(0, 0)
 			platform.instance.charge = 0
+			if platform.instance.laser ~= nil then
+				platform.instance.laser:destroy()
+				platform.instance.laser = nil
+			end
 		end
-		
-		
 	end
 end
 
 function platform:update(time)
 	if self.charge == self.chargeFull then
-		laser:new(platform.instance.image.x, platform.instance.image.y)
+		if not self.laser then
+			self.laser = laser:new(platform.instance.image.x, platform.instance.image.y + laser.spriteHeight/2 + 44)
+		end
 	elseif self.charge > 0 then
 		self.charge = self.charge + 1
 	end
@@ -99,43 +105,55 @@ end
 
 laser = {
 	-- Class constants
-	radius = 3,
-	velocity = 200,
+	--velocity = 400,
+	
+	spriteName = 'img/laser_stretch.png',
+	spriteWidth = 26,
+	spriteHeight = 540,
+	spriteIdleFrameBegin = 1,
+	spriteIdleFrameCount = 1,
+	spriteIdleFrameRate = 1,
 	
 	list = {}
 }
+laser.spriteSheet = sprite.newSpriteSheet(laser.spriteName, laser.spriteWidth, laser.spriteHeight)
+laser.spriteSet = sprite.newSpriteSet(laser.spriteSheet, laser.spriteIdleFrameBegin, laser.spriteIdleFrameCount)
+
+sprite.add(laser.spriteSet, 'idle', laser.spriteIdleFrameBegin, laser.spriteIdleFrameCount, laser.spriteIdleFrameRate, 0)
 
 function laser:new(center_x, center_y)
-	-- Temporary non-physics based solution until collisions are worked out
-	for _, i in ipairs(ground.list) do
-		if center_x >= i:x() and center_x < i:x() + i.w then
-			i:carve(center_x, 32, 1)
-			break
-		end
-	end
-	
 	local object = {
-		image = display.newCircle(center_x, center_y, laser.radius),
+		image = sprite.newSprite(laser.spriteSet),
 	
 		destroyed = false
 	}
 	setmetatable(object, { __index = laser })
 	
-	object.image:setFillColor(0,255,0)
+	--object.image:setFillColor(0,255,0)
 		
-	physics.addBody(object.image, 'kinematic', {})
+	--physics.addBody(object.image, 'kinematic', {})
 	
-	object.image.collision = laser.collide
-	object.image:addEventListener('collision', object.image)
-	object.image:setLinearVelocity(0, laser.velocity)
+	--object.image.collision = laser.collide
+	--object.image:addEventListener('collision', object.image)
+	--object.image:setLinearVelocity(0, laser.velocity)
 	
-	object.image.isFixedRotation = true
-	object.image.isBullet = true
+	--object.image.isFixedRotation = true
+	--object.image.isBullet = true
 	
 	object.image.x = center_x
 	object.image.y = center_y
 	
 	return object
+end
+
+function laser:update(time)
+	-- Temporary non-physics based solution until collisions are worked out
+	for _, i in ipairs(ground.list) do
+		if self.image.x >= i:x() and self.image.x < i:x() + i.w then
+			i:carve(self.image.x, 48, 1)
+			break
+		end
+	end
 end
 
 function laser:destroy()

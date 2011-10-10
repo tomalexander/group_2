@@ -19,8 +19,9 @@ sprite.add(resource.spriteSet, 'idle', resource.spriteIdleFrameBegin, resource.s
 
 function resource:new(x, y)
 	local object = {
-		destroyed = false,
-		image = sprite.newSprite(resource.spriteSet)
+		image = sprite.newSprite(resource.spriteSet),
+		
+		destroyed = false
 	}
 	setmetatable(object, { __index = resource })
 	
