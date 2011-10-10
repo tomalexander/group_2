@@ -6,7 +6,7 @@ function meteor:new(center_x, center_y, radius, x_velocity, y_velocity)
    setmetatable(object, { __index = meteor })
    object.image = display.newCircle(center_x, center_y, radius)
    object.type = "live_meteor"
-   physics.addBody(object.image, { density = 1.0, friction = 0.3, bounce = 0.2, radius = radius})
+   physics.addBody(object.image, { density = 1.0, friction = 0.3, bounce = 0.2, radius = radius, filter = { categoryBits = 4, maskBits = 57 }})
    object.image:setLinearVelocity(x_velocity, y_velocity)
    object.image:setFillColor(255,0,0)
    return object
@@ -28,7 +28,7 @@ function meteor_disperse(meteor_index, meteor_list)
       
       local vx, vy = current_meteor.image:getLinearVelocity()
       local closure = function()
-                         physics.addBody(current, { density = 0.1, friction = 0, bounce = 0.2, radius = 1})
+                         physics.addBody(current, { density = 0.1, friction = 0, bounce = 0.2, radius = 1, filter = { categoryBits = 64, maskBits = 113 }})
                          local x_addition = math.random(50,100)
                          local x_multiplier = math.random(-1,1)
                          if x_multiplier < 0 then
