@@ -34,22 +34,23 @@ sprite.add(ground.spriteSet, 'idle', ground.spriteIdleFrameBegin, ground.spriteI
 function ground:new(x, y, w, h)
 	local object = {
 		-- Set w and h if given, else default to fullsize sprite
+		_x = x,
+		_y = y,
 		w = w or ground.spriteWidth,
 		h = h or ground.spriteHeight,
 		
 		destroyed = false
 	}
 	setmetatable(object, { __index = ground })
-	if w or h then
-		object:resize(x, y, object.w, object.h)
-	else
-		object.sheet = ground.spriteSheet
-		object.set = ground.spriteSet
-		object.image = sprite.newSprite(object.set)
-		physics.addBody(object.image, 'static', {friction = 0.6, bounce = 0.4})
+	object:resize(x, y, object.w, object.h)
+	
+	if not object:isPartial() then	
+		-- Have new ground spawn some resources
+		local count = math.random(1, 3)
 		
-		object.image.x = round(x + object.w / 2)
-		object.image.y = round(y + ground.spriteHeight / 2)
+		for i = 0, count do
+			resource:new(x + math.random(0, ground.spriteWidth - resource.spriteWidth), y + math.random(0, ground.spriteHeight - resource.spriteHeight))
+		end
 	end
 	
 	
@@ -68,70 +69,83 @@ function ground:new(x, y, w, h)
 end
 -- x() and y() are function calls so that they return the top left, not center
 function ground:x()
-	return round(self.image.x) - self.w / 2
+	return self._x
+	--return round(self.image.x) - self.w / 2
 end
 
 function ground:y()
-	return round(self.image.y) - self.h / 2
+	return self._y
+	--return round(self.image.y) - self.h / 2
 end
 
-function ground:resize(x, y, w, h)
+function ground:isPartial()
+	return self.w ~= ground.spriteWidth or self.h ~= ground.spriteHeight
+end
+
+function ground:load()
+	-- If creating a partial ground, create a sprite sheet from the remaining area
+	if self:isPartial() then
+		local function createData()
+			local data = 
+			{
+				frames = 
+				{
+					{
+					name = ground.spriteName,
+					textureRect = {
+						x = self:x() % ground.spriteWidth,
+						y = ground.spriteHeight - (self.h or ground.spriteHeight),
+						width = self.w or ground.spriteWidth,
+						height = self.h or ground.spriteHeight
+					},
+					spriteTrimmed = true,
+					spriteColorRect = {
+						x = 0,
+						y = 0,
+						width = self.w or ground.spriteWidth,
+						height = self.h or ground.spriteHeight
+					},
+					spriteSourceSize = {
+						width = self.w or ground.spriteWidth,
+						height = self.h or ground.spriteHeight
+					},
+					},
+				}
+			}
+			return data
+		end
+		
+		self.sheet = sprite.newSpriteSheetFromData(ground.spriteName, createData())
+		self.set = sprite.newSpriteSet(self.sheet, ground.spriteIdleFrameBegin, ground.spriteIdleFrameCount)
+		sprite.add(self.set, 'idle', ground.spriteIdleFrameBegin, ground.spriteIdleFrameCount, ground.spriteIdleFrameRate, 0)
+	else
+		self.sheet = ground.spriteSheet
+		self.set = ground.spriteSet
+	end
+	self.image = sprite.newSprite(self.set)
+	ground.group:insert(self.image)
 	
+	self.image.x = round(self:x() + self.w / 2)
+	self.image.y = round(self:y() + self.h / 2)
+	
+	physics.addBody(self.image, 'static', {friction = 0.6, bounce = 0.4})
+end
+
+function ground:unload()
 	if self.image then
 		self.image:removeSelf()
 	end
-	print('Resize:')
-	print(x % ground.spriteWidth)
-	print(ground.spriteHeight - (h or ground.spriteHeight))
-	print(w or ground.spriteWidth)
-	print(h or ground.spriteHeight)
-	print('---')
+end
+
+function ground:resize(x, y, w, h)
+	self:unload()
 	
-	-- If creating a partial ground, create a sprite sheet from the remaining area
-	local function createData()
-		local data = 
-		{
-			frames = 
-			{
-				{
-				name = ground.spriteName,
-				textureRect = {
-					x = x % ground.spriteWidth,
-					y = ground.spriteHeight - (h or ground.spriteHeight),
-					width = w or ground.spriteWidth,
-					height = h or ground.spriteHeight
-				},
-				spriteTrimmed = true,
-				spriteColorRect = {
-					x = 0,
-					y = 0,
-					width = w or ground.spriteWidth,
-					height = h or ground.spriteHeight
-				},
-				spriteSourceSize = {
-					width = w or ground.spriteWidth,
-					height = h or ground.spriteHeight
-				},
-				},
-			}
-		}
-		return data
-	end
-	
-	self.sheet = sprite.newSpriteSheetFromData(ground.spriteName, createData())
-	self.set = sprite.newSpriteSet(self.sheet, ground.spriteIdleFrameBegin, ground.spriteIdleFrameCount)
-	sprite.add(self.set, 'idle', ground.spriteIdleFrameBegin, ground.spriteIdleFrameCount, ground.spriteIdleFrameRate, 0)
-	self.image = sprite.newSprite(self.set)
-	
+	self._x = x
+	self._y = y
 	self.w = w
 	self.h = h
-	print(x .. ' ' .. y .. ' ' .. self.w .. ' ' .. self.h)
-	self.image.x = round(x + self.w / 2)
-	self.image.y = round(y + self.h / 2)
 	
-	print(self.image.x .. ' ' .. self.image.y .. ' ' .. self.w .. ' ' .. self.h)
-	
-	physics.addBody(self.image, 'static', {friction = 0.6, bounce = 0.4})
+	self:load()
 end
 
 function ground:carve(x, w, pixels)
@@ -153,7 +167,7 @@ function ground:carve(x, w, pixels)
 		self:destroy()
 	else
 		-- Shrink rectangle directly under contact
-		self:resize(left, self:y() + pixels, right - left, self.h - pixels)
+		self:resize(newleft, self:y() + pixels, newright - newleft, self.h - pixels)
 	end
 end
 
@@ -176,7 +190,7 @@ end
 
 function ground:destroy()
 	if not self.destroyed then
-		self.image:removeSelf()
+		self:unload()
 		
 		-- Remove from ground.list
 		

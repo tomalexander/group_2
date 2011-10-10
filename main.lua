@@ -1,5 +1,9 @@
 sprite = require "sprite"
 physics = require "physics"
+
+-- Quick hackish method to force the background to be drawn first
+local background = display.newImage("img/background.png", true)
+
 shield_h = require "shield"
 meteor_h = require "meteor"
 meteor_generator_h = require "meteor_generator"
@@ -11,13 +15,6 @@ highscores_h = require "highscores"
 --start the physical simulation
 physics.start()
 --physics.setDrawMode("hybrid")
-
---background color
-local background = display.newImage("img/background.png", true)
-
---circle to show transitions, touch & drag
-local circle = display.newCircle(display.contentWidth / 2, display.contentHeight / 2, 100)
-circle:setFillColor(255, 0, 0)
 
 local shield_generators = {}
 table.insert( shield_generators, shield:new(display.contentWidth / 2, display.contentHeight / 2 + 200 ,50,25,50) )

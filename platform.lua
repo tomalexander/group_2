@@ -95,7 +95,7 @@ function laser:new(center_x, center_y)
 	-- Temporary non-physics based solution until collisions are worked out
 	for _, i in ipairs(ground.list) do
 		if center_x >= i:x() and center_x < i:x() + i.w then
-			i:carve(center_x, 32, 4)
+			i:carve(center_x, 32, 1)
 			break
 		end
 	end
