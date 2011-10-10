@@ -11,6 +11,8 @@ platform_h = require "platform"
 ground_h = require "ground"
 survivor_h = require "survivor"
 highscores_h = require "highscores"
+require "HUD"
+require "menu"
 
 --start the physical simulation
 physics.start()
@@ -85,3 +87,29 @@ timer.performWithDelay(1000, high_scores_closure)
 table.insert(survivor_list, survivor:new(500,50) )
 local sysFonts = native.getFontNames()
 for k,v in pairs(sysFonts) do print(v) end
+
+mainmenu = mainMenu:new()
+
+hud = HUD:new()
+hud:displayHUD(false)
+
+
+local function menuTouch(event)
+    if event.phase == "began" then
+        if (event.x > display.contentWidth/4 and event.x < display.contentWidth*3/4
+        and event.y > display.contentHeight/4 and event.y < display.contentHeight*3/4) then
+            if mainmenu.help then
+                mainmenu:setHelp(false)
+            else
+                mainmenu:setHelp(true)
+            end
+            
+        elseif (event.x > display.contentWidth*3/4 and event.y > display.contentHeight*3/4) then
+            mainmenu:Play()
+            hud:displayHUD(true)
+            Runtime:removeEventListener("touch", menuTouch)
+        end
+    end
+end
+
+Runtime:addEventListener("touch", menuTouch)
