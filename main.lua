@@ -18,7 +18,7 @@ require "menu"
 physics.start()
 --physics.setDrawMode("hybrid")
 
-local shield_generators = {}
+shield_generators = {}
 table.insert( shield_generators, shield:new(50, 300 ,200,50,50) )
 table.insert( shield_generators, shield:new(350, 300 ,150,50,50) )
 table.insert( shield_generators, shield:new(550, 300 ,70,50,50) )
