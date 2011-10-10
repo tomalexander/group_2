@@ -11,6 +11,8 @@ platform_h = require "platform"
 ground_h = require "ground"
 survivor_h = require "survivor"
 highscores_h = require "highscores"
+require "HUD"
+require "menu"
 
 --start the physical simulation
 physics.start()
@@ -24,7 +26,7 @@ table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
 
 platform:new(256, 64)
-ground:new(0, 386)
+ground:new(0, 450)
 
 
 --[[Corona automatically translates between the screen units and the
@@ -82,13 +84,49 @@ local function onCollide(event)
    end
 end
 
+function onFrame(event)
+	if platform.instance then
+		platform.instance:update(event.time)
+		if platform.instance.laser then
+			platform.instance.laser:update(event.time)
+		end
+	end
+end
+
 --add event listeners for other functions
 --circle:addEventListener("touch", circleTouch)
 --Runtime:addEventListener("enterFrame", penguinFly)
 Runtime:addEventListener("collision", onCollide)
+Runtime:addEventListener("enterFrame", onFrame)
 
 local high_scores = highscores:new()
 --high_scores:show_overlay()
 table.insert(survivor_list, survivor:new(500,50) )
 local sysFonts = native.getFontNames()
 for k,v in pairs(sysFonts) do print(v) end
+
+mainmenu = mainMenu:new()
+
+hud = HUD:new()
+hud:displayHUD(false)
+
+
+local function menuTouch(event)
+    if event.phase == "began" then
+        if (event.x > display.contentWidth/4 and event.x < display.contentWidth*3/4
+        and event.y > display.contentHeight/4 and event.y < display.contentHeight*3/4) then
+            if mainmenu.help then
+                mainmenu:setHelp(false)
+            else
+                mainmenu:setHelp(true)
+            end
+            
+        elseif (event.x > display.contentWidth*3/4 and event.y > display.contentHeight*3/4) then
+            mainmenu:Play()
+            hud:displayHUD(true)
+            Runtime:removeEventListener("touch", menuTouch)
+        end
+    end
+end
+
+Runtime:addEventListener("touch", menuTouch)
