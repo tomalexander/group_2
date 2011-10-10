@@ -57,3 +57,9 @@ function get_distance(x_1, y_1, x_2, y_2)
    y = y * y
    return math.sqrt(x+y)
 end
+
+function kill_survivor(survivor_index, survivor_list)
+   print("removing survivor")
+   display.remove(survivor_list[survivor_index].image)
+   table.remove(survivor_list, survivor_index)
+end

@@ -59,13 +59,27 @@ local function onCollide(event)
       end
    end
 
+   local collide_survivor = {}
+   local found_survivor = 0
+   for i,v in ipairs(survivor_list) do
+      if event.object1 == v.image or event.object2 == v.image then
+         collide_survivor = v
+         found_survivor = i
+      end
+   end
+
+
+
 
    if found_shield ~= 0 and found_meteor ~= 0 then
       collide_shield:take_damage(5)
-      meteor_disperse(found_meteor, meteor_list)
       cull_shields(shield_generators)
-   elseif found_meteor ~= 0 then
+   end
+   if found_meteor ~= 0 then
       meteor_disperse(found_meteor, meteor_list)
+   end
+   if found_survivor ~= 0 then
+      kill_survivor(found_survivor, survivor_list)
    end
 end
 
@@ -82,13 +96,7 @@ Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("enterFrame", onFrame)
 
 local high_scores = highscores:new()
-high_scores:show_overlay()
---high_scores:kill_overlay()
-local high_scores_closure = function()
-                               high_scores:kill_overlay()
-                            end
-timer.performWithDelay(1000, high_scores_closure)
-
+--high_scores:show_overlay()
 table.insert(survivor_list, survivor:new(500,50) )
 local sysFonts = native.getFontNames()
 for k,v in pairs(sysFonts) do print(v) end
