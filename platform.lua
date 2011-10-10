@@ -34,7 +34,7 @@ function platform:new(center_x, center_y)
 		}
 		setmetatable(platform.instance, { __index = platform })
 		
-		physics.addBody(platform.instance.image, 'kinematic', {friction = 0.5, bounce = 0.2, filter = { categoryBits = 16, maskBits = 4 }})
+		physics.addBody(platform.instance.image, 'kinematic', {friction = 0.5, bounce = 0.2, filter = { categoryBits = 16, maskBits = 68 }})
 		platform.instance.image.isFixedRotation = true
 		
 		Runtime:addEventListener('accelerometer', platform.onAccelerometer)

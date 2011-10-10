@@ -9,7 +9,7 @@ function shield:new(center_x,center_y, radius, health, max_health)
    object:update_color()
    object.type = "shield"
    physics.addBody(object.generator_image, "dynamic", {density = 2000, bounce = 0.0, friction = 1.0, filter = { categoryBits = 2, maskBits = 32 }})
-   physics.addBody(object.image, "dynamic", {density = 20, bounce = 0.2, radius = radius, filter = { categoryBits = 1, maskBits = 4 }})
+   physics.addBody(object.image, "dynamic", {density = 20, bounce = 0.2, radius = radius, filter = { categoryBits = 1, maskBits = 70 }})
    object.joint = physics.newJoint("pivot", object.generator_image, object.image, center_x, center_y)
    return object
 end
