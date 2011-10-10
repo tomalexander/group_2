@@ -4,12 +4,15 @@ require 'ground'
 
 platform = {
 	-- Class constants
-	spriteName = 'img/platform_anim.png',
+	spriteName = 'img/platform.png',
 	spriteWidth = 199,
 	spriteHeight = 103,
 	spriteIdleFrameBegin = 1,
-	spriteIdleFrameCount = 3,
+	spriteIdleFrameCount = 1,
 	spriteIdleFrameRate = 500,
+	spriteFireFrameBegin = 2,
+	spriteFireFrameCount = 3,
+	spriteFireFrameRate = 500,
 	velocityMax = 250,
 	
 	charge = 0,
@@ -19,9 +22,10 @@ platform = {
 	instance = nil
 }
 platform.spriteSheet = sprite.newSpriteSheet(platform.spriteName, platform.spriteWidth, platform.spriteHeight)
-platform.spriteSet = sprite.newSpriteSet(platform.spriteSheet, platform.spriteIdleFrameBegin, platform.spriteIdleFrameCount)
+platform.spriteSet = sprite.newSpriteSet(platform.spriteSheet, platform.spriteIdleFrameBegin, platform.spriteIdleFrameCount + platform.spriteFireFrameCount)
 
 sprite.add(platform.spriteSet, 'idle', platform.spriteIdleFrameBegin, platform.spriteIdleFrameCount, platform.spriteIdleFrameRate, 0)
+sprite.add(platform.spriteSet, 'fire', platform.spriteFireFrameBegin, platform.spriteFireFrameCount, platform.spriteFireFrameRate, 0)
 
 function platform:new(center_x, center_y)
 	if not platform.instance then
@@ -78,6 +82,8 @@ function platform.onTouch(event)
 			if event.y > 400 then
 				if platform.instance.charge == 0 then
 					platform.instance.charge = 1
+					platform.instance.image:prepare('fire')
+					platform.instance.image:play()
 				end
 			end
 		elseif event.phase == 'ended' or event.phase == 'cancelled' then
@@ -87,6 +93,8 @@ function platform.onTouch(event)
 				platform.instance.laser:destroy()
 				platform.instance.laser = nil
 			end
+			platform.instance.image:prepare('idle')
+			platform.instance.image:play()
 		end
 	end
 end
@@ -94,7 +102,7 @@ end
 function platform:update(time)
 	if self.charge == self.chargeFull then
 		if not self.laser then
-			self.laser = laser:new(platform.instance.image.x, platform.instance.image.y + laser.spriteHeight/2 + 44)
+			self.laser = laser:new(self.image.x, self.image.y + laser.spriteHeight/2 + 44)
 		end
 	elseif self.charge > 0 then
 		self.charge = self.charge + 1
