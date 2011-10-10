@@ -128,7 +128,7 @@ function ground:load()
 	self.image.x = round(self:x() + self.w / 2)
 	self.image.y = round(self:y() + self.h / 2)
 	
-	physics.addBody(self.image, 'static', {friction = 0.6, bounce = 0.4})
+	physics.addBody(self.image, 'static', {friction = 0.6, bounce = 0.4, filter = { categoryBits = 32, maskBits = 6 }})
 end
 
 function ground:unload()

@@ -14,15 +14,14 @@ highscores_h = require "highscores"
 
 --start the physical simulation
 physics.start()
---physics.setDrawMode("hybrid")
+physics.setDrawMode("hybrid")
 
 local shield_generators = {}
-table.insert( shield_generators, shield:new(display.contentWidth / 2, display.contentHeight / 2 + 200 ,50,25,50) )
-table.insert( shield_generators, shield:new(50, 400 ,200,50,50) )
-table.insert( shield_generators, shield:new(350, 400 ,150,50,50) )
-table.insert( shield_generators, shield:new(550, 500 ,70,50,50) )
-table.insert( shield_generators, shield:new(750, 500 ,90,50,50) )
-table.insert( shield_generators, shield:new(950, 500 ,100,50,50) )
+table.insert( shield_generators, shield:new(50, 300 ,200,50,50) )
+table.insert( shield_generators, shield:new(350, 300 ,150,50,50) )
+table.insert( shield_generators, shield:new(550, 300 ,70,50,50) )
+table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
+table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
 
 platform:new(256, 64)
 ground:new(0, 386)
