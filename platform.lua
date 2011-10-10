@@ -12,6 +12,8 @@ platform = {
 	spriteIdleFrameRate = 250,
 	velocityMax = 250,
 	
+	charge = 0,
+	chargeFull = 30,
 	
 	-- Make the class singleton-ish so it can handle global events gracefully
 	instance = nil
@@ -71,13 +73,25 @@ function platform.onTouch(event)
 			elseif event.x > 960 - 100 then
 				platform.instance.image:setLinearVelocity(platform.instance.velocityMax, 0)
 			end
+			if event.y > 400 then
+				if platform.instance.charge == 0 then
+					platform.instance.charge = 1
+				end
+			end
 		elseif event.phase == 'ended' or event.phase == 'cancelled' then
 			platform.instance.image:setLinearVelocity(0, 0)
+			platform.instance.charge = 0
 		end
 		
-		if event.y > 400 then
-			laser:new(platform.instance.image.x, platform.instance.image.y)
-		end
+		
+	end
+end
+
+function platform:update(time)
+	if self.charge == self.chargeFull then
+		laser:new(platform.instance.image.x, platform.instance.image.y)
+	elseif self.charge > 0 then
+		self.charge = self.charge + 1
 	end
 end
 

@@ -69,10 +69,17 @@ local function onCollide(event)
    end
 end
 
+function onFrame(event)
+	if platform.instance then
+		platform.instance:update(event.time)
+	end
+end
+
 --add event listeners for other functions
 --circle:addEventListener("touch", circleTouch)
 --Runtime:addEventListener("enterFrame", penguinFly)
 Runtime:addEventListener("collision", onCollide)
+Runtime:addEventListener("enterFrame", onFrame)
 
 local high_scores = highscores:new()
 high_scores:show_overlay()
