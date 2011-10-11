@@ -3,12 +3,19 @@ physics = require "physics"
 
 -- Quick hackish method to force the background to be drawn first
 local background = display.newImage("img/background.png", true)
+local background_ground0 = display.newImage("img/ground_destroyed.png", true)
+local background_ground1 = display.newImage("img/ground_destroyed.png", true)
+background_ground0.x = 0
+background_ground0.y = 450 + 45
+background_ground1.x = 960
+background_ground1.y = 450 + 45
 
 shield_h = require "shield"
 meteor_h = require "meteor"
 meteor_generator_h = require "meteor_generator"
 platform_h = require "platform"
 ground_h = require "ground"
+resource_h = require "resource"
 survivor_h = require "survivor"
 highscores_h = require "highscores"
 require "HUD"

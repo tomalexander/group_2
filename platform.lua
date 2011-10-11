@@ -1,6 +1,6 @@
 physics = require "physics"
 sprite = require "sprite"
-require 'ground'
+--require 'ground'
 
 platform = {
 	-- Class constants
@@ -122,6 +122,7 @@ laser = {
 	spriteIdleFrameCount = 1,
 	spriteIdleFrameRate = 1,
 	
+	group = display.newGroup(),
 	list = {}
 }
 laser.spriteSheet = sprite.newSpriteSheet(laser.spriteName, laser.spriteWidth, laser.spriteHeight)
@@ -136,6 +137,8 @@ function laser:new(center_x, center_y)
 		destroyed = false
 	}
 	setmetatable(object, { __index = laser })
+	
+	laser.group:insert(object.image)
 	
 	--object.image:setFillColor(0,255,0)
 		

@@ -10,6 +10,8 @@ resource = {
 	spriteIdleFrameCount = 1,
 	spriteIdleFrameRate = 1,
 	
+	group = display.newGroup(),
+	
 	list = {}
 }
 resource.spriteSheet = sprite.newSpriteSheet(resource.spriteName, resource.spriteWidth, resource.spriteHeight)
@@ -24,6 +26,8 @@ function resource:new(x, y)
 		destroyed = false
 	}
 	setmetatable(object, { __index = resource })
+	
+	resource.group:insert(object.image)
 	
 	physics.addBody(object.image, 'static', {friction = 0.0, bounce = 0.0})
 	object.image.isFixedRotation = true
