@@ -109,8 +109,8 @@ Runtime:addEventListener("enterFrame", onFrame)
 local high_scores = highscores:new()
 --high_scores:show_overlay()
 table.insert(survivor_list, survivor:new(500,50) )
-local sysFonts = native.getFontNames()
-for k,v in pairs(sysFonts) do print(v) end
+--local sysFonts = native.getFontNames()
+--for k,v in pairs(sysFonts) do print(v) end
 
 mainmenu = mainMenu:new()
 
@@ -155,4 +155,3 @@ function move_screen_left(amount)
       i = i - 1
    end
 end
-
