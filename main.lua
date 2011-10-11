@@ -14,6 +14,7 @@ survivor_h = require "survivor"
 highscores_h = require "highscores"
 require "HUD"
 require "menu"
+require "extraction"
 
 --start the physical simulation
 physics.start()
@@ -111,7 +112,22 @@ mainmenu = mainMenu:new()
 hud = HUD:new()
 hud:displayHUD(false)
 
+extractionPoint = extractPoint:new(950, 450, 100, 5)
 
+surv_location = survivor_list[1].x_location
+ext_location = extractionPoint.x
+initialDistance = extractionPoint.initialDistance
+
+if mainmenu.play then
+    hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance)
+end
+
+local function HUDUpdate(event)
+    if event.phase == "began" then
+        hud:update(platform.instance.image.x, surv_location, ext_location, initialDistance)
+    end
+end
+    
 local function menuTouch(event)
     if event.phase == "began" then
         if (event.x > display.contentWidth/4 and event.x < display.contentWidth*3/4
@@ -130,7 +146,19 @@ local function menuTouch(event)
     end
 end
 
+local function extractPointTouch(event)
+    if event.phase == "began" then
+        if event.x < extractionPoint.x+25 and event.x > extractionPoint.x-25 and event.y > extractionPoint.y-25 and event.y < extractionPoint.y+25 and 
+        platform.instance.image.x > extractionPoint.x-25 and platform.instance.image.x < extractionPoint.x+25 then
+            print("extracting...")
+            extractionPoint:extract()
+        end
+    end
+end
+
 Runtime:addEventListener("touch", menuTouch)
+Runtime:addEventListener("touch", extractPointTouch)
+Runtime:addEventListener("touch", HUDUpdate)
 
 function move_screen_right(amount)
    the_stage = display.getCurrentStage()
