@@ -3,6 +3,12 @@ physics = require "physics"
 
 -- Quick hackish method to force the background to be drawn first
 local background = display.newImage("img/background.png", true)
+local background_ground0 = display.newImage("img/ground_destroyed.png", true)
+local background_ground1 = display.newImage("img/ground_destroyed.png", true)
+background_ground0.x = 0
+background_ground0.y = 450 + 45
+background_ground1.x = 960
+background_ground1.y = 450 + 45
 
 shield_h = require "shield"
 meteor_h = require "meteor"
@@ -18,7 +24,7 @@ require "extraction"
 
 --start the physical simulation
 physics.start()
---physics.setDrawMode("hybrid")
+physics.setDrawMode("hybrid")
 
 shield_generators = {}
 table.insert( shield_generators, shield:new(50, 300 ,200,50,50) )
@@ -28,8 +34,7 @@ table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
 
 platform:new(256, 64)
-ground:new(0, 450)
-
+ground.partitions[0] = {ground:new(0, 450)}
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation
@@ -86,6 +91,8 @@ local function onCollide(event)
    end
 end
 
+local test_goright = true
+
 function onFrame(event)
 	if platform.instance then
 		platform.instance:update(event.time)
@@ -93,6 +100,17 @@ function onFrame(event)
 			platform.instance.laser:update(event.time)
 		end
 	end
+	--[[
+	if test_goright then
+		move_screen_right(1)
+		
+		if viewx > 960 * 1.5 then
+			test_goright = false
+		end
+	else
+		move_screen_left(1)
+	end
+	--]]
 end
 
 --add event listeners for other functions
@@ -160,6 +178,8 @@ Runtime:addEventListener("touch", menuTouch)
 Runtime:addEventListener("touch", extractPointTouch)
 Runtime:addEventListener("touch", HUDUpdate)
 
+viewx = 0
+
 function move_screen_right(amount)
    the_stage = display.getCurrentStage()
    local i = the_stage.numChildren
@@ -167,6 +187,9 @@ function move_screen_right(amount)
       the_stage[i].x = the_stage[i].x-amount
       i = i - 1
    end
+   -- create, load, and unload ground as needed
+   ground.scroll(viewx + amount, viewx)
+   viewx = viewx + amount
 end
 
 function move_screen_left(amount)
@@ -176,5 +199,8 @@ function move_screen_left(amount)
       the_stage[i].x = the_stage[i].x+amount
       i = i - 1
    end
+   -- create, load, and unload ground as needed
+   ground.scroll(viewx - amount, viewx)
+   viewx = viewx - amount
 end
 
