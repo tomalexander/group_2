@@ -227,8 +227,7 @@ function ground:carve(x, w, pixels)
 			end
 		end
 		self.resources = l
-		print(type(ground.partitions[0]))
-		table.insert(ground.partitions[math.floor(g:x()/960)], g)
+		table.insert(self.partitions[math.floor(g:x()/960)], g)
 		newleft = left
 	end
 	if right < self:x() + self.w then
@@ -242,7 +241,7 @@ function ground:carve(x, w, pixels)
 			end
 		end
 		self.resources = l
-		table.insert(ground.partitions[math.floor(g:x()/960)], g)
+		table.insert(self.partitions[math.floor(g:x()/960)], g)
 		newright = right
 	end
 	if self.h - pixels <= 0 then

@@ -34,7 +34,6 @@ table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
 
 platform:new(256, 64)
 ground.partitions[0] = {ground:new(0, 450)}
-timer.performWithDelay(1000, function(t) print(type(ground.partitions[0])) end)
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation
@@ -109,8 +108,8 @@ Runtime:addEventListener("enterFrame", onFrame)
 local high_scores = highscores:new()
 --high_scores:show_overlay()
 table.insert(survivor_list, survivor:new(500,50) )
---local sysFonts = native.getFontNames()
---for k,v in pairs(sysFonts) do print(v) end
+local sysFonts = native.getFontNames()
+for k,v in pairs(sysFonts) do print(v) end
 
 mainmenu = mainMenu:new()
 
@@ -155,3 +154,4 @@ function move_screen_left(amount)
       i = i - 1
    end
 end
+
