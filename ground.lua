@@ -13,7 +13,7 @@ end
 ground = {
 	-- Class constants
 	spriteName = 'img/ground.png',
-	spriteWidth = 1000,
+	spriteWidth = 960,
 	spriteHeight = 90,
 	spriteIdleFrameBegin = 1,
 	spriteIdleFrameCount = 1,
@@ -85,13 +85,6 @@ function ground:new(x, y, w, h)
 	
 	if not object:isPartial() then	
 		-- Have new ground spawn some resources
-		--[[
-		local count = math.random(1, 3)
-		
-		for i = 0, count do
-			resource:new(x + math.random(0, ground.spriteWidth - resource.spriteWidth), y + math.random(0, ground.spriteHeight - resource.spriteHeight))
-		end
-		]]
 		local pos = 0
 		while pos < ground.spriteWidth do
 			if math.random() <= self.resourceChance then
