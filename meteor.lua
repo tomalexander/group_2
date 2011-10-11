@@ -1,14 +1,22 @@
 physics = require "physics"
 meteor = {}
 
+meteor_sprite_sheet = sprite.newSpriteSheet("img/meteor.png", 26, 26)
+tail_sprite_sheet = sprite.newSpriteSheet("img/meteor_tail.png", 36, 149)
+--meteor_sprite_set = sprite.newSpriteSet(meteor_sprite_sheet, 1, 10)
+
 function meteor:new(center_x, center_y, radius, x_velocity, y_velocity)
    local object = {center_x = center_x, center_y = center_y, radius = radius }
    setmetatable(object, { __index = meteor })
-   object.image = display.newCircle(center_x, center_y, radius)
+   --object.image = display.newCircle(center_x, center_y, radius)
+   object.sprite_sheet = sprite.newSpriteSet(meteor_sprite_sheet, math.random(9), 1)
+   object.image = sprite.newSprite(object.sprite_sheet)
+   object.image.x = center_x
+   object.image.y = center_y
    object.type = "live_meteor"
    physics.addBody(object.image, { density = 1.0, friction = 0.3, bounce = 0.2, radius = radius, filter = { categoryBits = 4, maskBits = 57 }})
    object.image:setLinearVelocity(x_velocity, y_velocity)
-   object.image:setFillColor(255,0,0)
+   --object.image:setFillColor(255,0,0)
    return object
 end
 
