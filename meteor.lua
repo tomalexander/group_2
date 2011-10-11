@@ -4,11 +4,11 @@ meteor = {}
 meteor_sprite_sheet = sprite.newSpriteSheet("img/meteor.png", 26, 26)
 tail_sprite_sheet = sprite.newSpriteSheet("img/meteor_tail.png", 36, 149)
 tail_sprite_set = sprite.newSpriteSet(tail_sprite_sheet, 1, 4)
+sprite.add(tail_sprite_set, 'idle', 1, 4, 50, 0)
 
 function meteor:new(center_x, center_y, radius, x_velocity, y_velocity)
    local object = {center_x = center_x, center_y = center_y, radius = radius }
    setmetatable(object, { __index = meteor })
-   --object.image = display.newCircle(center_x, center_y, radius)
    object.sprite_sheet = sprite.newSpriteSet(meteor_sprite_sheet, math.random(9), 1)
    object.tail = sprite.newSprite(tail_sprite_set)
    object.tail.x = center_x
@@ -25,7 +25,8 @@ function meteor:new(center_x, center_y, radius, x_velocity, y_velocity)
    local max_x_velocity = 500
    object.tail:rotate(x_velocity / max_x_velocity * -45)
    print(x_velocity)
-   --object.image:setFillColor(255,0,0)
+   object.tail:prepare('idle')
+   object.tail:play()
    return object
 end
 
