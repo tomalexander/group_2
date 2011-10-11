@@ -41,23 +41,27 @@ function ground.scroll(x, xprev)
 			i:load()
 		end
 	else
-		ground.partitions[partnum] = {ground:new(x, 450)}
+		print('creating at ' .. partnum)
+		ground.partitions[partnum] = {ground:new(partnum * 960, 450)}
 	end
 	if ground.partitions[partnum + 1] then
 		for _, i in ipairs(ground.partitions[partnum + 1]) do
 			i:load()
 		end
 	else
-		ground.partitions[partnum + 1] = {ground:new(x, 450)}
+		print('creating at ' .. partnum + 1)
+		ground.partitions[partnum + 1] = {ground:new((partnum + 1) * 960, 450)}
 	end
 	
 	local partnumprev = math.floor(xprev / 960)
-	if partnumprev ~= partnum or partnumprev ~= partnum + 1 then
+	if partnumprev ~= partnum and partnumprev ~= partnum + 1 then
+		print('unloading at ' .. partnumprev)
 		for _, i in ipairs(ground.partitions[partnumprev]) do
 			i:unload()
 		end
 	end
-	if partnumprev + 1 ~= partnum or partnumprev + 1 ~= partnum + 1 then
+	if partnumprev + 1 ~= partnum and partnumprev + 1 ~= partnum + 1 then
+		print('unloading at ' .. partnumprev + 1)
 		for _, i in ipairs(ground.partitions[partnumprev + 1]) do
 			i:unload()
 		end
