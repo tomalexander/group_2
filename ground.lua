@@ -22,6 +22,8 @@ ground = {
 	-- The chance of a resource spawning per width pixel
 	resourceChance = 0.0021, -- Approximately 2 resources per 1000 pixels (1 ground object)
 	
+	partitions = {},
+	
 	group = display.newGroup(),
 	list = {}
 }
@@ -29,6 +31,38 @@ ground.spriteSheet = sprite.newSpriteSheet(ground.spriteName, ground.spriteWidth
 ground.spriteSet = sprite.newSpriteSet(ground.spriteSheet, ground.spriteIdleFrameBegin, ground.spriteIdleFrameCount)
 
 sprite.add(ground.spriteSet, 'idle', ground.spriteIdleFrameBegin, ground.spriteIdleFrameCount, ground.spriteIdleFrameRate, 0)
+
+function ground.scroll(x, xprev)
+	-- whenever the screen moves, call ground.scroll with x as the effective x coordinate,
+	-- and xprev as the screen's effective x coordinate before moving
+	local partnum = math.floor(x / 960)
+	if ground.partitions[partnum] then
+		for _, i in ipairs(ground.partitions[partnum]) do
+			i:load()
+		end
+	else
+		ground.partitions[partnum] = {ground:new(x, 450)}
+	end
+	if ground.partitions[partnum + 1] then
+		for _, i in ipairs(ground.partitions[partnum + 1]) do
+			i:load()
+		end
+	else
+		ground.partitions[partnum + 1] = {ground:new(x, 450)}
+	end
+	
+	local partnumprev = math.floor(xprev / 960)
+	if partnumprev ~= partnum or partnumprev ~= partnum + 1 then
+		for _, i in ipairs(ground.partitions[partnumprev]) do
+			i:unload()
+		end
+	end
+	if partnumprev + 1 ~= partnum or partnumprev + 1 ~= partnum + 1 then
+		for _, i in ipairs(ground.partitions[partnumprev + 1]) do
+			i:unload()
+		end
+	end
+end	
 
 function ground:new(x, y, w, h)
 	local object = {
@@ -93,7 +127,14 @@ function ground:isPartial()
 	return self.w ~= ground.spriteWidth or self.h ~= ground.spriteHeight
 end
 
+function ground:isLoaded()
+	return self.image ~= nil
+end
+
 function ground:load()
+	if self:isLoaded() then
+		return
+	end
 	-- If creating a partial ground, create a sprite sheet from the remaining area
 	if self:isPartial() then
 		local function createData()
@@ -145,6 +186,7 @@ end
 function ground:unload()
 	if self.image then
 		self.image:removeSelf()
+		self.image = nil
 	end
 end
 
@@ -185,6 +227,8 @@ function ground:carve(x, w, pixels)
 			end
 		end
 		self.resources = l
+		print(type(ground.partitions[0]))
+		table.insert(ground.partitions[math.floor(g:x()/960)], g)
 		newleft = left
 	end
 	if right < self:x() + self.w then
@@ -198,6 +242,7 @@ function ground:carve(x, w, pixels)
 			end
 		end
 		self.resources = l
+		table.insert(ground.partitions[math.floor(g:x()/960)], g)
 		newright = right
 	end
 	if self.h - pixels <= 0 then
@@ -235,3 +280,6 @@ function ground:destroy()
 		self.destroyed = true
 	end
 end
+
+--ground.partitions[0] = {ground:new(0, 450)}
+--ground:new(0, 450)

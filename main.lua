@@ -33,8 +33,8 @@ table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
 
 platform:new(256, 64)
-ground:new(0, 450)
-
+ground.partitions[0] = {ground:new(0, 450)}
+timer.performWithDelay(1000, function(t) print(type(ground.partitions[0])) end)
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation
