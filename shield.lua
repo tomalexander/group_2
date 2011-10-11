@@ -15,15 +15,15 @@ function shield:new(center_x,center_y, radius, health, max_health)
    object.image = sprite.newSprite(shield_sprite_set)
    object.image.x = center_x
    object.image.y = center_y
-   object.image.width = radius
-   object.image.height = radius
+   --object.image.width = radius
+   --object.image.height = radius
    --object.image = display.newCircle(center_x, center_y, radius)
    object.generator_image = display.newRect(center_x-10, center_y-10+80, 20,20)
    object.generator_image.isVisible = false
    object:update_color()
    object.type = "shield"
    --physics.addBody(object.generator_image, "dynamic", {density = 2000, bounce = 0.0, friction = 1.0, filter = { categoryBits = 2, maskBits = 32 }})
-   physics.addBody(object.image, "dynamic", {density = 20, bounce = 0.2, shape = shield_shape, filter = { categoryBits = 1, maskBits = 100 }})
+   physics.addBody(object.image, "dynamic", {density = 20, friction = 1, bounce = 0.01, shape = shield_shape, filter = { categoryBits = 1, maskBits = 100 }})
    --object.joint = physics.newJoint("weld", object.generator_image, object.image, center_x, center_y)
    object.image:prepare('idle')
    object.image:play()
@@ -31,6 +31,7 @@ function shield:new(center_x,center_y, radius, health, max_health)
 end
 
 function shield:update_color()
+   self.image.alpha = self.health / self.max_health / 2 + 0.5
    --self.image:setFillColor(51,204,255 , 255 * self.health / self.max_health)
 end
 
