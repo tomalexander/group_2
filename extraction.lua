@@ -8,7 +8,14 @@ function extractPoint:new(x, y, currentTime, rate)
     setmetatable(object, { __index = extractPoint })
     object.image = display.newImageRect("extractionPoint.png", 50, 50)
     object.health = 100
-    extractPoint:addEventListener("touch", extractPoint.touch)
+    object.shield = display.newCircle(x, y, 50)
+    object.shield:setFillColor(0, 150, 20)
+    object.saved = false
+    object.destroyed = false
+    object.initialDistance = x-256
+    
+    --object.touch = extractPointTouch
+    --object:addEventListener("touch", object)
     return object
 end
 
@@ -19,24 +26,22 @@ function extractPoint:extract()
     end
     
     if (self.currentTime == 0) then
-        display.remove(self.image)
+        --self.image.isVisible = false
+        self.shield.isVisible = false
+        self.saved = true
     end
 end
 
 function extractPoint:takedamage()
     extractPoint.health = extractPoint.health - 10
+    self.shield.alpha = (extractPoint.health/100)
     if (extractPoint.health < 0) then
         extractPoint.health = 0
     end
     
     if (extractPoint.health == 0) then
-        display.remove(self.image)
-    end
-end
-    
-
-function extractPoint:touch(event)
-    if event.x < x+10 and event.x > x-10 and event.y > y-10 and event.y < y+10 then
-        extractPoint:extract()
+        --self.image.isVisible = false
+        self.shield.isVisible = false
+        self.destroyed = true
     end
 end
