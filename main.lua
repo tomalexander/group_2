@@ -20,10 +20,11 @@ survivor_h = require "survivor"
 highscores_h = require "highscores"
 require "HUD"
 require "menu"
+require "extraction"
 
 --start the physical simulation
 physics.start()
---physics.setDrawMode("hybrid")
+physics.setDrawMode("hybrid")
 
 shield_generators = {}
 table.insert( shield_generators, shield:new(50, 300 ,200,50,50) )
@@ -34,7 +35,6 @@ table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
 
 platform:new(256, 64)
 ground.partitions[0] = {ground:new(0, 450)}
-timer.performWithDelay(1000, function(t) print(type(ground.partitions[0])) end)
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation
@@ -91,6 +91,8 @@ local function onCollide(event)
    end
 end
 
+local test_goright = true
+
 function onFrame(event)
 	if platform.instance then
 		platform.instance:update(event.time)
@@ -98,6 +100,17 @@ function onFrame(event)
 			platform.instance.laser:update(event.time)
 		end
 	end
+	--[[
+	if test_goright then
+		move_screen_right(1)
+		
+		if viewx > 960 * 1.5 then
+			test_goright = false
+		end
+	else
+		move_screen_left(1)
+	end
+	--]]
 end
 
 --add event listeners for other functions
@@ -109,15 +122,30 @@ Runtime:addEventListener("enterFrame", onFrame)
 local high_scores = highscores:new()
 --high_scores:show_overlay()
 table.insert(survivor_list, survivor:new(500,50) )
---local sysFonts = native.getFontNames()
---for k,v in pairs(sysFonts) do print(v) end
+local sysFonts = native.getFontNames()
+for k,v in pairs(sysFonts) do print(v) end
 
 mainmenu = mainMenu:new()
 
 hud = HUD:new()
 hud:displayHUD(false)
 
+extractionPoint = extractPoint:new(950, 450, 100, 5)
 
+surv_location = survivor_list[1].x_location
+ext_location = extractionPoint.x
+initialDistance = extractionPoint.initialDistance
+
+if mainmenu.play then
+    hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance)
+end
+
+local function HUDUpdate(event)
+    if event.phase == "began" then
+        hud:update(platform.instance.image.x, surv_location, ext_location, initialDistance)
+    end
+end
+    
 local function menuTouch(event)
     if event.phase == "began" then
         if (event.x > display.contentWidth/4 and event.x < display.contentWidth*3/4
@@ -136,7 +164,21 @@ local function menuTouch(event)
     end
 end
 
+local function extractPointTouch(event)
+    if event.phase == "began" then
+        if event.x < extractionPoint.x+25 and event.x > extractionPoint.x-25 and event.y > extractionPoint.y-25 and event.y < extractionPoint.y+25 and 
+        platform.instance.image.x > extractionPoint.x-25 and platform.instance.image.x < extractionPoint.x+25 then
+            print("extracting...")
+            extractionPoint:extract()
+        end
+    end
+end
+
 Runtime:addEventListener("touch", menuTouch)
+Runtime:addEventListener("touch", extractPointTouch)
+Runtime:addEventListener("touch", HUDUpdate)
+
+viewx = 0
 
 function move_screen_right(amount)
    the_stage = display.getCurrentStage()
@@ -145,6 +187,9 @@ function move_screen_right(amount)
       the_stage[i].x = the_stage[i].x-amount
       i = i - 1
    end
+   -- create, load, and unload ground as needed
+   ground.scroll(viewx + amount, viewx)
+   viewx = viewx + amount
 end
 
 function move_screen_left(amount)
@@ -154,4 +199,8 @@ function move_screen_left(amount)
       the_stage[i].x = the_stage[i].x+amount
       i = i - 1
    end
+   -- create, load, and unload ground as needed
+   ground.scroll(viewx - amount, viewx)
+   viewx = viewx - amount
 end
+
