@@ -1,6 +1,6 @@
 physics = require "physics"
 sprite = require "sprite"
-require "resource"
+--require "resource"
 
 local round = function(n)
 	if n >= 0 then
@@ -13,15 +13,14 @@ end
 ground = {
 	-- Class constants
 	spriteName = 'img/ground.png',
-	spriteMaskName = 'img/ground_mask.png',
 	spriteWidth = 1000,
 	spriteHeight = 90,
 	spriteIdleFrameBegin = 1,
 	spriteIdleFrameCount = 1,
 	spriteIdleFrameRate = 1,
 	
-	-- Each tile's probability of spawning a resource on it
-	resourceProbability = 0.01,
+	-- The chance of a resource spawning per width pixel
+	resourceChance = 0.0021, -- Approximately 2 resources per 1000 pixels (1 ground object)
 	
 	group = display.newGroup(),
 	list = {}
@@ -46,10 +45,20 @@ function ground:new(x, y, w, h)
 	
 	if not object:isPartial() then	
 		-- Have new ground spawn some resources
+		--[[
 		local count = math.random(1, 3)
 		
 		for i = 0, count do
 			resource:new(x + math.random(0, ground.spriteWidth - resource.spriteWidth), y + math.random(0, ground.spriteHeight - resource.spriteHeight))
+		end
+		]]
+		local pos = 0
+		while pos < ground.spriteWidth do
+			if math.random() <= self.resourceChance then
+				resource:new(x + pos, y + math.random(0, ground.spriteHeight - resource.spriteHeight))
+				pos = pos + resource.spriteWidth
+			end
+			pos = pos + 1
 		end
 	end
 	
