@@ -24,7 +24,7 @@ require "extraction"
 
 --start the physical simulation
 physics.start()
-physics.setDrawMode("hybrid")
+--physics.setDrawMode("hybrid")
 
 shield_generators = {}
 table.insert( shield_generators, shield:new(50, 300 ,200,50,50) )
