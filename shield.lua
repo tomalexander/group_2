@@ -44,7 +44,7 @@ end
 
 function gen_new_generator(event)
    if event.phase == "began" and event.y < display.contentHeight/20 and event.x > display.contentWidth/10 and event.x < display.contentWidth*9/10 then
-      table.insert( shield_generators, shield:new(event.x, event.y, 50, 50, 50) )
+      table.insert( shield_generators, shield:new(event.x, event.y, 150, 50, 50) )
    end
 end
 

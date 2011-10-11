@@ -131,3 +131,22 @@ local function menuTouch(event)
 end
 
 Runtime:addEventListener("touch", menuTouch)
+
+function move_screen_right(amount)
+   the_stage = display.getCurrentStage()
+   local i = the_stage.numChildren
+   while i > 0 do
+      the_stage[i].x = the_stage[i].x-amount
+      i = i - 1
+   end
+end
+
+function move_screen_left(amount)
+   the_stage = display.getCurrentStage()
+   local i = the_stage.numChildren
+   while i > 0 do
+      the_stage[i].x = the_stage[i].x+amount
+      i = i - 1
+   end
+end
+
