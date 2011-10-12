@@ -103,6 +103,12 @@ function HUD:setDistanceBar(x)
  
 end
 
+function HUD:setFuel(amount)
+	-- convert 0 to 150 to 0 to 215 pixels
+	self.fuel.y = self.fuelY + (150 - amount)*215/150
+end
+	
+
 function HUD:deFuel()
     --self.fuel = display.newRect(10, 70, 300-x, 25)
     if (self.fuel.y + (215/10) >= 215) then

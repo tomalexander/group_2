@@ -211,6 +211,9 @@ function onFrame(event)
 	background_mountains0.x = math.floor(viewx / 1954) * 1954
 	background_mountains1.x = (math.floor(viewx / 1954) + 1) * 1954
 	
+	if platform.instance then
+		hud:setFuel(platform.instance.resources)
+	end
 	
 	hud.group.x = viewx
 end
@@ -239,7 +242,7 @@ local function HUDUpdate(event)
     if event.phase == "began" then
         hud:update(platform.instance.image.x, surv_location, ext_location, initialDistance, alert)
         if event.y < display.contentHeight/20 and event.x > display.contentWidth/10 and event.x < display.contentWidth*9/10 then
-            hud:deFuel()
+            --hud:deFuel()
         end
     end
 end
