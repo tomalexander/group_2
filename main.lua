@@ -214,7 +214,7 @@ function onFrame(event)
 	if platform.instance then
 		hud:setFuel(platform.instance.resources)
 	end
-	
+	hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance, alert)
 	hud.group.x = viewx
 end
 
