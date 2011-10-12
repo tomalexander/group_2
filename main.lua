@@ -24,7 +24,7 @@ require "extraction"
 
 --start the physical simulation
 physics.start()
-physics.setDrawMode("hybrid")
+--physics.setDrawMode("hybrid")
 
 shield_generators = {}
 table.insert( shield_generators, shield:new(50, 300 ,200,50,50) )
@@ -195,11 +195,15 @@ viewx = 0
 
 function move_screen_right(amount)
    the_stage = display.getCurrentStage()
+   the_stage:translate(-amount, 0)
    local i = the_stage.numChildren
+   --[[
    while i > 0 do
-      the_stage[i].x = the_stage[i].x-amount
+      --the_stage[i].x = the_stage[i].x-amount
+	  the_stage[i]:translate(-amount, 0)
       i = i - 1
    end
+   --]]
    -- create, load, and unload ground as needed
    ground.scroll(viewx + amount, viewx)
    viewx = viewx + amount
@@ -207,11 +211,15 @@ end
 
 function move_screen_left(amount)
    the_stage = display.getCurrentStage()
+   the_stage:translate(amount, 0)
    local i = the_stage.numChildren
+   --[[
    while i > 0 do
-      the_stage[i].x = the_stage[i].x+amount
+      --the_stage[i].x = the_stage[i].x+amount
+	  the_stage[i]:translate(amount, 0)
       i = i - 1
    end
+   --]]
    -- create, load, and unload ground as needed
    ground.scroll(viewx - amount, viewx)
    viewx = viewx - amount
