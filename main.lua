@@ -41,7 +41,13 @@ local function tutHandler(event)
                     --hud:displayHUD(true)
                     --enableListeners()
                     Runtime:removeEventListener("touch", tutHandler)
+					mainmenu:Play()
+					--enableListeners()
 					do_main()
+					hud:displayHUD(true)
+					hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance, alert)
+					hud:displayHUD(true)
+					Runtime:removeEventListener("touch", menuTouch)
                 end
             end
         end
