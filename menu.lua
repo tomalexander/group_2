@@ -5,51 +5,51 @@ function mainMenu:new()
     local object = {}
     object.instructions = {}
     
-    object.instructions1 = display.newImage("img/tutorial/screen-1.png", 0, 0)
+    object.instructions1 = display.newImage("img/tutorial/Screen-1.png", 0, 0)
     table.insert(object.instructions, object.instructions1)
     
     --object.instructions2 = {}
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-2-1.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-2-2.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-2-3.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-2-4.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-2-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-2-2.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-2-3.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-2-4.png", 0, 0))
     --table.insert(object.instructions, object.instructions2)
     
     --object.instructions3 = {}
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-3-1.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-3-2.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-3-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-3-2.png", 0, 0))
     --table.insert(object.instructions, object.instructions3)
     
-    object.instructions4 = display.newImage("img/tutorial/screen-4.png", 0, 0)
+    object.instructions4 = display.newImage("img/tutorial/Screen-4.png", 0, 0)
     table.insert(object.instructions, object.instructions4)
     
     --object.instructions5 = {}
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-5-1.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-5-2.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-5-3.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-5-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-5-2.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-5-3.png", 0, 0))
     --table.insert(object.instructions, object.instructions5)
     
     --object.instructions6 = {}
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-6-1.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-6-2.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-6-3.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-6-4.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-6-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-6-2.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-6-3.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-6-4.png", 0, 0))
     --table.insert(object.instructions, object.instructions6)
     
     --object.instructions7 = {}
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-7-1.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-7-2.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-7-3.png", 0, 0))
-    table.insert(object.instructions, display.newImage("img/tutorial/screen-7-4.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-7-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-7-2.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-7-3.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/Screen-7-4.png", 0, 0))
     --table.insert(object.instructions, object.instructions7)
     
-    object.instructions8 = display.newImage("img/tutorial/screen-8.png", 0, 0)
+    object.instructions8 = display.newImage("img/tutorial/Screen-8.png", 0, 0)
     table.insert(object.instructions, object.instructions8)
     
-    object.instructions9 = display.newImage("img/tutorial/screen-9.png", 0, 0)
+    object.instructions9 = display.newImage("img/tutorial/Screen-9.png", 0, 0)
     table.insert(object.instructions, object.instructions9)
     
-    object.instructions10 = display.newImage("img/tutorial/screen-10.png", 0, 0)
+    object.instructions10 = display.newImage("img/tutorial/Screen-10.png", 0, 0)
     table.insert(object.instructions, object.instructions10)
     
     for i,v in ipairs(object.instructions) do
