@@ -52,6 +52,10 @@ function HUD:setDistanceBar(x)
     if x < 0 then
         x = x * -1
     end
+    if x > 1 then
+        x = 1
+    end
+    
     self.distFill.x = self.distX + (215-215*x)
     --self.distanceBar = display.newRect(10, 10, 300*x, 25)
  
