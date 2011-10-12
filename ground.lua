@@ -23,18 +23,26 @@ ground = {
 	resourceChance = 0.0021, -- Approximately 2 resources per 1000 pixels (1 ground object)
 	
 	partitions = {},
-	body = display.newRect(-960, 450, 960 * 3, 90),
 	
 	group = display.newGroup(),
 	list = {}
 }
-ground.body.isVisible = false
-physics.addBody(ground.body, 'static', {friction = 0.6, bounce = 0.4, filter = { categoryBits = 32, maskBits = 71 }})
+function ground.physbox(w)
+	if ground.body then
+		ground.body:removeSelf()
+	end
+	ground.body = display.newRect(-w/2, 450, w, 90)
+	ground.body.isVisible = false
+	physics.addBody(ground.body, 'static', {friction = 0.6, bounce = 0.4, filter = { categoryBits = 32, maskBits = 71 }})
+end
+ground.physbox(960 * 4)
 
 ground.spriteSheet = sprite.newSpriteSheet(ground.spriteName, ground.spriteWidth, ground.spriteHeight)
 ground.spriteSet = sprite.newSpriteSet(ground.spriteSheet, ground.spriteIdleFrameBegin, ground.spriteIdleFrameCount)
 
 sprite.add(ground.spriteSet, 'idle', ground.spriteIdleFrameBegin, ground.spriteIdleFrameCount, ground.spriteIdleFrameRate, 0)
+
+
 
 function ground.scroll(x, xprev)
 	-- whenever the screen moves, call ground.scroll with x as the effective x coordinate,
@@ -49,7 +57,7 @@ function ground.scroll(x, xprev)
 		ground.partitions[partnum] = {ground:new(partnum * 960, 450)}
         random_create_survivor(x, xprev)
 		-- hack! whenever new ground is created, add two screen widths of rectangle
-		ground.body.width = ground.body.width + 960 * 2
+		ground.physbox(ground.body.width + 960 * 2)
 	end
 	if ground.partitions[partnum + 1] then
 		for _, i in ipairs(ground.partitions[partnum + 1]) do
@@ -59,6 +67,8 @@ function ground.scroll(x, xprev)
 		print('creating at ' .. partnum + 1)
 		ground.partitions[partnum + 1] = {ground:new((partnum + 1) * 960, 450)}
         random_create_survivor(x, xprev)
+		-- hack! whenever new ground is created, add two screen widths of rectangle
+		ground.physbox(ground.body.width + 960 * 2)
 	end
 	
 	local partnumprev = math.floor(xprev / 960)

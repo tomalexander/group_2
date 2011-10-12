@@ -14,7 +14,7 @@ background_ground1.y = 450 + 45
 
 --start the physical simulation
 physics.start()
---physics.setDrawMode("hybrid")
+physics.setDrawMode("hybrid")
 
 shield_h = require "shield"
 meteor_h = require "meteor"
@@ -124,29 +124,33 @@ local function onCollide(event)
       cull_shields(shield_generators)
    end
    if found_meteor ~= 0 then
-		if found_shield == 0 and found_extractor == 0 and found_shieldless_extractor == 0 and found_survivor == 0 and found_platform == 0 then
-			if math.random() < 0.25 then
-				if math.random() < 0.5 then
-					media.playEventSound(sound.meteor_ground0)
-				else
-					media.playEventSound(sound.meteor_ground1)
+		-- play sounds only when on screen
+		
+		if collide_meteor.image.x > viewx and collide_meteor.image.x < viewx + 960 then
+			if found_shield == 0 and found_extractor == 0 and found_shieldless_extractor == 0 and found_survivor == 0 and found_platform == 0 then
+				if math.random() < 0.25 then
+					if math.random() < 0.5 then
+						media.playEventSound(sound.meteor_ground0)
+					else
+						media.playEventSound(sound.meteor_ground1)
+					end
 				end
 			end
-		end
-		if found_shieldless_extractor ~= 0 then
-			media.playEventSound(sound.meteor_extractor)
-		end
-		if found_shield ~= 0 or found_extractor ~= 0 then
-			if math.random() < 0.25 then
-				-- Hardcoding, ho!
+			if found_shieldless_extractor ~= 0 then
+				media.playEventSound(sound.meteor_extractor)
+			end
+			if found_shield ~= 0 or found_extractor ~= 0 then
 				if math.random() < 0.25 then
-					media.playEventSound(sound.meteor_shield0)
-				elseif math.random() < 0.33 then
-					media.playEventSound(sound.meteor_shield1)
-				elseif math.random() < 0.5 then
-					media.playEventSound(sound.meteor_shield2)
-				else 
-					media.playEventSound(sound.meteor_shield3)
+					-- Hardcoding, ho!
+					if math.random() < 0.25 then
+						media.playEventSound(sound.meteor_shield0)
+					elseif math.random() < 0.33 then
+						media.playEventSound(sound.meteor_shield1)
+					elseif math.random() < 0.5 then
+						media.playEventSound(sound.meteor_shield2)
+					else 
+						media.playEventSound(sound.meteor_shield3)
+					end
 				end
 			end
 		end
