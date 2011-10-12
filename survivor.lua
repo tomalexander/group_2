@@ -18,6 +18,11 @@ function survivor:new(x_location, y_location)
    object.image.x = x_location
    object.image.y = y_location
    object.type = "survivor"
+   object.safe = true
+   local not_safe = function()
+                       object.safe = false
+                    end
+   timer.performWithDelay(3000, not_safe)
    physics.addBody(object.image, {friction = 0.0, bounce = 0.2, filter = { categoryBits = 8, maskBits = 4 }})
    object.image.bodyType = "kinematic"
    object.image:addEventListener( "touch", object )

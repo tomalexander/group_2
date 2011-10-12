@@ -265,7 +265,7 @@ function do_main()
 			end
 			meteor_disperse(found_meteor, meteor_list)
 	   end
-	   if found_survivor ~= 0 then
+	   if found_survivor ~= 0 and survivor_list[found_survivor].safe ~= true then
 		  kill_survivor(found_survivor, survivor_list)
 		  --[[
 		  if hud then
