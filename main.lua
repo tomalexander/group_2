@@ -38,8 +38,11 @@ local function tutHandler(event)
                     end
                     mainmenu.button2.isVisible = false
                     mainmenu.button3.isVisible = false
-                    hud:displayHUD(true)
-                    enableListeners()
+                    if hud then
+                        hud:displayHUD(true)
+                    end
+                    --enableListeners()
+                    do_main()
                     Runtime:removeEventListener("touch", tutHandler)
                 end
             end
@@ -328,7 +331,7 @@ function do_main()
 
 
 	hud = HUD:new()
-	hud:displayHUD(false)
+	hud:displayHUD(true)
 
 	surv_location = survivor_list[1].x_location
 	ext_location = extractionPoint.x

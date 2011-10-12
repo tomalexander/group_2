@@ -13,6 +13,8 @@ function HUD:new()
     object.distBack = display.newImage("img/hud_health_back.png", 770, 400)
     object.distFill = display.newImage("img/hud_health_middle.png", 770, 400)
     object.distFront = display.newImage("img/hud_health_front.png", 770, 400)
+    object.distIcon = display.newImage("img/hud_health_icon.png", 880, 485)
+    object.fuelIcon = display.newImage("img/hud_resource.png", 10, 450)
     object.distY = object.distFill.y
     object.distBack:rotate(90)
     object.distFill:rotate(90)
@@ -51,12 +53,12 @@ function HUD:new()
     object.right_indicator_text = display.newText("2000", object.right_indicator.x, object.right_indicator.y -35, "Helvetica", 18)
 
     
-    object.left_indicator.isVisible = true
+    object.left_indicator.isVisible = false
     object.right_indicator.isVisible = false
     
     
     --object.distText = display.newText("Distance until Extraction Point: ", 680, 10, "Helvetica", 20)
-    --object.fuelText = display.newText("Fuel: ", 10, 10, "Helvetica", 24) 
+    --object.fuelText = display.newText("Fuel: ", 10, 10, "Helvetica", 24)
     object.dead = 0
     object.score = 0
     object.scoreText = display.newText("Score: "..object.score, 10, 70, "Helvetica", 24)
@@ -66,12 +68,13 @@ function HUD:new()
     --object.survText = display.newText("Survivors: ", 10, 180, "Helvetica", 24)
     --object.deadIcon = display.newImage("dead.png", 10, 200)
     --object.deadText = display.newText("Number dead: ", 10, 220, "Helvetica", 24)
-	
-	object.group = display.newGroup()
-	object.group:insert(object.distBack)
-	object.group:insert(object.distFill)
-	object.group:insert(object.distFront)
-	
+
+object.group = display.newGroup()
+object.group:insert(object.distBack)
+object.group:insert(object.distFill)
+object.group:insert(object.distFront)
+    
+
     object.group:insert(object.left_indicator)
     object.group:insert(object.right_indicator)
     object.group:insert(object.left_indicator_text)
@@ -81,17 +84,19 @@ function HUD:new()
     object.group:insert(object.warningLeft)
     object.group:insert(object.warningRight)
     
-	object.group:insert(object.fuelBack)
-	object.group:insert(object.fuel)
-	object.group:insert(object.fuelFront)
-	
-	--object.group:insert(object.distText)
-	--object.group:insert(object.fuelText)
-	object.group:insert(object.scoreText)
-	--object.group:insert(object.survIcon)
-	--object.group:insert(object.survText)
-	--object.group:insert(object.deadText)
-	
+object.group:insert(object.fuelBack)
+object.group:insert(object.fuel)
+object.group:insert(object.fuelFront)
+object.group:insert(object.distIcon)
+    object.group:insert(object.fuelIcon)
+    
+--object.group:insert(object.distText)
+--object.group:insert(object.fuelText)
+object.group:insert(object.scoreText)
+--object.group:insert(object.survIcon)
+--object.group:insert(object.survText)
+--object.group:insert(object.deadText)
+
     setmetatable(object, {__index=HUD})
     return object
 end
@@ -111,22 +116,22 @@ function HUD:setDistanceBar(x)
 end
 
 function HUD:setFuel(amount)
-	-- convert 0 to 150 to 0 to 215 pixels
-	self.fuel.y = self.fuelY + (150 - amount)*215/150
+-- convert 0 to 150 to 0 to 215 pixels
+self.fuel.y = self.fuelY + (150 - amount)*215/150
 end
 
 function HUD:addKill()
-	self.dead = self.dead + 1
-	self.left_indicator.currentFrame = self.dead + 1
-	self.right_indicator.currentFrame = self.dead + 1
-	if self.dead >= 5 then
-		display.getCurrentStage().x = 0
-		media.stopSound()
-		platform.instance = nil
-		high_scores:display_name_box()
+self.dead = self.dead + 1
+self.left_indicator.currentFrame = self.dead + 1
+self.right_indicator.currentFrame = self.dead + 1
+if self.dead >= 5 then
+display.getCurrentStage().x = 0
+media.stopSound()
+platform.instance = nil
+high_scores:display_name_box()
         self.dead = -999
-		-- GAMEOVER
-	end
+-- GAMEOVER
+end
 end
 
 function HUD:deFuel()
@@ -134,7 +139,7 @@ function HUD:deFuel()
     self.fuel.y = self.fuel.y + (215/10)
     if self.fuel.y > self.fuelY + 215 then
         self.fuel.y = self.fuelY + 215
-    end    
+    end
 end
 
 function HUD:reFuel()
@@ -156,14 +161,14 @@ function HUD:increaseScore()
 end
 
 --[[function HUD:newSurvDist(x)
-    self.survDistance = x
-    self.survIcon:removeSelf()
-    if ((100/(x+1)) < 20) then
-        self.survIcon = display.newCircle(900, 300, 20)
-    else
-        self.survIcon = display.newCircle(900, 300, (100/(x+1)))
-    end
-	self.group:insert(self.survIcon)
+self.survDistance = x
+self.survIcon:removeSelf()
+if ((100/(x+1)) < 20) then
+self.survIcon = display.newCircle(900, 300, 20)
+else
+self.survIcon = display.newCircle(900, 300, (100/(x+1)))
+end
+self.group:insert(self.survIcon)
 end]]
 
 function HUD:displayHUD(flag)
@@ -176,6 +181,12 @@ function HUD:displayHUD(flag)
         self.fuel.isVisible = true
         self.fuelBack.isVisible = true
         self.fuelFront.isVisible = true
+        
+        self.fuelIcon.isVisible = true
+        self.distIcon.isVisible = true
+        
+        self.right_indicator.isVisible = true
+        self.left_indicator.isVisible = true
         
         self.scoreText.isVisible = true
         
@@ -195,6 +206,11 @@ function HUD:displayHUD(flag)
         self.fuelBack.isVisible = false
         self.fuelFront.isVisible = false
         
+        self.fuelIcon.isVisible = false
+        self.distIcon.isVisible = false
+        self.right_indicator.isVisible = false
+        self.left_indicator.isVisible = false
+        
         self.scoreText.isVisible = false
         
         --self.fuelText.isVisible = false
@@ -212,9 +228,9 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
         platDist = 960/2
     end
     --self:setDistanceBar((exDist - platDist)/initExDist)
-	--[[if SDist then
-		self:newSurvDist(SDist)
-	end]]
+--[[if SDist then
+self:newSurvDist(SDist)
+end]]
     
     if alert < platDist and alert ~= 0 then
         self.warningLeft.isVisible = true
@@ -249,6 +265,3 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
     --self:newSurvDist(SDist - platDist)
 end
 
-    
-
-        
