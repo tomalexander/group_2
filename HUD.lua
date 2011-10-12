@@ -26,6 +26,23 @@ function HUD:new()
     object.survText = display.newText("Survivors: ", 10, 180, "Helvetica", 24)
     --object.deadIcon = display.newImage("dead.png", 10, 200)
     object.deadText = display.newText("Number dead: ", 10, 220, "Helvetica", 24)
+	
+	object.group = display.newGroup()
+	object.group:insert(object.distBack)
+	object.group:insert(object.distFill)
+	object.group:insert(object.distFront)
+	
+	object.group:insert(object.fuelBack)
+	object.group:insert(object.fuel)
+	object.group:insert(object.fuelFront)
+	
+	object.group:insert(object.distText)
+	object.group:insert(object.fuelText)
+	object.group:insert(object.scoreText)
+	object.group:insert(object.survIcon)
+	object.group:insert(object.survText)
+	object.group:insert(object.deadText)
+	
     setmetatable(object, {__index=HUD})
     return object
 end
@@ -62,6 +79,7 @@ function HUD:newSurvDist(x)
     else
         self.survIcon = display.newCircle(900, 300, (100/(x+1)))
     end
+	self.group:insert(self.survIcon)
 end
 
 function HUD:displayHUD(flag)
