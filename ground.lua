@@ -58,6 +58,7 @@ function ground.scroll(x, xprev)
         random_create_survivor(x, xprev)
 		-- hack! whenever new ground is created, add two screen widths of rectangle
 		ground.physbox(ground.body.width + 960 * 2)
+        table.insert(meteor_spawn_list, x)
 	end
 	if ground.partitions[partnum + 1] then
 		for _, i in ipairs(ground.partitions[partnum + 1]) do
@@ -69,6 +70,7 @@ function ground.scroll(x, xprev)
         random_create_survivor(x, xprev)
 		-- hack! whenever new ground is created, add two screen widths of rectangle
 		ground.physbox(ground.body.width + 960 * 2)
+        table.insert(meteor_spawn_list, x)
 	end
 	
 	local partnumprev = math.floor(xprev / 960)
