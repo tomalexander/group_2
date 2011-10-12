@@ -60,10 +60,10 @@ function cull_shields(shield_generators)
 end
 
 function gen_new_generator(event)
-   if event.phase == "began" and event.y < display.contentHeight/20 and event.x > display.contentWidth/10 and event.x < display.contentWidth*9/10 then
+   if event.phase == "began" and event.y < display.contentHeight/2 and event.x > display.contentWidth/10 and event.x < display.contentWidth*9/10 then
       media.playEventSound(sound.shield_spawn)
 	  --audio.play(sound.shield_spawn)
-      table.insert( shield_generators, shield:new(viewx + event.x, event.y, 150, 50, 50) )
+      table.insert( shield_generators, shield:new(viewx + event.x, event.y, 150, 500, 500) )
    end
 end
 

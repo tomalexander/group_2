@@ -77,6 +77,7 @@ function check_for_survivors()
       if (distance < 50) then
          display.remove(current.image)
          table.remove(survivor_list, i)
+         hud:increaseScore()
       end
 
       i = i -1
