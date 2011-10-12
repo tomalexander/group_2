@@ -23,6 +23,8 @@ function extractPoint:new(x, y, currentTime, rate)
     object.shield.y = y
     object.noShield = display.newImage("img/extraction_noshield.png", x, y)
     object.noShield.isVisible = false
+    object.noShield.isFixedRotation = true
+    object.shield.isFixedRotation = true
     
     physics.addBody(object.noShield, "static", {friction = 1, bounce = .05, shape = shield_shape})
     object.saved = false
