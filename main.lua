@@ -26,11 +26,11 @@ local function tutHandler(event)
                 end
             end
         elseif event.x > 878 and event.x < 960 and event.y > 180 and event.y < 291 then
-            if i < 10 then
+            if i < 22 then
                 print(i)
                 i = i + 1
                 mainmenu.instructions[i].isVisible = true
-                if i == 10 then
+                if i == 22 then
                     print("..?")
                     mainmenu.play = true
                     for i,v in ipairs(mainmenu.instructions) do
@@ -38,9 +38,10 @@ local function tutHandler(event)
                     end
                     mainmenu.button2.isVisible = false
                     mainmenu.button3.isVisible = false
-                    hud:displayHUD(true)
-                    enableListeners()
+                    --hud:displayHUD(true)
+                    --enableListeners()
                     Runtime:removeEventListener("touch", tutHandler)
+					do_main()
                 end
             end
         end
