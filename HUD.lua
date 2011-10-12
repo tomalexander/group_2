@@ -122,6 +122,7 @@ function HUD:addKill()
 	if self.dead >= 5 then
 		display.getCurrentStage().x = 0
 		high_scores:display_name_box()
+		platform.instance = nil
 		-- GAMEOVER
 	end
 end
@@ -209,7 +210,9 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
         platDist = 960/2
     end
     --self:setDistanceBar((exDist - platDist)/initExDist)
-    self:newSurvDist(SDist)
+	if SDist then
+		self:newSurvDist(SDist)
+	end
     
     if alert < platDist and alert ~= 0 then
         self.warningLeft.isVisible = true

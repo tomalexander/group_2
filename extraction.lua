@@ -68,6 +68,7 @@ function extractPoint:takedamage(x)
         display.remove(self.shield)
 		display.getCurrentStage().x = 0
 		high_scores:display_name_box()
+		platform.instance = nil
     end
 end
 
