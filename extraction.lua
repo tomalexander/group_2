@@ -27,7 +27,7 @@ function extractPoint:new(x, y, currentTime, rate)
     object.noShield.isFixedRotation = true
     object.shield.isFixedRotation = true
     
-    physics.addBody(object.noShield, "static", {friction = 1, bounce = .05, radius = 50})
+    physics.addBody(object.noShield, "static", {friction = 1, bounce = .05, radius = 25})
     object.saved = false
     object.destroyed = false
     object.initialDistance = x-960/2

@@ -13,6 +13,8 @@ function HUD:new()
     object.distBack = display.newImage("img/hud_health_back.png", 770, 400)
     object.distFill = display.newImage("img/hud_health_middle.png", 770, 400)
     object.distFront = display.newImage("img/hud_health_front.png", 770, 400)
+    object.distIcon = display.newImage("img/hud_health_icon.png", 880, 485)
+    object.fuelIcon = display.newImage("img/hud_resource.png", 10, 450)
     object.distY = object.distFill.y
     object.distBack:rotate(90)
     object.distFill:rotate(90)
@@ -51,7 +53,7 @@ function HUD:new()
     object.right_indicator_text = display.newText("2000", object.right_indicator.x, object.right_indicator.y -35, "Helvetica", 18)
 
     
-    object.left_indicator.isVisible = true
+    object.left_indicator.isVisible = false
     object.right_indicator.isVisible = false
     
     
@@ -71,6 +73,7 @@ function HUD:new()
 	object.group:insert(object.distBack)
 	object.group:insert(object.distFill)
 	object.group:insert(object.distFront)
+    
 	
     object.group:insert(object.left_indicator)
     object.group:insert(object.right_indicator)
@@ -84,7 +87,9 @@ function HUD:new()
 	object.group:insert(object.fuelBack)
 	object.group:insert(object.fuel)
 	object.group:insert(object.fuelFront)
-	
+	object.group:insert(object.distIcon)
+    object.group:insert(object.fuelIcon)
+    
 	--object.group:insert(object.distText)
 	--object.group:insert(object.fuelText)
 	object.group:insert(object.scoreText)
@@ -176,6 +181,12 @@ function HUD:displayHUD(flag)
         self.fuelBack.isVisible = true
         self.fuelFront.isVisible = true
         
+        self.fuelIcon.isVisible = true
+        self.distIcon.isVisible = true
+        
+        self.right_indicator.isVisible = true
+        self.left_indicator.isVisible = true
+        
         self.scoreText.isVisible = true
         
         --self.fuelText.isVisible = true
@@ -193,6 +204,11 @@ function HUD:displayHUD(flag)
         self.fuel.isVisible = false
         self.fuelBack.isVisible = false
         self.fuelFront.isVisible = false
+        
+        self.fuelIcon.isVisible = false
+        self.distIcon.isVisible = false
+        self.right_indicator.isVisible = false
+        self.left_indicator.isVisible = false
         
         self.scoreText.isVisible = false
         

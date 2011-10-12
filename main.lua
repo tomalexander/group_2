@@ -241,6 +241,12 @@ Runtime:addEventListener("enterFrame", onFrame)
 
 --table.insert(survivor_list, survivor:new(500,500) )
 
+for i,current in ipairs(survivor_list) do
+   current.image:toFront()
+end
+table.insert(survivor_list, survivor:new(50,450) )
+
+
 mainmenu = mainMenu:new()
 i = 0
 
@@ -412,9 +418,9 @@ function move_screen(amount)
  end
 --high_scores:show_overlay()
 --high_scores:display_name_box()
-for i,current in ipairs(survivor_list) do
+--[[for i,current in ipairs(survivor_list) do
    current.image:toFront()
 end
-table.insert(survivor_list, survivor:new(50,450) )
+table.insert(survivor_list, survivor:new(50,450) )]]
 
 --high_scores:display_name_box()
