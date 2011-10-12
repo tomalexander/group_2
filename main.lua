@@ -114,6 +114,11 @@ function onFrame(event)
 		end
 	end
 	
+	background.x = viewx + 960/2
+	--background_ground0
+	--background_ground1
+	hud.group.x = viewx
+	
 	--[[
 	if test_goright then
 		move_screen_right(1)
@@ -224,7 +229,17 @@ function move_screen_left(amount)
 end
 
 function move_screen(amount)
-	display.getCurrentStage():translate(-amount, 0)
+	local stage = display.getCurrentStage()
+	stage:translate(-amount, 0)
+	
+	--[[
+	for i = 0, stage.numChildren do
+		if stage[i] then
+			--stage[i]:translate(amount, 0)
+		end
+	end
+	--]]
+	
 	ground.scroll(viewx + amount, viewx)
 	viewx = viewx + amount
  end
