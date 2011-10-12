@@ -5,9 +5,9 @@ physics = require "physics"
 local background = display.newImage("img/background.png", true)
 local background_ground0 = display.newImage("img/ground_destroyed.png", true)
 local background_ground1 = display.newImage("img/ground_destroyed.png", true)
-background_ground0.x = 0
+background_ground0.x = 960/2
 background_ground0.y = 450 + 45
-background_ground1.x = 960
+background_ground1.x = 960*3/2
 background_ground1.y = 450 + 45
 
 shield_h = require "shield"
@@ -32,14 +32,19 @@ table.insert( shield_generators, shield:new(350, 300 ,150,50,50) )
 table.insert( shield_generators, shield:new(550, 300 ,70,50,50) )
 table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
+table.insert(survivor_list, survivor:new(500,50) )
 
-platform:new(256, 64)
+platform:new(960/2, 64)
+ground.partitions[-1] = {ground:new(-960, 450)}
 ground.partitions[0] = {ground:new(0, 450)}
+
 extractionPoint = extractPoint:new(950, 450, 100, 5)
 extraction_points = {}
 table.insert( extraction_points, extractionPoint)
 naked_exPoints = {}
 table.insert( naked_exPoints, extractionPoint)
+
+ground.partitions[1] = {ground:new(960, 450)}
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation
@@ -126,7 +131,23 @@ function onFrame(event)
 		if platform.instance.laser then
 			platform.instance.laser:update(event.time)
 		end
+		--[[
+			viewx + 300 < x
+				viewx < x - 300
+			viewx + 960 - 300 > x
+				viewx > x - 960 + 300
+		--]]
+		local boundx = math.max(math.min(viewx, platform.instance.image.x - 400), platform.instance.image.x - 960 + 400)
+		if boundx ~= viewx then
+			move_screen(boundx - viewx)
+		end
 	end
+	
+	background.x = viewx + 960/2
+	--background_ground0
+	--background_ground1
+	hud.group.x = viewx
+	
 	--[[
 	if test_goright then
 		move_screen_right(1)
@@ -146,11 +167,8 @@ end
 Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("enterFrame", onFrame)
 
-local high_scores = highscores:new()
---high_scores:show_overlay()
-table.insert(survivor_list, survivor:new(500,50) )
-local sysFonts = native.getFontNames()
-for k,v in pairs(sysFonts) do print(v) end
+high_scores = highscores:new()
+--table.insert(survivor_list, survivor:new(500,500) )
 
 mainmenu = mainMenu:new()
 
@@ -239,3 +257,23 @@ function move_screen_left(amount)
    viewx = viewx - amount
 end
 
+function move_screen(amount)
+	local stage = display.getCurrentStage()
+	stage:translate(-amount, 0)
+	
+	--[[
+	for i = 0, stage.numChildren do
+		if stage[i] then
+			--stage[i]:translate(amount, 0)
+		end
+	end
+	--]]
+	
+	ground.scroll(viewx + amount, viewx)
+	viewx = viewx + amount
+ end
+--high_scores:show_overlay()
+--high_scores:display_name_box()
+for i,current in ipairs(survivor_list) do
+   current.image:toFront()
+end
