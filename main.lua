@@ -35,6 +35,9 @@ table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
 
 platform:new(256, 64)
 ground.partitions[0] = {ground:new(0, 450)}
+extractionPoint = extractPoint:new(950, 450, 100, 5)
+extraction_points = {}
+table.insert( extraction_points, extractionPoint)
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation
@@ -75,10 +78,20 @@ local function onCollide(event)
          found_survivor = i
       end
    end
+   
+   local collide_extraction = {}
+   local found_extractor = 0
+   for i,v in ipairs(extraction_points) do
+       if (event.object1 == v.shield or event.object2 == v.shield) then
+           collide_extraction = v
+           found_extractor = i
+       end
+   end
 
 
-
-
+   if found_extractor ~= 0 and found_meteor ~= 0 then
+      collide_extraction:takedamage(5)
+   end   
    if found_shield ~= 0 and found_meteor ~= 0 then
       collide_shield:take_damage(5)
       cull_shields(shield_generators)
@@ -130,8 +143,6 @@ mainmenu = mainMenu:new()
 hud = HUD:new()
 hud:displayHUD(false)
 
-extractionPoint = extractPoint:new(950, 450, 100, 5)
-
 surv_location = survivor_list[1].x_location
 ext_location = extractionPoint.x
 initialDistance = extractionPoint.initialDistance
@@ -177,6 +188,8 @@ end
 Runtime:addEventListener("touch", menuTouch)
 Runtime:addEventListener("touch", extractPointTouch)
 Runtime:addEventListener("touch", HUDUpdate)
+
+--timer.performWithDelay(100, HUDUpdate, 0)
 
 viewx = 0
 

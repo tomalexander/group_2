@@ -1,3 +1,5 @@
+physics = require "physics"
+
 extractPoint = {}
 
 function extractPoint:new(x, y, currentTime, rate)
@@ -13,6 +15,7 @@ function extractPoint:new(x, y, currentTime, rate)
     object.saved = false
     object.destroyed = false
     object.initialDistance = x-256
+    physics.addBody(object.shield, "static", {friction = 0.5, bounce = 0.5})
     
     --object.touch = extractPointTouch
     --object:addEventListener("touch", object)
@@ -32,14 +35,14 @@ function extractPoint:extract()
     end
 end
 
-function extractPoint:takedamage()
-    extractPoint.health = extractPoint.health - 10
-    self.shield.alpha = (extractPoint.health/100)
-    if (extractPoint.health < 0) then
-        extractPoint.health = 0
+function extractPoint:takedamage(x)
+    self.health = self.health - x
+    self.shield.alpha = (self.health/100)
+    if (self.health < 0) then
+        self.health = 0
     end
     
-    if (extractPoint.health == 0) then
+    if (self.health == 0) then
         --self.image.isVisible = false
         self.shield.isVisible = false
         self.destroyed = true
