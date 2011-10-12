@@ -18,7 +18,6 @@ function survivor:new(x_location, y_location)
    object.image.x = center_x
    object.image.y = center_y
    object.type = "survivor"
-   object.image:setFillColor(0,255,0)
    physics.addBody(object.image, {friction = 0.0, bounce = 0.2, filter = { categoryBits = 8, maskBits = 4 }})
    object.image.bodyType = "kinematic"
    object.image:addEventListener( "touch", object )
