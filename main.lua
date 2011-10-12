@@ -47,6 +47,7 @@ naked_exPoints = {}
 table.insert( naked_exPoints, extractionPoint)
 
 ground.partitions[1] = {ground:new(960, 450)}
+alert = 0
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation
@@ -115,7 +116,10 @@ local function onCollide(event)
    end   
    if found_shield ~= 0 and found_meteor ~= 0 then
       collide_shield:take_damage(5)
-      cull_shields(shield_generators)
+      local temp = cull_shields(shield_generators)
+      if temp ~= 0 then
+          alert = temp
+      end
    end
    if found_meteor ~= 0 then
       meteor_disperse(found_meteor, meteor_list)
@@ -182,12 +186,15 @@ ext_location = extractionPoint.x
 initialDistance = extractionPoint.initialDistance
 
 if mainmenu.play then
-    hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance)
+    hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance, alert)
 end
 
 local function HUDUpdate(event)
     if event.phase == "began" then
-        hud:update(platform.instance.image.x, surv_location, ext_location, initialDistance)
+        hud:update(platform.instance.image.x, surv_location, ext_location, initialDistance, alert)
+        if event.y < display.contentHeight/20 and event.x > display.contentWidth/10 and event.x < display.contentWidth*9/10 then
+            hud:deFuel()
+        end
     end
 end
     
