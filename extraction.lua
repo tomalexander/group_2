@@ -61,11 +61,13 @@ function extractPoint:takedamage(x)
     if (self.health < 0) then
         self.health = 0
     end
-    self.shield.alpha = (self.health/100)
-    if (self.health == 0) then
+    self.shield.alpha = math.max(0, (self.health/100))
+    if (self.health < 0) then
         --self.image.isVisible = false
         self.shield.isVisible = false
         display.remove(self.shield)
+		display.getCurrentStage().x = 0
+		high_scores:display_name_box()
     end
 end
 
