@@ -238,7 +238,7 @@ function do_main()
 		  
 	   end   
 	   if found_shield ~= 0 and found_meteor ~= 0 then
-		  collide_shield:take_damage(25)
+		  collide_shield:take_damage(20)
 		  local temp = cull_shields(shield_generators)
 		  if temp ~= 0 then
 			  alert = temp
