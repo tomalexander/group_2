@@ -64,9 +64,14 @@ function platform:destroy()
 	end
 end
 
+accel_readout = nil
 function platform.onAccelerometer(event)
+	if accel_readout then
+		accel_readout:removeSelf()
+	end
 	if platform.instance then
 		--platform.instance.image:setLinearVelocity(-platform.instance.velocityMax, 0)
+		accel_readout = display.newText('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity, viewx + 500, 300, native.systemFont, 20) 
 		print('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity)
 	end
 end
