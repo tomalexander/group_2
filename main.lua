@@ -132,8 +132,7 @@ end
 Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("enterFrame", onFrame)
 
-local high_scores = highscores:new()
---high_scores:show_overlay()
+high_scores = highscores:new()
 table.insert(survivor_list, survivor:new(500,50) )
 local sysFonts = native.getFontNames()
 for k,v in pairs(sysFonts) do print(v) end
@@ -230,3 +229,5 @@ function move_screen(amount)
 	ground.scroll(viewx + amount, viewx)
 	viewx = viewx + amount
 end
+--high_scores:show_overlay()
+--high_scores:display_name_box()
