@@ -218,7 +218,15 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
         self.warningRight.isVisible = true
         self.warningLeft.isVisible = false
     end
-    print(old_plat_dist)
+    abs_dist = math.abs(math.floor(old_plat_dist) - 960)
+    self.left_indicator_text:removeSelf()
+    self.right_indicator_text:removeSelf()
+    self.left_indicator_text = display.newText(abs_dist, self.left_indicator.x -60, self.left_indicator.y -35, "Helvetica", 18)
+    self.right_indicator_text = display.newText(abs_dist, self.right_indicator.x, self.right_indicator.y -35, "Helvetica", 18)
+    self.group:insert(self.right_indicator_text)
+    self.group:insert(self.left_indicator_text)
+
+
     if platDist < exDist then
         self.right_indicator.isVisible = false
         self.left_indicator.isVisible = true
