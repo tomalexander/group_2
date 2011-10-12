@@ -9,7 +9,7 @@ sprite.add(tail_sprite_set, 'idle', 1, 4, 50, 0)
 function meteor:new(center_x, center_y, radius, x_velocity, y_velocity)
    local object = {center_x = center_x, center_y = center_y, radius = radius }
    setmetatable(object, { __index = meteor })
-   object.sprite_sheet = sprite.newSpriteSet(meteor_sprite_sheet, math.random(9), 1)
+   object.sprite_sheet = sprite.newSpriteSet(meteor_sprite_sheet, math.random(10), 1)
    object.tail = sprite.newSprite(tail_sprite_set)
    object.tail.x = center_x
    object.tail.y = center_y - 50
