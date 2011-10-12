@@ -251,6 +251,8 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
        self.left_indicator_text.isVisible = false
     end
     
+	self.group:toFront()
+	
     --self:newSurvDist(SDist - platDist)
 end
 
