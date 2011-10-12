@@ -63,7 +63,7 @@ function cull_shields(shield_generators)
 end
 
 function gen_new_generator(event)
-   if event.phase == "began" and event.y < display.contentHeight/2 and event.x > display.contentWidth/10 and event.x < display.contentWidth*9/10 then
+   if event.phase == "began" and event.y < display.contentHeight/2 and event.x > 0 and event.x < display.contentWidth then
       local shields_per_resource = 5
 	  if platform.instance and platform.instance.resources >= 30/shields_per_resource then
          media.playEventSound(sound.shield_spawn)
