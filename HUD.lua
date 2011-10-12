@@ -126,6 +126,9 @@ end
 
 function HUD:increaseScore()
     self.score = self.score + 10
+   self.scoreText:removeSelf()
+   self.scoreText = display.newText("Score: "..self.score, 10, 70, "Helvetica", 24)
+   self.group:insert(self.scoreText)
 end
 
 function HUD:newSurvDist(x)
