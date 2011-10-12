@@ -38,6 +38,8 @@ ground.partitions[0] = {ground:new(0, 450)}
 extractionPoint = extractPoint:new(950, 450, 100, 5)
 extraction_points = {}
 table.insert( extraction_points, extractionPoint)
+naked_exPoints = {}
+table.insert( naked_exPoints, extractionPoint)
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation
@@ -87,8 +89,20 @@ local function onCollide(event)
            found_extractor = i
        end
    end
+   
+   local collide_shieldless_extraction = {}
+   local found_shieldless_extractor = 0
+   for i,v in ipairs(extraction_points) do
+       if (event.object1 == v.noShield or event.object2 == v.noShield) then
+           collide_shieldless_extraction = v
+           found_shieldless_extractor = i
+       end
+   end
 
-
+    
+   if found_shieldless_extractor ~= 0 and found_meteor ~= 0 then
+      collide_shieldless_extraction:blow_up()
+   end    
    if found_extractor ~= 0 and found_meteor ~= 0 then
       collide_extraction:takedamage(5)
    end   
