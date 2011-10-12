@@ -61,7 +61,7 @@ function HUD:new()
     --object.fuelText = display.newText("Fuel: ", 10, 10, "Helvetica", 24) 
     object.dead = 0
     object.score = 0
-    object.scoreText = display.newText("Score: "..object.score, 10, 70, "Helvetica", 24)
+    object.scoreText = display.newText("Score: "..object.score, 10, 140, "Helvetica", 24)
     object.survDistance = 0
     --object.survIcon = display.newImage("survivor.png", 10, 160)
     --object.survIcon = display.newCircle(900, 300, 20)
@@ -156,7 +156,7 @@ end
 function HUD:increaseScore()
     self.score = self.score + 10
    self.scoreText:removeSelf()
-   self.scoreText = display.newText("Score: "..self.score, 10, 70, "Helvetica", 24)
+   self.scoreText = display.newText("Score: "..self.score, 10, 140, "Helvetica", 24)
    self.group:insert(self.scoreText)
 end
 

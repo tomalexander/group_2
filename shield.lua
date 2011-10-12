@@ -63,13 +63,15 @@ function cull_shields(shield_generators)
 end
 
 function gen_new_generator(event)
-   if event.phase == "began" and event.y < display.contentHeight/2 and event.x > 0 and event.x < display.contentWidth then
-      local shields_per_resource = 5
-	  if platform.instance and platform.instance.resources >= 30/shields_per_resource then
-         media.playEventSound(sound.shield_spawn)
-	     --audio.play(sound.shield_spawn)
-         table.insert( shield_generators, shield:new(viewx + event.x, event.y, 150, 250, 250) )
-		 platform.instance.resources = platform.instance.resources - 30/shields_per_resource
+   if event.phase == "began" and event.y < display.contentHeight/2 then
+      if (system.getInfo('device') and event.x > 0 and event.x < display.contentWidth) or (event.x > display.contentWidth/10 and event.x < display.contentWidth * 9/10) then
+		  local shields_per_resource = 5
+		  if platform.instance and platform.instance.resources >= 30/shields_per_resource then
+			 media.playEventSound(sound.shield_spawn)
+			 --audio.play(sound.shield_spawn)
+			 table.insert( shield_generators, shield:new(viewx + event.x, event.y, 150, 250, 250) )
+			 platform.instance.resources = platform.instance.resources - 30/shields_per_resource
+		  end
 	  end
    end
 end

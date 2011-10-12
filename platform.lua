@@ -90,12 +90,14 @@ function platform.onTouch(event)
 	-- Can't test accelerometer on simulator, so touch the sides of the screen for testing
 	if platform.instance then
 		if event.phase == 'began' then
-			if event.x < 100 then
-				--platform.instance.image:setLinearVelocity(-platform.instance.velocityMax, 0)
-				--platform.instance.image.rotation = -platform.rotationMax
-			elseif event.x > 960 - 100 then
-				--platform.instance.image:setLinearVelocity(platform.instance.velocityMax, 0)
-				--platform.instance.image.rotation = platform.rotationMax
+			if system.getInfo('environment') == 'simulator' then
+				if event.x < 100 then
+					platform.instance.image:setLinearVelocity(-platform.instance.velocityMax, 0)
+					platform.instance.image.rotation = -platform.rotationMax
+				elseif event.x > 960 - 100 then
+					platform.instance.image:setLinearVelocity(platform.instance.velocityMax, 0)
+					platform.instance.image.rotation = platform.rotationMax
+				end
 			end
 			if event.y > 400 then
 				platform.instance.image:setLinearVelocity(0, 0)
