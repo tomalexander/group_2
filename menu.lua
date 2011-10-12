@@ -131,7 +131,7 @@ end
             mainMenu:Play()
         end
     end
-end
+end]]
 
 function mainMenu.touch(event)
     if event.phase == "began" then
@@ -147,9 +147,4 @@ function mainMenu.touch(event)
             self:Play()
         end
     end
-end]]
-
-
-            
-
-    
+end
