@@ -106,6 +106,7 @@ local function onCollide(event)
    for i,v in ipairs(survivor_list) do
       if event.object1 == v.image or event.object2 == v.image then
 	     hud:addKill()
+		 media.playEventSound(sound.survivor_die)
          collide_survivor = v
          found_survivor = i
       end
