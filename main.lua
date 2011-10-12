@@ -7,15 +7,32 @@ require "sounds"
 local background = display.newImage("img/background.png", true)
 local background_ground0 = display.newImage("img/ground_destroyed.png", true)
 local background_ground1 = display.newImage("img/ground_destroyed.png", true)
+local background_mountains_back0 = display.newImage("img/mountains_back.png", true)
+local background_mountains_back1 = display.newImage("img/mountains_back.png", true)
+local background_mountains0 = display.newImage("img/mountains.png", true)
+local background_mountains1 = display.newImage("img/mountains.png", true)
 background_ground0.x = 960/2
 background_ground0.y = 450 + 45
 background_ground1.x = 960*3/2
 background_ground1.y = 450 + 45
+background_mountains_back0.x = 1743/2
+background_mountains_back0.y = 450 - 140/2
+background_mountains_back1.x = 1743*3/2
+background_mountains_back1.y = 450 - 140/2
+background_mountains0.x = 1954/2
+background_mountains0.y = 450 - 195/2
+background_mountains1.x = 1954*3/2
+background_mountains1.y = 450 - 195/2
+
+--start the physical simulation
+physics.start()
+--physics.setDrawMode("hybrid")
 
 shield_h = require "shield"
 meteor_h = require "meteor"
 meteor_generator_h = require "meteor_generator"
 platform_h = require "platform"
+platform:new(960/2, 64)
 ground_h = require "ground"
 resource_h = require "resource"
 survivor_h = require "survivor"
@@ -24,21 +41,19 @@ require "HUD"
 require "menu"
 require "extraction"
 
---start the physical simulation
-physics.start()
---physics.setDrawMode("hybrid")
-
 shield_generators = {}
+--[[
 table.insert( shield_generators, shield:new(50, 300 ,200,50,50) )
 table.insert( shield_generators, shield:new(350, 300 ,150,50,50) )
 table.insert( shield_generators, shield:new(550, 300 ,70,50,50) )
 table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
+--]]
 table.insert(survivor_list, survivor:new(500,450) )
 
-platform:new(960/2, 64)
 ground.partitions[-1] = {ground:new(-960, 450)}
 ground.partitions[0] = {ground:new(0, 450)}
+ground.partitions[1] = {ground:new(960, 450)}
 
 extractionPoint = extractPoint:new(950, 450, 100, 5)
 extraction_points = {}
@@ -68,6 +83,13 @@ local function onCollide(event)
       if event.object1 == v.image or event.object2 == v.image then
          collide_shield = v
          found_shield = i
+      end
+   end
+   
+   local found_platform = 0
+   if platform.instance then
+	  if event.object1 == platform.instance.image or event.object2 == platform.instance.image then
+	     found_platform = 1
       end
    end
 
@@ -122,7 +144,37 @@ local function onCollide(event)
       end
    end
    if found_meteor ~= 0 then
-      meteor_disperse(found_meteor, meteor_list)
+		-- play sounds only when on screen
+		
+		if collide_meteor.image.x > viewx and collide_meteor.image.x < viewx + 960 then
+			if found_shield == 0 and found_extractor == 0 and found_shieldless_extractor == 0 and found_survivor == 0 and found_platform == 0 then
+				if math.random() < 0.25 then
+					if math.random() < 0.5 then
+						media.playEventSound(sound.meteor_ground0)
+					else
+						media.playEventSound(sound.meteor_ground1)
+					end
+				end
+			end
+			if found_shieldless_extractor ~= 0 then
+				media.playEventSound(sound.meteor_extractor)
+			end
+			if found_shield ~= 0 or found_extractor ~= 0 then
+				if math.random() < 0.25 then
+					-- Hardcoding, ho!
+					if math.random() < 0.25 then
+						media.playEventSound(sound.meteor_shield0)
+					elseif math.random() < 0.33 then
+						media.playEventSound(sound.meteor_shield1)
+					elseif math.random() < 0.5 then
+						media.playEventSound(sound.meteor_shield2)
+					else 
+						media.playEventSound(sound.meteor_shield3)
+					end
+				end
+			end
+		end
+		meteor_disperse(found_meteor, meteor_list)
    end
    if found_survivor ~= 0 then
       kill_survivor(found_survivor, survivor_list)
@@ -137,12 +189,6 @@ function onFrame(event)
 		if platform.instance.laser then
 			platform.instance.laser:update(event.time)
 		end
-		--[[
-			viewx + 300 < x
-				viewx < x - 300
-			viewx + 960 - 300 > x
-				viewx > x - 960 + 300
-		--]]
 		local boundx = math.max(math.min(viewx, platform.instance.image.x - 400), platform.instance.image.x - 960 + 400)
 		if boundx ~= viewx then
 			move_screen(boundx - viewx)
@@ -150,26 +196,27 @@ function onFrame(event)
 	end
 	
 	background.x = viewx + 960/2
-	--background_ground0
-	--background_ground1
-	hud.group.x = viewx
+	--print('viewx: ' .. viewx .. ' 0: ' .. math.floor(viewx / 960) * 960)
+	background_ground0.x = math.floor(viewx / 960) * 960
+	background_ground1.x = (math.floor(viewx / 960) + 1) * 960
+	background_ground0.x = math.floor(viewx / 960) * 960
+	background_ground1.x = (math.floor(viewx / 960) + 1) * 960
 	
-	--[[
-	if test_goright then
-		move_screen_right(1)
-		
-		if viewx > 960 * 1.5 then
-			test_goright = false
-		end
-	else
-		move_screen_left(1)
-	end
-	--]]
+	background_mountains_back0.x = math.floor(viewx / 1743) * 1743
+	background_mountains_back1.x = (math.floor(viewx / 1743) + 1) * 1743
+	background_mountains_back0.x = math.floor(viewx / 1743) * 1743
+	background_mountains_back1.x = (math.floor(viewx / 1743) + 1) * 1743
+	
+	background_mountains0.x = math.floor(viewx / 1954) * 1954
+	background_mountains1.x = (math.floor(viewx / 1954) + 1) * 1954
+	background_mountains0.x = math.floor(viewx / 1954) * 1954
+	background_mountains1.x = (math.floor(viewx / 1954) + 1) * 1954
+	
+	
+	hud.group.x = viewx
 end
 
 --add event listeners for other functions
---circle:addEventListener("touch", circleTouch)
---Runtime:addEventListener("enterFrame", penguinFly)
 Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("enterFrame", onFrame)
 
@@ -287,3 +334,5 @@ for i,current in ipairs(survivor_list) do
    current.image:toFront()
 end
 table.insert(survivor_list, survivor:new(50,450) )
+
+--high_scores:display_name_box()

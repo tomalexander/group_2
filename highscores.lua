@@ -26,7 +26,27 @@ function highscores:parse_scores(input)
 end
 
 function highscores:display_name_box()
-   self.input_field = native.newTextField( 50, 150, 500, 360, high_scores_listener)
+   self.input_window = display.newRect( 40, 140, 820, 220)
+   self.input_window:setFillColor(0,0,0)
+   self.input_field = native.newTextField( 50, 150, 400, 200, high_scores_listener)
+   self.input_box = display.newRect(475, 150, 300, 60)
+   self.input_box:setFillColor(128,128,128)
+   self.input_box_text = display.newText("Submit", 485, 150, "Space Frigate", 54)
+   high_scores_show_overlay = function()
+                                 high_scores:show_overlay()
+                              end
+   high_scores_submit = function()
+                           high_scores:insert_score(high_scores.input_field.text, hud.score)
+                           high_scores.input_field:removeSelf()
+                           high_scores.input_box:removeSelf()
+                           high_scores.input_box_text:removeSelf()
+                           high_scores.input_window:removeSelf()
+                           timer.performWithDelay(10, high_scores_show_overlay)
+                           --high_scores:show_overlay()
+                           --tempory_high_scores(5000)
+                           return true
+                        end
+   self.input_box:addEventListener( "touch", high_scores_submit )
    self.input_field.text = "Enter Name"
 end
 
@@ -35,10 +55,6 @@ function high_scores_listener(event)
       if (high_scores.input_field.text == "Enter Name") then
          high_scores.input_field.text = ""
       end
-   elseif (event.phase == "submitted") then
-      high_scores:insert_score(high_scores.input_field.text, 9999)
-      high_scores.input_field:removeSelf()
-      high_scores:show_overlay()
    end
 end
 
@@ -121,4 +137,5 @@ function tempory_high_scores(duration)
 
    timer.performWithDelay(duration, kill_temp_high_scores)
    high_scores:show_overlay()
+   high_scores.overlay:removeEventListener( "touch", doOverlay )
 end
