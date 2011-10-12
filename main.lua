@@ -32,6 +32,7 @@ table.insert( shield_generators, shield:new(350, 300 ,150,50,50) )
 table.insert( shield_generators, shield:new(550, 300 ,70,50,50) )
 table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
+table.insert(survivor_list, survivor:new(500,50) )
 
 platform:new(960/2, 64)
 ground.partitions[0] = {ground:new(0, 450)}
@@ -131,9 +132,7 @@ Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("enterFrame", onFrame)
 
 high_scores = highscores:new()
-table.insert(survivor_list, survivor:new(500,50) )
-local sysFonts = native.getFontNames()
-for k,v in pairs(sysFonts) do print(v) end
+--table.insert(survivor_list, survivor:new(500,500) )
 
 mainmenu = mainMenu:new()
 
@@ -226,6 +225,9 @@ function move_screen(amount)
 	display.getCurrentStage():translate(-amount, 0)
 	ground.scroll(viewx + amount, viewx)
 	viewx = viewx + amount
-end
+ end
 --high_scores:show_overlay()
 --high_scores:display_name_box()
+for i,current in ipairs(survivor_list) do
+   current.image:toFront()
+end

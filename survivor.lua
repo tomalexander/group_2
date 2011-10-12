@@ -1,16 +1,29 @@
 physics = require "physics"
 platform_h = require "platform"
+require "sprite"
 survivor = {}
+
+survivor_sprite_sheet = sprite.newSpriteSheet("img/colonist.png", 59, 66)
+survivor_sprite_set = sprite.newSpriteSet(survivor_sprite_sheet, 1, 16)
+sprite.add(survivor_sprite_set, 'idle_facing_right', 8,1,500,0)
+sprite.add(survivor_sprite_set, 'idle_facing_left', 16,1,500,0)
+sprite.add(survivor_sprite_set, 'run_right', 1,8,1500,0)
+sprite.add(survivor_sprite_set, 'run_left', 9,8,1500,0)
+
 
 function survivor:new(x_location, y_location)
    local object = {x_location = x_location, y_location = y_location, platform_reference = platform.instance, x_direction = 0}
    setmetatable(object, { __index = survivor })
-   object.image = display.newCircle(x_location, y_location, 3)
+   object.image = sprite.newSprite(survivor_sprite_set)
+   object.image.x = center_x
+   object.image.y = center_y
    object.type = "survivor"
    object.image:setFillColor(0,255,0)
    physics.addBody(object.image, {friction = 0.0, bounce = 0.2, filter = { categoryBits = 8, maskBits = 4 }})
    object.image.bodyType = "kinematic"
    object.image:addEventListener( "touch", object )
+   object.image:prepare('idle_facing_left')
+   object.image:play()
    return object
 end
 
@@ -25,8 +38,12 @@ end
 function survivor:begin_run()
    if (self.platform_reference.image.x < self.image.x) then
       self.x_direction = -1
+      object.image:prepare('run_left')
+      object.image:play()
    else
       self.x_direction = 1
+      object.image:prepare('run_right')
+      object.image:play()
    end
    self.image:setLinearVelocity(200*self.x_direction, 0)
 end
