@@ -3,7 +3,7 @@ meteor_h = require "meteor"
 meteor_list = {}
 
 function generate_meteor( event )
-   table.insert(meteor_list, meteor:new(platform.instance.image.x + math.random(-500,500),0,10, math.random(-500,500), math.random(250,500)))
+	table.insert(meteor_list, meteor:new(platform.instance.image.x + math.random(-500,500),0	,10, math.random(-500,500), math.random(250,500)))
 end
 
 function off_screen_generate_meteor( event )

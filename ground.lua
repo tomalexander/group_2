@@ -224,6 +224,7 @@ function ground:carve(x, w, pixels)
 			if x > i.image.x - i.spriteHeight/2 and x < i.image.x + i.spriteHeight/2 then
 				if platform.instance then
 					platform.instance.resources = platform.instance.resources + i:extract()
+					platform.instance.resources = math.min(platform.resourcesMax, platform.instance.resources)
 				end
 			end
 		end

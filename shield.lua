@@ -61,9 +61,13 @@ end
 
 function gen_new_generator(event)
    if event.phase == "began" and event.y < display.contentHeight/2 and event.x > display.contentWidth/10 and event.x < display.contentWidth*9/10 then
-      media.playEventSound(sound.shield_spawn)
-	  --audio.play(sound.shield_spawn)
-      table.insert( shield_generators, shield:new(viewx + event.x, event.y, 150, 500, 500) )
+      local shields_per_resource = 5
+	  if platform.instance and platform.instance.resources >= 30/shields_per_resource then
+         media.playEventSound(sound.shield_spawn)
+	     --audio.play(sound.shield_spawn)
+         table.insert( shield_generators, shield:new(viewx + event.x, event.y, 150, 500, 500) )
+		 platform.instance.resources = platform.instance.resources - 30/shields_per_resource
+	  end
    end
 end
 

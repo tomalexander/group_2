@@ -15,6 +15,8 @@ platform = {
 	spriteFireFrameRate = 500,
 	velocityMax = 500,
 	
+	resourcesMax = 150,
+	
 	charge = 0,
 	chargeFull = 30,
 	
@@ -30,7 +32,7 @@ sprite.add(platform.spriteSet, 'fire', platform.spriteFireFrameBegin, platform.s
 function platform:new(center_x, center_y)
 	if not platform.instance then
 		platform.instance = {
-			resources = 0,
+			resources = 30,
 			laser = nil,
 			image = sprite.newSprite(platform.spriteSet),
 			
@@ -74,7 +76,7 @@ function platform.onAccelerometer(event)
 		--accel_readout = display.newText('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity, viewx + 500, 300, native.systemFont, 20) 
 		--print('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity)
 		local normalize = math.max(math.min(0.5, -event.yGravity), -0.5) * 2
-		if math.abs(normalize) < 0.1 then
+		if math.abs(normalize) < 0.0 then
 			normalize = 0
 		end
 		platform.instance.image:setLinearVelocity(platform.instance.velocityMax * normalize, 0)
