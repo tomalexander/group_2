@@ -44,6 +44,7 @@ function ground.scroll(x, xprev)
 		print('creating at ' .. partnum)
 		ground.partitions[partnum] = {ground:new(partnum * 960, 450)}
         random_create_survivor(x, xprev)
+        table.insert(meteor_spawn_list, x)
 	end
 	if ground.partitions[partnum + 1] then
 		for _, i in ipairs(ground.partitions[partnum + 1]) do
@@ -53,6 +54,7 @@ function ground.scroll(x, xprev)
 		print('creating at ' .. partnum + 1)
 		ground.partitions[partnum + 1] = {ground:new((partnum + 1) * 960, 450)}
         random_create_survivor(x, xprev)
+        table.insert(meteor_spawn_list, x)
 	end
 	
 	local partnumprev = math.floor(xprev / 960)
