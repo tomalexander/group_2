@@ -38,12 +38,12 @@ function HUD:new()
     object.fuelFront:rotate(-90)
     
     object.left_indicator = sprite.newSprite(indicatorLset)
-    object.left_indicator.currentFrame = object.lives
+    object.left_indicator.currentFrame = object.dead
     object.left_indicator.x = 900
     object.left_indicator.y = 80
     
     object.right_indicator = sprite.newSprite(indicatorRset)
-    object.right_indicator.currentFrame = object.lives
+    object.right_indicator.currentFrame = object.dead
     object.right_indicator.x = 55
     object.right_indicator.y = 80
     
@@ -107,7 +107,17 @@ function HUD:setFuel(amount)
 	-- convert 0 to 150 to 0 to 215 pixels
 	self.fuel.y = self.fuelY + (150 - amount)*215/150
 end
-	
+
+function HUD:addKill()
+	self.dead = self.dead + 1
+	self.left_indicator.currentFrame = self.dead + 1
+	self.right_indicator.currentFrame = self.dead + 1
+	if self.dead >= 5 then
+		display.getCurrentStage().x = 0
+		high_scores:show_overlay()
+		-- GAMEOVER
+	end
+end
 
 function HUD:deFuel()
     --self.fuel = display.newRect(10, 70, 300-x, 25)
@@ -197,11 +207,11 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
     if platDist < exDist then
         self.right_indicator.isVisible = false
         self.left_indicator.isVisible = true
-        self.left_indicator.currentFrame = self.lives
+        --self.left_indicator.currentFrame = self.lives
     else
         self.right_indicator.isVisible = true
         self.left_indicator.isVisible = false
-        self.right_indicator.currentFrame = self.lives
+        --self.right_indicator.currentFrame = self.lives
     end
     
     --self:newSurvDist(SDist - platDist)
