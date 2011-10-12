@@ -248,4 +248,4 @@ function move_screen(amount)
 for i,current in ipairs(survivor_list) do
    current.image:toFront()
 end
-table.insert(survivor_list, survivor:new(50,400) )
+table.insert(survivor_list, survivor:new(50,450) )
