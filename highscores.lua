@@ -25,6 +25,22 @@ function highscores:parse_scores(input)
    self.parsed_scores = new_parsed_scores
 end
 
+function highscores:display_name_box()
+   self.input_field = native.newTextField( 50, 150, 500, 360, high_scores_listener)
+   self.input_field.text = "Enter Name"
+end
+
+function high_scores_listener(event)
+   if (event.phase == "began") then
+      if (high_scores.input_field.text == "Enter Name") then
+         high_scores.input_field.text = ""
+      end
+   elseif (event.phase == "submitted") then
+      self:insert_score(high_scores.input_field.text, 9999)
+      high_scores.input_field:removeSelf()
+   end
+end
+
 function highscores:insert_score(name, score)
    local high_scores = http.request("http://gamedevhighscores.paphus.com/?newscore=" .. url.escape(score) .. "&newname=" .. url.escape(name))
    self:parse_scores(high_scores)

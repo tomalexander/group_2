@@ -24,7 +24,6 @@ function meteor:new(center_x, center_y, radius, x_velocity, y_velocity)
    object.image:setLinearVelocity(x_velocity, y_velocity)
    local max_x_velocity = 500
    object.tail:rotate(x_velocity / max_x_velocity * -45)
-   print(x_velocity)
    object.tail:prepare('idle')
    object.tail:play()
    return object
