@@ -66,7 +66,7 @@ end
 
 function platform.onAccelerometer(event)
 	if platform.instance then
-		platform.instance.image:setLinearVelocity(-platform.instance.velocityMax, 0)
+		--platform.instance.image:setLinearVelocity(-platform.instance.velocityMax, 0)
 		print('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity)
 	end
 end
