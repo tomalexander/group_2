@@ -233,6 +233,9 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
     self.right_indicator_text:removeSelf()
     self.left_indicator_text = display.newText(abs_dist, self.left_indicator.x -60, self.left_indicator.y -35, "Helvetica", 18)
     self.right_indicator_text = display.newText(abs_dist, self.right_indicator.x, self.right_indicator.y -35, "Helvetica", 18)
+	self.left_indicator_text:setTextColor(0, 0, 0)
+	self.right_indicator_text:setTextColor(0, 0, 0) 
+	
     self.group:insert(self.right_indicator_text)
     self.group:insert(self.left_indicator_text)
 
