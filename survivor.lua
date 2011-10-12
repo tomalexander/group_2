@@ -51,11 +51,20 @@ end
 
 survivor_list = {}
 
-function random_create_survivor(x_position)
-   print(x_position .. " rnd crt srvr")
-   chance = math.random(1,2)
-   if (chance == 1) then
-      table.insert(survivor_list, survivor:new(x_position, 450))
+function random_create_survivor(x_position, xprev)
+   local i = 0
+   print("ground " .. x_position .. " " .. xprev)
+   -- Going right, xpos > xprev
+   local lookahead = 960
+   if x_position < xprev then
+      lookahead = lookahead * -1 - 960
+   end
+   while i < 5 do
+      chance = math.random(1,2)
+      if (chance == 1) then
+         table.insert(survivor_list, survivor:new(math.random(-400,400) + x_position + 960 + lookahead, 450))
+      end
+      i = i + 1
    end
 end
 
