@@ -39,6 +39,7 @@ function highscores:display_name_box()
                            high_scores.input_box_text:removeSelf()
                            high_scores.input_window:removeSelf()
                            high_scores:show_overlay()
+                           return true
                         end
    self.input_box:addEventListener( "touch", high_scores_submit )
    self.input_field.text = "Enter Name"
