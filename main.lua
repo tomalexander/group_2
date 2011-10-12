@@ -167,7 +167,7 @@ end
 Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("enterFrame", onFrame)
 
-high_scores = highscores:new()
+
 --table.insert(survivor_list, survivor:new(500,500) )
 
 mainmenu = mainMenu:new()
