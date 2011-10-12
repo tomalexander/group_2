@@ -26,7 +26,7 @@ function HUD:new()
     object.warningRight:scale(0.5, 0.5)
     object.warningLeft.isVisible = false
     object.warningRight.isVisible = false
-    
+
     --object.distanceBar = display.newRect(10, 10, 300, 25)
     --object.fuel = display.newRect(10, 80, 300, 25)
     object.fuelBack = display.newImage("img/hud_resource_back.png", -100, 400)
@@ -38,14 +38,18 @@ function HUD:new()
     object.fuelFront:rotate(-90)
     
     object.left_indicator = sprite.newSprite(indicatorLset)
-    object.left_indicator.currentFrame = object.lives
+    object.left_indicator.currentFrame = object.dead
     object.left_indicator.x = 900
     object.left_indicator.y = 80
     
     object.right_indicator = sprite.newSprite(indicatorRset)
-    object.right_indicator.currentFrame = object.lives
+    object.right_indicator.currentFrame = object.dead
     object.right_indicator.x = 55
     object.right_indicator.y = 80
+
+    object.left_indicator_text = display.newText("1000", object.left_indicator.x -60, object.left_indicator.y -35, "Helvetica", 18)
+    object.right_indicator_text = display.newText("2000", object.right_indicator.x, object.right_indicator.y -35, "Helvetica", 18)
+
     
     object.left_indicator.isVisible = true
     object.right_indicator.isVisible = false
@@ -70,6 +74,9 @@ function HUD:new()
 	
     object.group:insert(object.left_indicator)
     object.group:insert(object.right_indicator)
+    object.group:insert(object.left_indicator_text)
+    object.group:insert(object.right_indicator_text)
+
     
     object.group:insert(object.warningLeft)
     object.group:insert(object.warningRight)
@@ -107,7 +114,19 @@ function HUD:setFuel(amount)
 	-- convert 0 to 150 to 0 to 215 pixels
 	self.fuel.y = self.fuelY + (150 - amount)*215/150
 end
-	
+
+function HUD:addKill()
+	self.dead = self.dead + 1
+	self.left_indicator.currentFrame = self.dead + 1
+	self.right_indicator.currentFrame = self.dead + 1
+	if self.dead >= 5 then
+		display.getCurrentStage().x = 0
+		high_scores:display_name_box()
+		platform.instance = nil
+        self.dead = -999
+		-- GAMEOVER
+	end
+end
 
 function HUD:deFuel()
     --self.fuel = display.newRect(10, 70, 300-x, 25)
@@ -187,11 +206,14 @@ function HUD:displayHUD(flag)
 end
 
 function HUD:update(platDist, SDist, exDist, initExDist, alert)
-    if platDist < 960/2 then
+   local old_plat_dist = platDist
+   if platDist < 960/2 then
         platDist = 960/2
     end
     --self:setDistanceBar((exDist - platDist)/initExDist)
-    self:newSurvDist(SDist)
+	if SDist then
+		self:newSurvDist(SDist)
+	end
     
     if alert < platDist and alert ~= 0 then
         self.warningLeft.isVisible = true
@@ -200,15 +222,27 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
         self.warningRight.isVisible = true
         self.warningLeft.isVisible = false
     end
-    
+    abs_dist = math.abs(math.floor(old_plat_dist) - 960)
+    self.left_indicator_text:removeSelf()
+    self.right_indicator_text:removeSelf()
+    self.left_indicator_text = display.newText(abs_dist, self.left_indicator.x -60, self.left_indicator.y -35, "Helvetica", 18)
+    self.right_indicator_text = display.newText(abs_dist, self.right_indicator.x, self.right_indicator.y -35, "Helvetica", 18)
+    self.group:insert(self.right_indicator_text)
+    self.group:insert(self.left_indicator_text)
+
+
     if platDist < exDist then
         self.right_indicator.isVisible = false
         self.left_indicator.isVisible = true
-        self.left_indicator.currentFrame = self.lives
+        --self.left_indicator.currentFrame = self.lives
+       self.left_indicator_text.isVisible = true
+       self.right_indicator_text.isVisible = false
     else
         self.right_indicator.isVisible = true
         self.left_indicator.isVisible = false
-        self.right_indicator.currentFrame = self.lives
+        --self.right_indicator.currentFrame = self.lives
+       self.right_indicator_text.isVisible = true
+       self.left_indicator_text.isVisible = false
     end
     
     --self:newSurvDist(SDist - platDist)

@@ -105,6 +105,8 @@ local function onCollide(event)
    local found_survivor = 0
    for i,v in ipairs(survivor_list) do
       if event.object1 == v.image or event.object2 == v.image then
+	     hud:addKill()
+		 media.playEventSound(sound.survivor_die)
          collide_survivor = v
          found_survivor = i
       end
@@ -181,9 +183,11 @@ local function onCollide(event)
    end
    if found_survivor ~= 0 then
       kill_survivor(found_survivor, survivor_list)
+	  --[[
       if hud then
           hud.lives = hud.lives - 1
       end
+	  --]]
    end
 end
 
@@ -220,8 +224,13 @@ function onFrame(event)
 	
 	if platform.instance then
 		hud:setFuel(platform.instance.resources)
+		if #survivor_list > 0 then
+			hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance, alert)
+		else
+			hud:update(platform.instance.image.x, nil, extractionPoint.x, extractionPoint.initialDistance, alert)
+		end
 	end
-	hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance, alert)
+	
 	hud.group.x = viewx
 end
 

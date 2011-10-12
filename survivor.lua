@@ -36,6 +36,7 @@ function survivor:touch(event)
 end
 
 function survivor:begin_run()
+   media.playEventSound(sound.survivor_run)
    if (extractionPoint.x < self.image.x) then
       self.x_direction = -1
       self.image:prepare('run_left')
@@ -78,6 +79,7 @@ function check_for_survivors()
          display.remove(current.image)
          table.remove(survivor_list, i)
          hud:increaseScore()
+		 media.playEventSound(sound.survivor_escape)
       end
 
       i = i -1
