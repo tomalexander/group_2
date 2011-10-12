@@ -3,6 +3,165 @@ physics = require "physics"
 
 require "menu"
 
+
+    
+   if found_shieldless_extractor ~= 0 and found_meteor ~= 0 then
+      collide_shieldless_extraction:blow_up()
+   end    
+   if found_extractor ~= 0 and found_meteor ~= 0 then
+      collide_extraction:takedamage(5)
+      if hud then
+           hud:setDistanceBar(collide_extraction.health/collide_extraction.maxHealth)
+      end
+      
+   end   
+   if found_shield ~= 0 and found_meteor ~= 0 then
+      collide_shield:take_damage(5)
+      local temp = cull_shields(shield_generators)
+      if temp ~= 0 then
+          alert = temp
+      end
+   end
+   if found_meteor ~= 0 then
+		-- play sounds only when on screen
+		
+		if collide_meteor.image.x > viewx and collide_meteor.image.x < viewx + 960 then
+			if found_shield == 0 and found_extractor == 0 and found_shieldless_extractor == 0 and found_survivor == 0 and found_platform == 0 then
+				if math.random() < 0.25 then
+					if math.random() < 0.5 then
+						media.playEventSound(sound.meteor_ground0)
+					else
+						media.playEventSound(sound.meteor_ground1)
+					end
+				end
+			end
+			if found_shieldless_extractor ~= 0 then
+				media.playEventSound(sound.meteor_extractor)
+			end
+			if found_shield ~= 0 or found_extractor ~= 0 then
+				if math.random() < 0.25 then
+					-- Hardcoding, ho!
+					if math.random() < 0.25 then
+						media.playEventSound(sound.meteor_shield0)
+					elseif math.random() < 0.33 then
+						media.playEventSound(sound.meteor_shield1)
+					elseif math.random() < 0.5 then
+						media.playEventSound(sound.meteor_shield2)
+					else 
+						media.playEventSound(sound.meteor_shield3)
+					end
+				end
+			end
+		end
+		meteor_disperse(found_meteor, meteor_list)
+   end
+   if found_survivor ~= 0 then
+      kill_survivor(found_survivor, survivor_list)
+	  --[[
+      if hud then
+          hud.lives = hud.lives - 1
+      end
+	  --]]
+   end
+end
+
+local test_goright = true
+
+function onFrame(event)
+	if platform.instance then
+		platform.instance:update(event.time)
+		if platform.instance.laser then
+			platform.instance.laser:update(event.time)
+		end
+		local boundx = math.max(math.min(viewx, platform.instance.image.x - 400), platform.instance.image.x - 960 + 400)
+		if boundx ~= viewx then
+			move_screen(boundx - viewx)
+		end
+	end
+	
+	background.x = viewx + 960/2
+	--print('viewx: ' .. viewx .. ' 0: ' .. math.floor(viewx / 960) * 960)
+	background_ground0.x = math.floor(viewx / 960) * 960
+	background_ground1.x = (math.floor(viewx / 960) + 1) * 960
+	background_ground0.x = math.floor(viewx / 960) * 960
+	background_ground1.x = (math.floor(viewx / 960) + 1) * 960
+	
+	background_mountains_back0.x = math.floor(viewx / 1743) * 1743
+	background_mountains_back1.x = (math.floor(viewx / 1743) + 1) * 1743
+	background_mountains_back0.x = math.floor(viewx / 1743) * 1743
+	background_mountains_back1.x = (math.floor(viewx / 1743) + 1) * 1743
+	
+	background_mountains0.x = math.floor(viewx / 1954) * 1954
+	background_mountains1.x = (math.floor(viewx / 1954) + 1) * 1954
+	background_mountains0.x = math.floor(viewx / 1954) * 1954
+	background_mountains1.x = (math.floor(viewx / 1954) + 1) * 1954
+	
+	if platform.instance then
+		hud:setFuel(platform.instance.resources)
+		if #survivor_list > 0 then
+			hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance, alert)
+		else
+			hud:update(platform.instance.image.x, nil, extractionPoint.x, extractionPoint.initialDistance, alert)
+		end
+	end
+	
+	hud.group.x = viewx
+end
+
+--add event listeners for other functions
+Runtime:addEventListener("collision", onCollide)
+Runtime:addEventListener("enterFrame", onFrame)
+
+
+--table.insert(survivor_list, survivor:new(500,500) )
+
+for i,current in ipairs(survivor_list) do
+   current.image:toFront()
+end
+table.insert(survivor_list, survivor:new(50,450) )
+
+
+mainmenu = mainMenu:new()
+i = 0
+
+hud = HUD:new()
+hud:displayHUD(false)
+
+surv_location = survivor_list[1].x_location
+ext_location = extractionPoint.x
+initialDistance = extractionPoint.initialDistance
+
+if mainmenu.play then
+    print("!")
+    hud:displayHUD(true)
+    hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance, alert)
+end
+
+local function HUDUpdate(event)
+    if event.phase == "began" then
+        hud:update(platform.instance.image.x, surv_location, ext_location, initialDistance, alert)
+        if event.y < display.contentHeight/20 and event.x > display.contentWidth/10 and event.x < display.contentWidth*9/10 then
+            --hud:deFuel()
+        end
+    end
+end
+
+local function disableListeners()
+    Runtime:removeEventListener('accelerometer', platform.onAccelerometer)
+    Runtime:removeEventListener('touch', platform.onTouch)
+    Runtime:removeEventListener("collision", onCollide)
+end
+
+local function enableListeners()
+    Runtime:addEventListener('accelerometer', platform.onAccelerometer)
+    Runtime:addEventListener('touch', platform.onTouch)
+    Runtime:addEventListener("collision", onCollide)
+end
+
+if (mainmenu.play == false) then
+    disableListeners()
+end
+
 --if (mainmenu.play == false) then
     --disableListeners()
 --end
@@ -317,6 +476,18 @@ function do_main()
 		
 		hud.group.x = viewx
 	end
+
+	
+	ground.scroll(viewx + amount, viewx)
+	viewx = viewx + amount
+ end
+--high_scores:show_overlay()
+--high_scores:display_name_box()
+--[[for i,current in ipairs(survivor_list) do
+   current.image:toFront()
+end
+table.insert(survivor_list, survivor:new(50,450) )]]
+
 
 	--add event listeners for other functions
 	Runtime:addEventListener("collision", onCollide)
