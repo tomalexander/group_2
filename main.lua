@@ -242,6 +242,7 @@ Runtime:addEventListener("enterFrame", onFrame)
 --table.insert(survivor_list, survivor:new(500,500) )
 
 mainmenu = mainMenu:new()
+i = 0
 
 hud = HUD:new()
 hud:displayHUD(false)
@@ -251,6 +252,8 @@ ext_location = extractionPoint.x
 initialDistance = extractionPoint.initialDistance
 
 if mainmenu.play then
+    print("!")
+    hud:displayHUD(true)
     hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance, alert)
 end
 
@@ -262,17 +265,58 @@ local function HUDUpdate(event)
         end
     end
 end
-    
-local function menuTouch(event)
+
+local function tutHandler(event)
     if event.phase == "began" then
-        if (event.x > display.contentWidth/4 and event.x < display.contentWidth*3/4
-        and event.y > display.contentHeight/4 and event.y < display.contentHeight*3/4) then
-            if mainmenu.help then
+        if event.x > 0 and event.x < 82 and event.y > 180 and event.y < 291 then
+            if i > 0 then
+                print(i)
+                mainmenu.instructions[i].isVisible = false
+                i = i - 1
+                if i == 0 then
+                    mainmenu.background.isVisible = true
+                    mainmenu.button1.isVisible = true
+                    mainmenu.button2.isVisible = false
+                    mainmenu.button3.isVisible = false
+                    Runtime:addEventListener("touch", menuTouch)
+                    Runtime:removeEventListener("touch", tutHandler)
+                end
+            end
+        elseif event.x > 878 and event.x < 960 and event.y > 180 and event.y < 291 then
+            if i < 10 then
+                print(i)
+                i = i + 1
+                mainmenu.instructions[i].isVisible = true
+                if i == 10 then
+                    print("..?")
+                    mainmenu.play = true
+                    for i,v in ipairs(mainmenu.instructions) do
+                        mainmenu.instructions[i].isVisible = false
+                    end
+                    mainmenu.button2.isVisible = false
+                    mainmenu.button3.isVisible = false
+                    hud:displayHUD(true)
+                    Runtime:removeEventListener("touch", tutHandler)
+                end
+            end
+        end
+    end
+end
+
+    
+function menuTouch(event)
+    if event.phase == "began" then
+        if (event.x > 50 and event.x < 308
+        and event.y > 425 and event.y < 502) then
+            --[[if mainmenu.help then
                 mainmenu:setHelp(false)
             else
                 mainmenu:setHelp(true)
-            end
-            
+            end]]
+            mainmenu:setHelp()
+            Runtime:removeEventListener("touch", menuTouch)
+            Runtime:addEventListener("touch", tutHandler)
+            i = i+1
         elseif (event.x > display.contentWidth*3/4 and event.y > display.contentHeight*3/4) then
             mainmenu:Play()
             hud:displayHUD(true)

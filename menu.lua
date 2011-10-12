@@ -1,38 +1,79 @@
 mainMenu = {}
+i = 1
 
 function mainMenu:new()
     local object = {}
-    object.background = display.newImage("img/background.png", 0, 0)
-    object.instructions = display.newImage("img/instructions.png", 0, 0)
-    object.button1 = display.newImage("img/helpButton.png", display.contentWidth/4, display.contentHeight/4)
-    object.button2 = display.newImage("img/backButton.png", display.contentWidth/4, display.contentHeight/4)
-    object.instructions.isVisible = false
+    object.instructions = {}
+    
+    object.instructions1 = display.newImage("img/tutorial/screen-1.png", 0, 0)
+    table.insert(object.instructions, object.instructions1)
+    
+    --object.instructions2 = {}
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-2-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-2-2.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-2-3.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-2-4.png", 0, 0))
+    --table.insert(object.instructions, object.instructions2)
+    
+    --object.instructions3 = {}
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-3-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-3-2.png", 0, 0))
+    --table.insert(object.instructions, object.instructions3)
+    
+    object.instructions4 = display.newImage("img/tutorial/screen-4.png", 0, 0)
+    table.insert(object.instructions, object.instructions4)
+    
+    --object.instructions5 = {}
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-5-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-5-2.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-5-3.png", 0, 0))
+    --table.insert(object.instructions, object.instructions5)
+    
+    --object.instructions6 = {}
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-6-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-6-2.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-6-3.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-6-4.png", 0, 0))
+    --table.insert(object.instructions, object.instructions6)
+    
+    --object.instructions7 = {}
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-7-1.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-7-2.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-7-3.png", 0, 0))
+    table.insert(object.instructions, display.newImage("img/tutorial/screen-7-4.png", 0, 0))
+    --table.insert(object.instructions, object.instructions7)
+    
+    object.instructions8 = display.newImage("img/tutorial/screen-8.png", 0, 0)
+    table.insert(object.instructions, object.instructions8)
+    
+    object.instructions9 = display.newImage("img/tutorial/screen-9.png", 0, 0)
+    table.insert(object.instructions, object.instructions9)
+    
+    object.instructions10 = display.newImage("img/tutorial/screen-10.png", 0, 0)
+    table.insert(object.instructions, object.instructions10)
+    
+    for i,v in ipairs(object.instructions) do
+        v.isVisible = false
+    end
+    
+    object.background = display.newImage("img/title.png", 0, 0)
+    object.button1 = display.newImage("img/menu_tutorial.png", 50, 425)
+    object.button2 = display.newImage("img/menu_back.png", 0, 180)
+    object.button3 = display.newImage("img/menu_next.png", 878, 180)
+    
+    
+    
+    object.button2.isVisible = false
+    object.button3.isVisible = false
+    
     object.help = false
     object.play = false
     setmetatable(object, {__index = mainMenu})
     return object
 end
 
---[[function mainMenu:setHelp(help)
-    
-    if help then
-        print("one")
-        mainMenu.instructions.isVisible = false
-        mainMenu.background.isVisible = true
-        mainMenu.button1.isVisible = false
-        mainMenu.button2.isVisible = true
-        mainMenu.help = true
-    else
-        print("two")
-        mainMenu.instructions.isVisible = true
-        mainMenu.background.isVisible = false
-        mainMenu.button2.isVisible = false
-        mainMenu.button1.isVisible = true
-        mainMenu.help = false
-    end
-end]]
 
-function mainMenu:setHelp(help)
+--[[function mainMenu:setHelp(help)
     
     if help then
         print("one")
@@ -49,17 +90,16 @@ function mainMenu:setHelp(help)
         self.button1.isVisible = true
         self.help = false
     end
-end
-
---[[function mainMenu:Play()
-    mainMenu.instructions.isVisible = false
-    mainMenu.background.isVisible = false
-    mainMenu.button2.isVisible = false
-    mainMenu.button1.isVisible = false
-    mainMenu.help = false
-    Runtime:removeEventListener("touch", mainMenu.touch)
-    mainMenu.play = true
 end]]
+
+function mainMenu:setHelp()
+        
+    self.background.isVisible = false
+    self.button1.isVisible = false
+    self.button2.isVisible = true
+    self.button3.isVisible = true
+    self.instructions[1].isVisible = true
+end
 
 function mainMenu:Play()
     self.instructions.isVisible = false
