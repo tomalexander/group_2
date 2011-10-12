@@ -36,8 +36,9 @@ function high_scores_listener(event)
          high_scores.input_field.text = ""
       end
    elseif (event.phase == "submitted") then
-      self:insert_score(high_scores.input_field.text, 9999)
+      high_scores:insert_score(high_scores.input_field.text, 9999)
       high_scores.input_field:removeSelf()
+      high_scores:show_overlay()
    end
 end
 

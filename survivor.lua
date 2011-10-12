@@ -36,7 +36,7 @@ function survivor:touch(event)
 end
 
 function survivor:begin_run()
-   if (self.platform_reference.image.x < self.image.x) then
+   if (extractionPoint.x < self.image.x) then
       self.x_direction = -1
       self.image:prepare('run_left')
       self.image:play()
@@ -55,8 +55,8 @@ function check_for_survivors()
    local i = #survivor_list
    while i > 0 do
       current = survivor_list[i]
-
-      distance = get_distance(platform.instance.image.x, platform.instance.image.y, current.image.x, current.image.y)
+      distance = math.abs(extractionPoint.x - current.image.x)
+      --distance = get_distance(platform.instance.image.x, platform.instance.image.y, current.image.x, current.image.y)
       if (distance < 50) then
          display.remove(current.image)
       end
