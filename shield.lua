@@ -68,7 +68,7 @@ function gen_new_generator(event)
 	  if platform.instance and platform.instance.resources >= 30/shields_per_resource then
          media.playEventSound(sound.shield_spawn)
 	     --audio.play(sound.shield_spawn)
-         table.insert( shield_generators, shield:new(viewx + event.x, event.y, 150, 500, 500) )
+         table.insert( shield_generators, shield:new(viewx + event.x, event.y, 150, 250, 250) )
 		 platform.instance.resources = platform.instance.resources - 30/shields_per_resource
 	  end
    end
