@@ -121,13 +121,17 @@ end
 
 function HUD:deFuel()
     --self.fuel = display.newRect(10, 70, 300-x, 25)
-    if (self.fuel.y + (215/10) >= 215) then
+    self.fuel.y = self.fuel.y + (215/10)
+    if self.fuel.y > self.fuelY + 215 then
         self.fuel.y = self.fuelY + 215
+    end    
+end
+
+function HUD:reFuel()
+    self.fuel.y = self.fuel.y - (215/20)
+    if self.fuel.y < self.fuelY then
+        self.fuel.y = self.fuelY
     end
-    
-    self.fuel.y = self.fuel.y + (10)
-    print (self.fuel.y)
-    
 end
 
 function HUD:increaseDeathCounter()
@@ -136,6 +140,9 @@ end
 
 function HUD:increaseScore()
     self.score = self.score + 10
+   self.scoreText:removeSelf()
+   self.scoreText = display.newText("Score: "..self.score, 10, 70, "Helvetica", 24)
+   self.group:insert(self.scoreText)
 end
 
 function HUD:newSurvDist(x)
@@ -193,7 +200,7 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
     if platDist < 960/2 then
         platDist = 960/2
     end
-    self:setDistanceBar((exDist - platDist)/initExDist)
+    --self:setDistanceBar((exDist - platDist)/initExDist)
     self:newSurvDist(SDist)
     
     if alert < platDist and alert ~= 0 then

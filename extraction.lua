@@ -18,6 +18,7 @@ function extractPoint:new(x, y, currentTime, rate)
     setmetatable(object, { __index = extractPoint })
     --object.image = display.newImageRect("extractionPoint.png", 50, 50)
     object.health = 100
+    object.maxHealth = object.health
     --object.shield = display.newCircle(x, y, 50)
     object.shield = sprite.newSprite(exSpriteSet)
     object.shield.x = x
