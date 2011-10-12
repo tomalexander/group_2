@@ -60,6 +60,8 @@ function mainMenu:new()
     object.button1 = display.newImage("img/menu_tutorial.png", 50, 425)
     object.button2 = display.newImage("img/menu_back.png", 0, 180)
     object.button3 = display.newImage("img/menu_next.png", 878, 180)
+    object.playbutton = display.newImage("img/menu_play.png", 336, 425)
+    object.highscorebutton = display.newImage("img/menu_highscore.png", 622, 425)
     
     
     
@@ -98,6 +100,8 @@ function mainMenu:setHelp()
     self.button1.isVisible = false
     self.button2.isVisible = true
     self.button3.isVisible = true
+    self.playbutton.isVisible = false
+    self.highscorebutton.isVisible = false
     self.instructions[1].isVisible = true
 end
 
@@ -106,6 +110,8 @@ function mainMenu:Play()
     self.background.isVisible = false
     self.button2.isVisible = false
     self.button1.isVisible = false
+    self.highscorebutton.isVisible = false
+    self.playbutton.isVisible = false
     self.help = false
     Runtime:removeEventListener("touch", self.touch)
     self.play = true
