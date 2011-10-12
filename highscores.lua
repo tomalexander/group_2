@@ -38,7 +38,7 @@ function highscores:display_name_box()
                            high_scores.input_box:removeSelf()
                            high_scores.input_box_text:removeSelf()
                            high_scores.input_window:removeSelf()
-                           high_scores:show_overlay()
+                           tempory_high_scores(5000)
                            return true
                         end
    self.input_box:addEventListener( "touch", high_scores_submit )
@@ -132,4 +132,5 @@ function tempory_high_scores(duration)
 
    timer.performWithDelay(duration, kill_temp_high_scores)
    high_scores:show_overlay()
+   high_scores.overlay:removeEventListener( "touch", doOverlay )
 end
