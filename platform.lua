@@ -164,13 +164,13 @@ function laser:new(center_x, center_y)
 end
 
 function laser:update(time)
-	-- Temporary non-physics based solution until collisions are worked out
 	for _, i in ipairs(ground.list) do
 		if self.image.x >= i:x() and self.image.x < i:x() + i.w then
 			i:carve(self.image.x, 48, 1)
 			break
 		end
 	end
+	platform.instance.image:setLinearVelocity(0, 0)
 end
 
 function laser:destroy()
