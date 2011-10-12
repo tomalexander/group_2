@@ -121,7 +121,7 @@ function HUD:addKill()
 	self.right_indicator.currentFrame = self.dead + 1
 	if self.dead >= 5 then
 		display.getCurrentStage().x = 0
-		high_scores:show_overlay()
+		high_scores:display_name_box()
 		-- GAMEOVER
 	end
 end
