@@ -52,6 +52,7 @@ function ground.scroll(x, xprev)
 	else
 		print('creating at ' .. partnum + 1)
 		ground.partitions[partnum + 1] = {ground:new((partnum + 1) * 960, 450)}
+        random_create_survivor(x)
 	end
 	
 	local partnumprev = math.floor(xprev / 960)

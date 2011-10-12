@@ -53,7 +53,7 @@ survivor_list = {}
 
 function random_create_survivor(x_position)
    print(x_position .. " rnd crt srvr")
-   chance = math.random(1,10)
+   chance = math.random(1,2)
    if (chance == 1) then
       table.insert(survivor_list, survivor:new(x_position, 450))
    end
