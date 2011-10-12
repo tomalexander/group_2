@@ -24,6 +24,7 @@ function shield:new(center_x,center_y, radius, health, max_health)
    object.type = "shield"
    --physics.addBody(object.generator_image, "dynamic", {density = 2000, bounce = 0.0, friction = 1.0, filter = { categoryBits = 2, maskBits = 32 }})
    physics.addBody(object.image, "dynamic", {density = 20, friction = 1, bounce = 0.01, shape = shield_shape, filter = { categoryBits = 1, maskBits = 100 }})
+   object.image.isFixedRotation = true
    --object.joint = physics.newJoint("weld", object.generator_image, object.image, center_x, center_y)
    object.image:prepare('idle')
    object.image:play()

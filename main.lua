@@ -34,11 +34,18 @@ table.insert( shield_generators, shield:new(350, 300 ,150,50,50) )
 table.insert( shield_generators, shield:new(550, 300 ,70,50,50) )
 table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
-table.insert(survivor_list, survivor:new(500,50) )
+table.insert(survivor_list, survivor:new(500,450) )
 
 platform:new(960/2, 64)
 ground.partitions[-1] = {ground:new(-960, 450)}
 ground.partitions[0] = {ground:new(0, 450)}
+
+extractionPoint = extractPoint:new(950, 450, 100, 5)
+extraction_points = {}
+table.insert( extraction_points, extractionPoint)
+naked_exPoints = {}
+table.insert( naked_exPoints, extractionPoint)
+
 ground.partitions[1] = {ground:new(960, 450)}
 
 --[[Corona automatically translates between the screen units and the
@@ -80,10 +87,32 @@ local function onCollide(event)
          found_survivor = i
       end
    end
+   
+   local collide_extraction = {}
+   local found_extractor = 0
+   for i,v in ipairs(extraction_points) do
+       if (event.object1 == v.shield or event.object2 == v.shield) then
+           collide_extraction = v
+           found_extractor = i
+       end
+   end
+   
+   local collide_shieldless_extraction = {}
+   local found_shieldless_extractor = 0
+   for i,v in ipairs(extraction_points) do
+       if (event.object1 == v.noShield or event.object2 == v.noShield) then
+           collide_shieldless_extraction = v
+           found_shieldless_extractor = i
+       end
+   end
 
-
-
-
+    
+   if found_shieldless_extractor ~= 0 and found_meteor ~= 0 then
+      collide_shieldless_extraction:blow_up()
+   end    
+   if found_extractor ~= 0 and found_meteor ~= 0 then
+      collide_extraction:takedamage(5)
+   end   
    if found_shield ~= 0 and found_meteor ~= 0 then
       collide_shield:take_damage(5)
       cull_shields(shield_generators)
@@ -140,15 +169,13 @@ end
 Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("enterFrame", onFrame)
 
-high_scores = highscores:new()
+
 --table.insert(survivor_list, survivor:new(500,500) )
 
 mainmenu = mainMenu:new()
 
 hud = HUD:new()
 hud:displayHUD(false)
-
-extractionPoint = extractPoint:new(950, 450, 100, 5)
 
 surv_location = survivor_list[1].x_location
 ext_location = extractionPoint.x
@@ -195,6 +222,8 @@ end
 Runtime:addEventListener("touch", menuTouch)
 Runtime:addEventListener("touch", extractPointTouch)
 Runtime:addEventListener("touch", HUDUpdate)
+
+--timer.performWithDelay(100, HUDUpdate, 0)
 
 viewx = 0
 
@@ -246,7 +275,8 @@ function move_screen(amount)
 	viewx = viewx + amount
  end
 --high_scores:show_overlay()
---high_scores:display_name_box()
+high_scores:display_name_box()
 for i,current in ipairs(survivor_list) do
    current.image:toFront()
 end
+table.insert(survivor_list, survivor:new(50,450) )

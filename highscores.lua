@@ -36,8 +36,9 @@ function high_scores_listener(event)
          high_scores.input_field.text = ""
       end
    elseif (event.phase == "submitted") then
-      self:insert_score(high_scores.input_field.text, 9999)
+      high_scores:insert_score(high_scores.input_field.text, 9999)
       high_scores.input_field:removeSelf()
+      high_scores:show_overlay()
    end
 end
 
@@ -89,7 +90,8 @@ function highscores:generate_highscores()
 end
 
 function doOverlay()
-    return true
+   high_scores:kill_overlay()
+   return true
 end
 
 function split(input, seperator)
@@ -108,4 +110,15 @@ function split(input, seperator)
       table.insert(ret, input:sub(previous_end))
    end
    return ret
+end
+
+high_scores = highscores:new()
+
+function tempory_high_scores(duration)
+   kill_temp_high_scores = function()
+                              high_scores:kill_overlay()
+                           end
+
+   timer.performWithDelay(duration, kill_temp_high_scores)
+   high_scores:show_overlay()
 end
