@@ -14,7 +14,7 @@ background_ground1.y = 450 + 45
 
 --start the physical simulation
 physics.start()
-physics.setDrawMode("hybrid")
+--physics.setDrawMode("hybrid")
 
 shield_h = require "shield"
 meteor_h = require "meteor"
@@ -30,11 +30,13 @@ require "menu"
 require "extraction"
 
 shield_generators = {}
+--[[
 table.insert( shield_generators, shield:new(50, 300 ,200,50,50) )
 table.insert( shield_generators, shield:new(350, 300 ,150,50,50) )
 table.insert( shield_generators, shield:new(550, 300 ,70,50,50) )
 table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
+--]]
 table.insert(survivor_list, survivor:new(500,450) )
 
 ground.partitions[-1] = {ground:new(-960, 450)}
