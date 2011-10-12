@@ -1,6 +1,8 @@
 sprite = require "sprite"
 physics = require "physics"
 
+require "sounds"
+
 -- Quick hackish method to force the background to be drawn first
 local background = display.newImage("img/background.png", true)
 local background_ground0 = display.newImage("img/ground_destroyed.png", true)
@@ -32,7 +34,7 @@ table.insert( shield_generators, shield:new(350, 300 ,150,50,50) )
 table.insert( shield_generators, shield:new(550, 300 ,70,50,50) )
 table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
-table.insert(survivor_list, survivor:new(500,50) )
+table.insert(survivor_list, survivor:new(500,450) )
 
 platform:new(960/2, 64)
 ground.partitions[-1] = {ground:new(-960, 450)}
@@ -167,7 +169,7 @@ end
 Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("enterFrame", onFrame)
 
-high_scores = highscores:new()
+
 --table.insert(survivor_list, survivor:new(500,500) )
 
 mainmenu = mainMenu:new()
@@ -277,3 +279,4 @@ function move_screen(amount)
 for i,current in ipairs(survivor_list) do
    current.image:toFront()
 end
+table.insert(survivor_list, survivor:new(50,450) )

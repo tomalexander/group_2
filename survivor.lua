@@ -15,8 +15,8 @@ function survivor:new(x_location, y_location)
    local object = {x_location = x_location, y_location = y_location, platform_reference = platform.instance, x_direction = 0}
    setmetatable(object, { __index = survivor })
    object.image = sprite.newSprite(survivor_sprite_set)
-   object.image.x = center_x
-   object.image.y = center_y
+   object.image.x = x_location
+   object.image.y = y_location
    object.type = "survivor"
    physics.addBody(object.image, {friction = 0.0, bounce = 0.2, filter = { categoryBits = 8, maskBits = 4 }})
    object.image.bodyType = "kinematic"
@@ -27,22 +27,23 @@ function survivor:new(x_location, y_location)
 end
 
 function survivor:touch(event)
+   print("Erry day im touching")
    if event.phase ~= "ended" then
-      return false --Not useful
+      return true --Not useful
    end
    self:begin_run()
    return true
 end
 
 function survivor:begin_run()
-   if (self.platform_reference.image.x < self.image.x) then
+   if (extractionPoint.x < self.image.x) then
       self.x_direction = -1
-      object.image:prepare('run_left')
-      object.image:play()
+      self.image:prepare('run_left')
+      self.image:play()
    else
       self.x_direction = 1
-      object.image:prepare('run_right')
-      object.image:play()
+      self.image:prepare('run_right')
+      self.image:play()
    end
    self.image:setLinearVelocity(200*self.x_direction, 0)
 end
@@ -50,14 +51,33 @@ end
 
 survivor_list = {}
 
+function random_create_survivor(x_position, xprev)
+   local i = 0
+   print("ground " .. x_position .. " " .. xprev)
+   -- Going right, xpos > xprev
+   local lookahead = 960
+   if x_position < xprev then
+      lookahead = lookahead * -1 - 960
+   end
+   while i < 5 do
+      chance = math.random(1,2)
+      if (chance == 1) then
+         table.insert(survivor_list, survivor:new(math.random(-400,400) + x_position + 960 + lookahead, 450))
+      end
+      i = i + 1
+   end
+end
+
 function check_for_survivors()
    local i = #survivor_list
    while i > 0 do
       current = survivor_list[i]
-
-      distance = get_distance(platform.instance.image.x, platform.instance.image.y, current.image.x, current.image.y)
+      distance = math.abs(extractionPoint.x - current.image.x)
+      --distance = get_distance(platform.instance.image.x, platform.instance.image.y, current.image.x, current.image.y)
       if (distance < 50) then
          display.remove(current.image)
+         table.remove(survivor_list, i)
+         hud:increaseScore()
       end
 
       i = i -1
