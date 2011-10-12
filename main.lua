@@ -7,10 +7,22 @@ require "sounds"
 local background = display.newImage("img/background.png", true)
 local background_ground0 = display.newImage("img/ground_destroyed.png", true)
 local background_ground1 = display.newImage("img/ground_destroyed.png", true)
+local background_mountains_back0 = display.newImage("img/mountains_back.png", true)
+local background_mountains_back1 = display.newImage("img/mountains_back.png", true)
+local background_mountains0 = display.newImage("img/mountains.png", true)
+local background_mountains1 = display.newImage("img/mountains.png", true)
 background_ground0.x = 960/2
 background_ground0.y = 450 + 45
 background_ground1.x = 960*3/2
 background_ground1.y = 450 + 45
+background_mountains_back0.x = 1743/2
+background_mountains_back0.y = 450 - 140/2
+background_mountains_back1.x = 1743*3/2
+background_mountains_back1.y = 450 - 140/2
+background_mountains0.x = 1954/2
+background_mountains0.y = 450 - 195/2
+background_mountains1.x = 1954*3/2
+background_mountains1.y = 450 - 195/2
 
 --start the physical simulation
 physics.start()
@@ -178,8 +190,23 @@ function onFrame(event)
 	end
 	
 	background.x = viewx + 960/2
-	--background_ground0
-	--background_ground1
+	--print('viewx: ' .. viewx .. ' 0: ' .. math.floor(viewx / 960) * 960)
+	background_ground0.x = math.floor(viewx / 960) * 960
+	background_ground1.x = (math.floor(viewx / 960) + 1) * 960
+	background_ground0.x = math.floor(viewx / 960) * 960
+	background_ground1.x = (math.floor(viewx / 960) + 1) * 960
+	
+	background_mountains_back0.x = math.floor(viewx / 1743) * 1743
+	background_mountains_back1.x = (math.floor(viewx / 1743) + 1) * 1743
+	background_mountains_back0.x = math.floor(viewx / 1743) * 1743
+	background_mountains_back1.x = (math.floor(viewx / 1743) + 1) * 1743
+	
+	background_mountains0.x = math.floor(viewx / 1954) * 1954
+	background_mountains1.x = (math.floor(viewx / 1954) + 1) * 1954
+	background_mountains0.x = math.floor(viewx / 1954) * 1954
+	background_mountains1.x = (math.floor(viewx / 1954) + 1) * 1954
+	
+	
 	hud.group.x = viewx
 end
 
