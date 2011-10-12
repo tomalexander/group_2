@@ -5,9 +5,9 @@ physics = require "physics"
 local background = display.newImage("img/background.png", true)
 local background_ground0 = display.newImage("img/ground_destroyed.png", true)
 local background_ground1 = display.newImage("img/ground_destroyed.png", true)
-background_ground0.x = 0
+background_ground0.x = 960/2
 background_ground0.y = 450 + 45
-background_ground1.x = 960
+background_ground1.x = 960*3/2
 background_ground1.y = 450 + 45
 
 shield_h = require "shield"
@@ -35,7 +35,9 @@ table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
 table.insert(survivor_list, survivor:new(500,50) )
 
 platform:new(960/2, 64)
+ground.partitions[-1] = {ground:new(-960, 450)}
 ground.partitions[0] = {ground:new(0, 450)}
+ground.partitions[1] = {ground:new(960, 450)}
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation

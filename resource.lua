@@ -9,19 +9,25 @@ resource = {
 	spriteIdleFrameBegin = 1,
 	spriteIdleFrameCount = 1,
 	spriteIdleFrameRate = 1,
+	spriteDepleteFrameBegin = 2,
+	spriteDepleteFrameCount = 1,
+	spriteDepleteFrameRate = 1,
 	
 	group = display.newGroup(),
 	
 	list = {}
 }
 resource.spriteSheet = sprite.newSpriteSheet(resource.spriteName, resource.spriteWidth, resource.spriteHeight)
-resource.spriteSet = sprite.newSpriteSet(resource.spriteSheet, resource.spriteIdleFrameBegin, resource.spriteIdleFrameCount)
+resource.spriteSet = sprite.newSpriteSet(resource.spriteSheet, resource.spriteIdleFrameBegin, resource.spriteIdleFrameCount + resource.spriteDepleteFrameCount)
 
 sprite.add(resource.spriteSet, 'idle', resource.spriteIdleFrameBegin, resource.spriteIdleFrameCount, resource.spriteIdleFrameRate, 0)
+sprite.add(resource.spriteSet, 'deplete', resource.spriteDepleteFrameBegin, resource.spriteDepleteFrameCount, resource.spriteDepleteFrameRate, 0)
 
 function resource:new(x, y)
 	local object = {
 		image = sprite.newSprite(resource.spriteSet),
+		
+		remaining = 30,
 		
 		destroyed = false
 	}
@@ -41,6 +47,19 @@ function resource:new(x, y)
 	table.insert(resource.list, object)
 	
 	return object
+end
+
+function resource:extract()
+	if self.remaining > 0 then
+		self.remaining = self.remaining - 1
+		if self.remaining == 0 then
+			self.image:prepare('deplete')
+			self.image:play()
+		end
+		
+		return 1
+	end
+	return 0
 end
 
 function resource:destroy()

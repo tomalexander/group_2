@@ -13,7 +13,7 @@ platform = {
 	spriteFireFrameBegin = 2,
 	spriteFireFrameCount = 3,
 	spriteFireFrameRate = 500,
-	velocityMax = 250,
+	velocityMax = 500,
 	
 	charge = 0,
 	chargeFull = 30,
@@ -66,6 +66,7 @@ end
 
 function platform.onAccelerometer(event)
 	if platform.instance then
+		platform.instance.image:setLinearVelocity(-platform.instance.velocityMax, 0)
 		print('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity)
 	end
 end
@@ -80,6 +81,7 @@ function platform.onTouch(event)
 				platform.instance.image:setLinearVelocity(platform.instance.velocityMax, 0)
 			end
 			if event.y > 400 then
+				platform.instance.image:setLinearVelocity(0, 0)
 				if platform.instance.charge == 0 then
 					platform.instance.charge = 1
 					platform.instance.image:prepare('fire')
@@ -173,15 +175,4 @@ function laser:destroy()
 		
 		self.destroyed = true
 	end
-end
-
-function laser:collide(event)
-	--[[
-	print('collision: phase = ' .. event.phase)
-	print('other = ' .. event.other.x .. ' ' .. event.other.y)
-	if event.other.__index == ground then
-		print('kill')
-		self.destroy()
-	end
-	--]]
 end

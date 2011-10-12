@@ -204,8 +204,9 @@ function ground:carve(x, w, pixels)
 	for _, i in ipairs(self.resources) do
 		if self:y() > i.image.y - i.spriteHeight/2 then
 			if x > i.image.x - i.spriteHeight/2 and x < i.image.x + i.spriteHeight/2 then
-				print('extract!')
-				break
+				if platform.instance then
+					platform.instance.resources = platform.instance.resources + i:extract()
+				end
 			end
 		end
 	end
@@ -250,23 +251,6 @@ function ground:carve(x, w, pixels)
 	end
 end
 
---[[
-function ground:newArea(x, y, w, h)
-	-- Put all the ground tiles into a group so that they have an earlier draw order than resources
-	local group = display.newGroup()
-	for i = 0, w, ground.spriteWidth do
-		for j = 0, h, ground.spriteHeight do
-			local g = ground:new(x + i, y + j)
-			group:insert(g.image)
-			
-			if math.random() <= ground.resourceProbability then
-				resource:new(x + i, y + j)
-			end
-		end
-	end
-end
---]]
-
 function ground:destroy()
 	if not self.destroyed then
 		self:unload()
@@ -276,6 +260,3 @@ function ground:destroy()
 		self.destroyed = true
 	end
 end
-
---ground.partitions[0] = {ground:new(0, 450)}
---ground:new(0, 450)
