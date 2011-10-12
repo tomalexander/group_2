@@ -1,5 +1,6 @@
 sprite = require "sprite"
 physics = require "physics"
+require "highscores"
 
 require "menu"
 
@@ -76,7 +77,11 @@ function menuTouch(event)
 			hud:update(platform.instance.image.x, survivor_list[1].x_location, extractionPoint.x, extractionPoint.initialDistance, alert)
             hud:displayHUD(true)
             Runtime:removeEventListener("touch", menuTouch)
-        end
+
+         elseif (event.x > 600 and event.y > 425 and event.y < 502) then
+            print("High scores")
+            tempory_high_scores(7000)
+         end
     end
 end
 
