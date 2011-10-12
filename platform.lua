@@ -71,8 +71,13 @@ function platform.onAccelerometer(event)
 	end
 	if platform.instance then
 		--platform.instance.image:setLinearVelocity(-platform.instance.velocityMax, 0)
-		accel_readout = display.newText('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity, viewx + 500, 300, native.systemFont, 20) 
-		print('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity)
+		--accel_readout = display.newText('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity, viewx + 500, 300, native.systemFont, 20) 
+		--print('x/y/z: ' .. event.xGravity .. '/' .. event.yGravity .. '/' .. event.zGravity)
+		local normalize = math.max(math.min(0.5, -event.yGravity), -0.5) * 2
+		if math.abs(normalize) < 0.1 then
+			normalize = 0
+		end
+		platform.instance.image:setLinearVelocity(platform.instance.velocityMax * normalize, 0)
 	end
 end
 
