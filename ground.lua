@@ -43,6 +43,7 @@ function ground.scroll(x, xprev)
 	else
 		print('creating at ' .. partnum)
 		ground.partitions[partnum] = {ground:new(partnum * 960, 450)}
+        random_create_survivor(x)
 	end
 	if ground.partitions[partnum + 1] then
 		for _, i in ipairs(ground.partitions[partnum + 1]) do
