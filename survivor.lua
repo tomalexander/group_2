@@ -29,7 +29,7 @@ end
 function survivor:touch(event)
    print("Erry day im touching")
    if event.phase ~= "ended" then
-      return false --Not useful
+      return true --Not useful
    end
    self:begin_run()
    return true
@@ -59,6 +59,7 @@ function check_for_survivors()
       --distance = get_distance(platform.instance.image.x, platform.instance.image.y, current.image.x, current.image.y)
       if (distance < 50) then
          display.remove(current.image)
+         table.remove(survivor_list, i)
       end
 
       i = i -1
