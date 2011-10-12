@@ -32,7 +32,7 @@ table.insert( shield_generators, shield:new(350, 300 ,150,50,50) )
 table.insert( shield_generators, shield:new(550, 300 ,70,50,50) )
 table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
-table.insert(survivor_list, survivor:new(500,50) )
+table.insert(survivor_list, survivor:new(500,450) )
 
 platform:new(960/2, 64)
 ground.partitions[-1] = {ground:new(-960, 450)}
