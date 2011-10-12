@@ -62,7 +62,7 @@ function HUD:new()
     object.scoreText = display.newText("Score: "..object.score, 10, 70, "Helvetica", 24)
     object.survDistance = 0
     --object.survIcon = display.newImage("survivor.png", 10, 160)
-    object.survIcon = display.newCircle(900, 300, 20)
+    --object.survIcon = display.newCircle(900, 300, 20)
     --object.survText = display.newText("Survivors: ", 10, 180, "Helvetica", 24)
     --object.deadIcon = display.newImage("dead.png", 10, 200)
     --object.deadText = display.newText("Number dead: ", 10, 220, "Helvetica", 24)
@@ -88,7 +88,7 @@ function HUD:new()
 	--object.group:insert(object.distText)
 	--object.group:insert(object.fuelText)
 	object.group:insert(object.scoreText)
-	object.group:insert(object.survIcon)
+	--object.group:insert(object.survIcon)
 	--object.group:insert(object.survText)
 	--object.group:insert(object.deadText)
 	
@@ -154,7 +154,7 @@ function HUD:increaseScore()
    self.group:insert(self.scoreText)
 end
 
-function HUD:newSurvDist(x)
+--[[function HUD:newSurvDist(x)
     self.survDistance = x
     self.survIcon:removeSelf()
     if ((100/(x+1)) < 20) then
@@ -163,7 +163,7 @@ function HUD:newSurvDist(x)
         self.survIcon = display.newCircle(900, 300, (100/(x+1)))
     end
 	self.group:insert(self.survIcon)
-end
+end]]
 
 function HUD:displayHUD(flag)
     if (flag) then
@@ -180,7 +180,7 @@ function HUD:displayHUD(flag)
         
         --self.fuelText.isVisible = true
         --self.distText.isVisible = true
-        self.survIcon.isVisible = true
+    
         --self.survText.isVisible = true
         --self.deadIcon.isVisible = true
         --self.deadText.isVisible = true
@@ -198,7 +198,7 @@ function HUD:displayHUD(flag)
         
         --self.fuelText.isVisible = false
         --self.distText.isVisible = false
-        self.survIcon.isVisible = false
+        
         --self.survText.isVisible = false
         --self.deadIcon.isVisible = false
         --self.deadText.isVisible = false
@@ -211,9 +211,9 @@ function HUD:update(platDist, SDist, exDist, initExDist, alert)
         platDist = 960/2
     end
     --self:setDistanceBar((exDist - platDist)/initExDist)
-	if SDist then
+	--[[if SDist then
 		self:newSurvDist(SDist)
-	end
+	end]]
     
     if alert < platDist and alert ~= 0 then
         self.warningLeft.isVisible = true
