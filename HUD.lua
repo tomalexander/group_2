@@ -13,6 +13,8 @@ function HUD:new()
     object.distBack = display.newImage("img/hud_health_back.png", 770, 400)
     object.distFill = display.newImage("img/hud_health_middle.png", 770, 400)
     object.distFront = display.newImage("img/hud_health_front.png", 770, 400)
+	object.distIcon = display.newImage("img/hud_health_icon.png", 880, 485)
+	object.fuelIcon = display.newImage("img/hud_resource.png", 10, 450)
     object.distY = object.distFill.y
     object.distBack:rotate(90)
     object.distFill:rotate(90)
@@ -91,6 +93,9 @@ function HUD:new()
 	--object.group:insert(object.survIcon)
 	--object.group:insert(object.survText)
 	--object.group:insert(object.deadText)
+	
+	object.group:insert(object.distIcon)
+	object.group:insert(object.fuelIcon)
 	
     setmetatable(object, {__index=HUD})
     return object
