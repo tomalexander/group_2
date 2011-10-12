@@ -46,17 +46,20 @@ end
 
 function cull_shields(shield_generators)
    local i = #shield_generators
+   local alert=0
    while i > 0 do
       v = shield_generators[i]
       if v.health == 0 then
          --local closure = function() return display.remove(v.image) end
          --timer.performWithDelay(10, closure)
          display.remove(v.image)
+         alert = v.image.x
          display.remove(v.generator_image)
          table.remove(shield_generators, i)
       end
       i = i - 1
    end
+   return alert
 end
 
 function gen_new_generator(event)
