@@ -69,6 +69,13 @@ local function onCollide(event)
          found_shield = i
       end
    end
+   
+   local found_platform = 0
+   if platform.instance then
+	  if event.object1 == platform.instance.image or event.object2 == platform.instance.image then
+	     found_platform = 1
+      end
+   end
 
    local collide_meteor = {}
    local found_meteor = 0
@@ -118,7 +125,29 @@ local function onCollide(event)
       cull_shields(shield_generators)
    end
    if found_meteor ~= 0 then
-      meteor_disperse(found_meteor, meteor_list)
+		if found_shield == 0 and found_extractor == 0 and found_shieldless_extractor == 0 and found_survivor == 0 and found_platform == 0 then
+			if math.random() < 0.5 then
+				media.playEventSound(sound.meteor_ground0)
+			else
+				media.playEventSound(sound.meteor_ground1)
+			end
+		end
+		if found_shieldless_extractor ~= 0 then
+			media.playEventSound(sound.meteor_extractor)
+		end
+		if found_shield ~= 0 or found_extractor ~= 0 then
+			-- Hardcoding, ho!
+			if math.random() < 0.25 then
+				media.playEventSound(sound.meteor_shield0)
+			elseif math.random() < 0.33 then
+				media.playEventSound(sound.meteor_shield1)
+			elseif math.random() < 0.5 then
+				media.playEventSound(sound.meteor_shield2)
+			else 
+				media.playEventSound(sound.meteor_shield3)
+			end
+		end
+		meteor_disperse(found_meteor, meteor_list)
    end
    if found_survivor ~= 0 then
       kill_survivor(found_survivor, survivor_list)
