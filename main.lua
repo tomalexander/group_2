@@ -275,7 +275,7 @@ function move_screen(amount)
 	viewx = viewx + amount
  end
 --high_scores:show_overlay()
-high_scores:display_name_box()
+--high_scores:display_name_box()
 for i,current in ipairs(survivor_list) do
    current.image:toFront()
 end
