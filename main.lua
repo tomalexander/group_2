@@ -135,6 +135,10 @@ local function onCollide(event)
    end    
    if found_extractor ~= 0 and found_meteor ~= 0 then
       collide_extraction:takedamage(5)
+      if hud then
+           hud:setDistanceBar(collide_extraction.health/collide_extraction.maxHealth)
+      end
+      
    end   
    if found_shield ~= 0 and found_meteor ~= 0 then
       collide_shield:take_damage(5)
@@ -178,6 +182,9 @@ local function onCollide(event)
    end
    if found_survivor ~= 0 then
       kill_survivor(found_survivor, survivor_list)
+      if hud then
+          hud.lives = hud.lives - 1
+      end
    end
 end
 
