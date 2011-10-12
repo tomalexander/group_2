@@ -15,6 +15,8 @@ platform = {
 	spriteFireFrameRate = 500,
 	velocityMax = 500,
 	
+	rotationMax = 10,
+	
 	resourcesMax = 150,
 	
 	charge = 0,
@@ -80,6 +82,7 @@ function platform.onAccelerometer(event)
 			normalize = 0
 		end
 		platform.instance.image:setLinearVelocity(platform.instance.velocityMax * normalize, 0)
+		platform.instance.image.rotation = normalize * platform.rotationMax
 	end
 end
 
@@ -89,8 +92,10 @@ function platform.onTouch(event)
 		if event.phase == 'began' then
 			if event.x < 100 then
 				platform.instance.image:setLinearVelocity(-platform.instance.velocityMax, 0)
+				platform.instance.image.rotation = -platform.rotationMax
 			elseif event.x > 960 - 100 then
 				platform.instance.image:setLinearVelocity(platform.instance.velocityMax, 0)
+				platform.instance.image.rotation = platform.rotationMax
 			end
 			if event.y > 400 then
 				platform.instance.image:setLinearVelocity(0, 0)
@@ -104,6 +109,7 @@ function platform.onTouch(event)
 			end
 		elseif event.phase == 'ended' or event.phase == 'cancelled' then
 			platform.instance.image:setLinearVelocity(0, 0)
+			platform.instance.image.rotation = 0
 			platform.instance.charge = 0
 			if platform.instance.laser ~= nil then
 				platform.instance.laser:destroy()
@@ -173,6 +179,7 @@ function laser:update(time)
 		end
 	end
 	platform.instance.image:setLinearVelocity(0, 0)
+	platform.instance.image.rotation = 0
 end
 
 function laser:destroy()

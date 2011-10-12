@@ -61,7 +61,6 @@ table.insert( extraction_points, extractionPoint)
 naked_exPoints = {}
 table.insert( naked_exPoints, extractionPoint)
 
-ground.partitions[1] = {ground:new(960, 450)}
 alert = 0
 
 --[[Corona automatically translates between the screen units and the
