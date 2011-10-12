@@ -1,6 +1,8 @@
 sprite = require "sprite"
 physics = require "physics"
 
+require "sounds"
+
 -- Quick hackish method to force the background to be drawn first
 local background = display.newImage("img/background.png", true)
 local background_ground0 = display.newImage("img/ground_destroyed.png", true)
