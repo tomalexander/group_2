@@ -84,6 +84,8 @@ function platform.onTouch(event)
 				platform.instance.image:setLinearVelocity(0, 0)
 				if platform.instance.charge == 0 then
 					platform.instance.charge = 1
+					media.playEventSound(sound.laser_charge)
+					--audio.play(sound.laser_charge)
 					platform.instance.image:prepare('fire')
 					platform.instance.image:play()
 				end
@@ -140,18 +142,10 @@ function laser:new(center_x, center_y)
 	}
 	setmetatable(object, { __index = laser })
 	
+	media.playSound(sound.laser, true)
+	--audio.play(sound.laser)
+	
 	laser.group:insert(object.image)
-	
-	--object.image:setFillColor(0,255,0)
-		
-	--physics.addBody(object.image, 'kinematic', {})
-	
-	--object.image.collision = laser.collide
-	--object.image:addEventListener('collision', object.image)
-	--object.image:setLinearVelocity(0, laser.velocity)
-	
-	--object.image.isFixedRotation = true
-	--object.image.isBullet = true
 	
 	object.image.x = center_x
 	object.image.y = center_y
@@ -171,6 +165,8 @@ end
 
 function laser:destroy()
 	if not destroyed then
+		media.stopSound()
+		--audio.stop(0)
 		self.image:removeSelf()
 		
 		self.destroyed = true
