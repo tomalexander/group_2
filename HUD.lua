@@ -121,8 +121,9 @@ function HUD:addKill()
 	self.right_indicator.currentFrame = self.dead + 1
 	if self.dead >= 5 then
 		display.getCurrentStage().x = 0
-		high_scores:display_name_box()
+		media.stopSound()
 		platform.instance = nil
+		high_scores:display_name_box()
         self.dead = -999
 		-- GAMEOVER
 	end

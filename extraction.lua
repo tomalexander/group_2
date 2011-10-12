@@ -17,7 +17,7 @@ function extractPoint:new(x, y, currentTime, rate)
                     rate = rate }
     setmetatable(object, { __index = extractPoint })
     --object.image = display.newImageRect("extractionPoint.png", 50, 50)
-    object.health = 100
+    object.health = 200
     object.maxHealth = object.health
     --object.shield = display.newCircle(x, y, 50)
     object.shield = sprite.newSprite(exSpriteSet)
@@ -61,14 +61,15 @@ function extractPoint:takedamage(x)
     if (self.health < 0) then
         self.health = 0
     end
-    self.shield.alpha = math.max(0, (self.health/100))
+    self.shield.alpha = math.max(0, .5 + (self.health)/400)
     if (self.health < 0) then
         --self.image.isVisible = false
         self.shield.isVisible = false
         display.remove(self.shield)
 		display.getCurrentStage().x = 0
-		high_scores:display_name_box()
 		platform.instance = nil
+		media.stopSound()
+		high_scores:display_name_box()
     end
 end
 
