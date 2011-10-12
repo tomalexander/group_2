@@ -325,3 +325,5 @@ for i,current in ipairs(survivor_list) do
    current.image:toFront()
 end
 table.insert(survivor_list, survivor:new(50,450) )
+
+--high_scores:display_name_box()
