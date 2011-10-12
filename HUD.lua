@@ -2,30 +2,37 @@ HUD = {}
 
 function HUD:new()
     local object = {}
-    object.distBack = display.newImage("img/hud_health_back.png", 700, 32)
-    object.distFill = display.newImage("img/hud_health_middle.png", 700, 32)
-    object.distFront = display.newImage("img/hud_health_front.png", 700, 32)
-    object.distX = object.distFill.x
+    object.distBack = display.newImage("img/hud_health_back.png", 770, 400)
+    object.distFill = display.newImage("img/hud_health_middle.png", 770, 400)
+    object.distFront = display.newImage("img/hud_health_front.png", 770, 400)
+    object.distY = object.distFill.y
+    object.distBack:rotate(90)
+    object.distFill:rotate(90)
+    object.distFront:rotate(90)
     
     
     --object.distanceBar = display.newRect(10, 10, 300, 25)
     --object.fuel = display.newRect(10, 80, 300, 25)
-    object.fuelBack = display.newImage("img/hud_resource_back.png", 0, 32)
-    object.fuel = display.newImage("img/hud_resource_middle.png", 0, 32)
-    object.fuelFront = display.newImage("img/hud_resource_front.png", 0, 32)
-    object.fuelX = object.fuel.x
+    object.fuelBack = display.newImage("img/hud_resource_back.png", -100, 400)
+    object.fuel = display.newImage("img/hud_resource_middle.png", -100, 400)
+    object.fuelFront = display.newImage("img/hud_resource_front.png", -100, 400)
+    object.fuelY = object.fuel.y
+    object.fuelBack:rotate(-90)
+    object.fuel:rotate(-90)
+    object.fuelFront:rotate(-90)
     
-    object.distText = display.newText("Distance until Extraction Point: ", 680, 10, "Helvetica", 20)
-    object.fuelText = display.newText("Fuel: ", 10, 10, "Helvetica", 24) 
+    
+    --object.distText = display.newText("Distance until Extraction Point: ", 680, 10, "Helvetica", 20)
+    --object.fuelText = display.newText("Fuel: ", 10, 10, "Helvetica", 24) 
     object.dead = 0
     object.score = 0
     object.scoreText = display.newText("Score: "..object.score, 10, 70, "Helvetica", 24)
     object.survDistance = 0
     --object.survIcon = display.newImage("survivor.png", 10, 160)
     object.survIcon = display.newCircle(900, 300, 20)
-    object.survText = display.newText("Survivors: ", 10, 180, "Helvetica", 24)
+    --object.survText = display.newText("Survivors: ", 10, 180, "Helvetica", 24)
     --object.deadIcon = display.newImage("dead.png", 10, 200)
-    object.deadText = display.newText("Number dead: ", 10, 220, "Helvetica", 24)
+    --object.deadText = display.newText("Number dead: ", 10, 220, "Helvetica", 24)
 	
 	object.group = display.newGroup()
 	object.group:insert(object.distBack)
@@ -36,12 +43,12 @@ function HUD:new()
 	object.group:insert(object.fuel)
 	object.group:insert(object.fuelFront)
 	
-	object.group:insert(object.distText)
-	object.group:insert(object.fuelText)
+	--object.group:insert(object.distText)
+	--object.group:insert(object.fuelText)
 	object.group:insert(object.scoreText)
 	object.group:insert(object.survIcon)
-	object.group:insert(object.survText)
-	object.group:insert(object.deadText)
+	--object.group:insert(object.survText)
+	--object.group:insert(object.deadText)
 	
     setmetatable(object, {__index=HUD})
     return object
@@ -56,14 +63,14 @@ function HUD:setDistanceBar(x)
         x = 1
     end
     
-    self.distFill.x = self.distX + (215-215*x)
+    self.distFill.y = self.distY + (215-215*x)
     --self.distanceBar = display.newRect(10, 10, 300*x, 25)
  
 end
 
 function HUD:setFuel(x)
     --self.fuel = display.newRect(10, 70, 300-x, 25)
-    self.fuel.x = self.fuelX - (215-215*x)
+    self.fuel.y = self.fuelY - (215-215*x)
     
 end
 
@@ -99,12 +106,12 @@ function HUD:displayHUD(flag)
         
         self.scoreText.isVisible = true
         
-        self.fuelText.isVisible = true
-        self.distText.isVisible = true
+        --self.fuelText.isVisible = true
+        --self.distText.isVisible = true
         self.survIcon.isVisible = true
-        self.survText.isVisible = true
+        --self.survText.isVisible = true
         --self.deadIcon.isVisible = true
-        self.deadText.isVisible = true
+        --self.deadText.isVisible = true
     else
         --self.distanceBar.isVisible = false
         self.distFill.isVisible = false
@@ -117,18 +124,18 @@ function HUD:displayHUD(flag)
         
         self.scoreText.isVisible = false
         
-        self.fuelText.isVisible = false
-        self.distText.isVisible = false
+        --self.fuelText.isVisible = false
+        --self.distText.isVisible = false
         self.survIcon.isVisible = false
-        self.survText.isVisible = false
+        --self.survText.isVisible = false
         --self.deadIcon.isVisible = false
-        self.deadText.isVisible = false
+        --self.deadText.isVisible = false
     end
 end
 
 function HUD:update(platDist, SDist, exDist, initExDist)
-    if platDist < 256 then
-        platDist = 256
+    if platDist < 960/2 then
+        platDist = 960/2
     end
     self:setDistanceBar((exDist - platDist)/initExDist)
     self:newSurvDist(SDist)
