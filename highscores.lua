@@ -32,6 +32,9 @@ function highscores:display_name_box()
    self.input_box = display.newRect(475, 150, 300, 60)
    self.input_box:setFillColor(128,128,128)
    self.input_box_text = display.newText("Submit", 485, 150, "Space Frigate", 54)
+   exit_your_god_damn_closure = function()
+                                   os.exit()
+                                end
    high_scores_show_overlay = function()
                                  high_scores:show_overlay()
                               end
@@ -41,9 +44,10 @@ function highscores:display_name_box()
                            high_scores.input_box:removeSelf()
                            high_scores.input_box_text:removeSelf()
                            high_scores.input_window:removeSelf()
-                           timer.performWithDelay(10, high_scores_show_overlay)
+                           --timer.performWithDelay(10, high_scores_show_overlay)
                            --high_scores:show_overlay()
-                           --tempory_high_scores(5000)
+                           tempory_high_scores(15000)
+                           timer.performWithDelay(15000, exit_your_god_damn_closure)
                            return true
                         end
    self.input_box:addEventListener( "touch", high_scores_submit )

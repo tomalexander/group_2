@@ -123,6 +123,7 @@ function HUD:addKill()
 		display.getCurrentStage().x = 0
 		high_scores:display_name_box()
 		platform.instance = nil
+        self.dead = -999
 		-- GAMEOVER
 	end
 end
