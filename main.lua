@@ -182,9 +182,11 @@ local function onCollide(event)
    end
    if found_survivor ~= 0 then
       kill_survivor(found_survivor, survivor_list)
+	  --[[
       if hud then
           hud.lives = hud.lives - 1
       end
+	  --]]
    end
 end
 
