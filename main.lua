@@ -276,6 +276,8 @@ local function tutHandler(event)
                 if i == 0 then
                     mainmenu.background.isVisible = true
                     mainmenu.button1.isVisible = true
+                    mainmenu.playbutton.isVisible = true
+                    mainmenu.highscorebutton.isVisible = true
                     mainmenu.button2.isVisible = false
                     mainmenu.button3.isVisible = false
                     Runtime:addEventListener("touch", menuTouch)
@@ -317,7 +319,7 @@ function menuTouch(event)
             Runtime:removeEventListener("touch", menuTouch)
             Runtime:addEventListener("touch", tutHandler)
             i = i+1
-        elseif (event.x > display.contentWidth*3/4 and event.y > display.contentHeight*3/4) then
+        elseif (event.x > 336 and event.x < 594 and event.y > 425 and event.y < 502) then
             mainmenu:Play()
             hud:displayHUD(true)
             Runtime:removeEventListener("touch", menuTouch)
