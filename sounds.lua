@@ -10,6 +10,8 @@ sound = {
 	meteor_shield1 = media.newEventSound('meteor_shield1.wav'),
 	meteor_shield2 = media.newEventSound('meteor_shield2.wav'),
 	meteor_shield3 = media.newEventSound('meteor_shield3.wav'),
+	survivor_run = media.newEventSound('survivor_run.wav'),
+	survivor_escape = media.newEventSound('survivor_escape.mp3'),
 }
 
 media.playSound(sound.laser)

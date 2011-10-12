@@ -105,6 +105,7 @@ local function onCollide(event)
    local found_survivor = 0
    for i,v in ipairs(survivor_list) do
       if event.object1 == v.image or event.object2 == v.image then
+	     hud:addKill()
          collide_survivor = v
          found_survivor = i
       end
@@ -181,9 +182,11 @@ local function onCollide(event)
    end
    if found_survivor ~= 0 then
       kill_survivor(found_survivor, survivor_list)
+	  --[[
       if hud then
           hud.lives = hud.lives - 1
       end
+	  --]]
    end
 end
 
