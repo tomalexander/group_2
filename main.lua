@@ -266,6 +266,22 @@ local function HUDUpdate(event)
     end
 end
 
+local function disableListeners()
+    Runtime:removeEventListener('accelerometer', platform.onAccelerometer)
+    Runtime:removeEventListener('touch', platform.onTouch)
+    Runtime:removeEventListener("collision", onCollide)
+end
+
+local function enableListeners()
+    Runtime:addEventListener('accelerometer', platform.onAccelerometer)
+    Runtime:addEventListener('touch', platform.onTouch)
+    Runtime:addEventListener("collision", onCollide)
+end
+
+if (mainmenu.play == false) then
+    disableListeners()
+end
+
 local function tutHandler(event)
     if event.phase == "began" then
         if event.x > 0 and event.x < 82 and event.y > 180 and event.y < 291 then
@@ -298,6 +314,7 @@ local function tutHandler(event)
                     mainmenu.button2.isVisible = false
                     mainmenu.button3.isVisible = false
                     hud:displayHUD(true)
+                    enableListeners()
                     Runtime:removeEventListener("touch", tutHandler)
                 end
             end
@@ -321,6 +338,7 @@ function menuTouch(event)
             i = i+1
         elseif (event.x > 336 and event.x < 594 and event.y > 425 and event.y < 502) then
             mainmenu:Play()
+            enableListeners()
             hud:displayHUD(true)
             Runtime:removeEventListener("touch", menuTouch)
         end
