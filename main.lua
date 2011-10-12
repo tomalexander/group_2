@@ -12,10 +12,15 @@ background_ground0.y = 450 + 45
 background_ground1.x = 960*3/2
 background_ground1.y = 450 + 45
 
+--start the physical simulation
+physics.start()
+--physics.setDrawMode("hybrid")
+
 shield_h = require "shield"
 meteor_h = require "meteor"
 meteor_generator_h = require "meteor_generator"
 platform_h = require "platform"
+platform:new(960/2, 64)
 ground_h = require "ground"
 resource_h = require "resource"
 survivor_h = require "survivor"
@@ -23,10 +28,6 @@ highscores_h = require "highscores"
 require "HUD"
 require "menu"
 require "extraction"
-
---start the physical simulation
-physics.start()
---physics.setDrawMode("hybrid")
 
 shield_generators = {}
 table.insert( shield_generators, shield:new(50, 300 ,200,50,50) )
@@ -36,17 +37,15 @@ table.insert( shield_generators, shield:new(750, 300 ,90,50,50) )
 table.insert( shield_generators, shield:new(950, 300 ,100,50,50) )
 table.insert(survivor_list, survivor:new(500,450) )
 
-platform:new(960/2, 64)
 ground.partitions[-1] = {ground:new(-960, 450)}
 ground.partitions[0] = {ground:new(0, 450)}
+ground.partitions[1] = {ground:new(960, 450)}
 
 extractionPoint = extractPoint:new(950, 450, 100, 5)
 extraction_points = {}
 table.insert( extraction_points, extractionPoint)
 naked_exPoints = {}
 table.insert( naked_exPoints, extractionPoint)
-
-ground.partitions[1] = {ground:new(960, 450)}
 
 --[[Corona automatically translates between the screen units and the
 internal metric units of the physical simulation
@@ -126,25 +125,29 @@ local function onCollide(event)
    end
    if found_meteor ~= 0 then
 		if found_shield == 0 and found_extractor == 0 and found_shieldless_extractor == 0 and found_survivor == 0 and found_platform == 0 then
-			if math.random() < 0.5 then
-				media.playEventSound(sound.meteor_ground0)
-			else
-				media.playEventSound(sound.meteor_ground1)
+			if math.random() < 0.25 then
+				if math.random() < 0.5 then
+					media.playEventSound(sound.meteor_ground0)
+				else
+					media.playEventSound(sound.meteor_ground1)
+				end
 			end
 		end
 		if found_shieldless_extractor ~= 0 then
 			media.playEventSound(sound.meteor_extractor)
 		end
 		if found_shield ~= 0 or found_extractor ~= 0 then
-			-- Hardcoding, ho!
 			if math.random() < 0.25 then
-				media.playEventSound(sound.meteor_shield0)
-			elseif math.random() < 0.33 then
-				media.playEventSound(sound.meteor_shield1)
-			elseif math.random() < 0.5 then
-				media.playEventSound(sound.meteor_shield2)
-			else 
-				media.playEventSound(sound.meteor_shield3)
+				-- Hardcoding, ho!
+				if math.random() < 0.25 then
+					media.playEventSound(sound.meteor_shield0)
+				elseif math.random() < 0.33 then
+					media.playEventSound(sound.meteor_shield1)
+				elseif math.random() < 0.5 then
+					media.playEventSound(sound.meteor_shield2)
+				else 
+					media.playEventSound(sound.meteor_shield3)
+				end
 			end
 		end
 		meteor_disperse(found_meteor, meteor_list)
@@ -162,12 +165,6 @@ function onFrame(event)
 		if platform.instance.laser then
 			platform.instance.laser:update(event.time)
 		end
-		--[[
-			viewx + 300 < x
-				viewx < x - 300
-			viewx + 960 - 300 > x
-				viewx > x - 960 + 300
-		--]]
 		local boundx = math.max(math.min(viewx, platform.instance.image.x - 400), platform.instance.image.x - 960 + 400)
 		if boundx ~= viewx then
 			move_screen(boundx - viewx)
@@ -178,23 +175,9 @@ function onFrame(event)
 	--background_ground0
 	--background_ground1
 	hud.group.x = viewx
-	
-	--[[
-	if test_goright then
-		move_screen_right(1)
-		
-		if viewx > 960 * 1.5 then
-			test_goright = false
-		end
-	else
-		move_screen_left(1)
-	end
-	--]]
 end
 
 --add event listeners for other functions
---circle:addEventListener("touch", circleTouch)
---Runtime:addEventListener("enterFrame", penguinFly)
 Runtime:addEventListener("collision", onCollide)
 Runtime:addEventListener("enterFrame", onFrame)
 

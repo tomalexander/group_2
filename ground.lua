@@ -23,10 +23,14 @@ ground = {
 	resourceChance = 0.0021, -- Approximately 2 resources per 1000 pixels (1 ground object)
 	
 	partitions = {},
+	body = display.newRect(-960, 450, 960 * 3, 90),
 	
 	group = display.newGroup(),
 	list = {}
 }
+ground.body.isVisible = false
+physics.addBody(ground.body, 'static', {friction = 0.6, bounce = 0.4, filter = { categoryBits = 32, maskBits = 71 }})
+
 ground.spriteSheet = sprite.newSpriteSheet(ground.spriteName, ground.spriteWidth, ground.spriteHeight)
 ground.spriteSet = sprite.newSpriteSet(ground.spriteSheet, ground.spriteIdleFrameBegin, ground.spriteIdleFrameCount)
 
@@ -44,6 +48,8 @@ function ground.scroll(x, xprev)
 		print('creating at ' .. partnum)
 		ground.partitions[partnum] = {ground:new(partnum * 960, 450)}
         random_create_survivor(x, xprev)
+		-- hack! whenever new ground is created, add two screen widths of rectangle
+		ground.body.width = ground.body.width + 960 * 2
         table.insert(meteor_spawn_list, x)
 	end
 	if ground.partitions[partnum + 1] then
@@ -180,8 +186,6 @@ function ground:load()
 	
 	self.image.x = round(self:x() + self.w / 2)
 	self.image.y = round(self:y() + self.h / 2)
-	
-	physics.addBody(self.image, 'static', {friction = 0.6, bounce = 0.4, filter = { categoryBits = 32, maskBits = 71 }})
 end
 
 function ground:unload()
